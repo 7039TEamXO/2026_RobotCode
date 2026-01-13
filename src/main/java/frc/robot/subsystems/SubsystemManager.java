@@ -14,6 +14,7 @@ import frc.robot.Constants;
 import frc.robot.RobotState;
 import frc.robot.Constants.Mode;
 import frc.robot.Constants.SysIdMode;
+import frc.robot.commands.TestAutoTeleop;
 import frc.robot.subsystems.SwerveDrive.SwerveDriveTuning;
 import frc.robot.subsystems.SwerveDrive.SwerveSubsystem;
 public class SubsystemManager {
@@ -38,7 +39,11 @@ public class SubsystemManager {
             testDrive = drivebase.driveToPose(new Pose2d(SwerveDriveTuning.TEST_DRIVE_X_get(), SwerveDriveTuning.TEST_DRIVE_Y_get(),
                 new Rotation2d(Math.toRadians(SwerveDriveTuning.TEST_DRIVE_ANGLE_get()))));
             CommandScheduler.getInstance().schedule(testDrive);
+        } else if(psControllerHID.getL1Button()) {
+            testDrive = new TestAutoTeleop();
+            CommandScheduler.getInstance().schedule(testDrive);
         } else {
+            drivebase.resetWaypointToPose();
             if(testDrive != null) {
                 CommandScheduler.getInstance().cancel(testDrive);
                 testDrive = null;

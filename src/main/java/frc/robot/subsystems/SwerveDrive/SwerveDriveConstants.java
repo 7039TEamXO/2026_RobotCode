@@ -1,5 +1,12 @@
 package frc.robot.subsystems.SwerveDrive;
 
+import static edu.wpi.first.units.Units.Centimeters;
+import static edu.wpi.first.units.Units.Degrees;
+
+import com.therekrab.autopilot.APConstraints;
+import com.therekrab.autopilot.APProfile;
+import com.therekrab.autopilot.Autopilot;
+
 import edu.wpi.first.math.util.Units;
 
 /*
@@ -26,7 +33,6 @@ public class SwerveDriveConstants {
     public static final double CLIMB_SPEED = Units.feetToMeters(7);
 
     public static final double MAX_ROTATION_V = 4;
-    public static final double MIN_ROTATION_V = 2; // Non-restrictive
 
     // SysId
     public static final double DriveSysIdQuasistatic = 1;
@@ -34,22 +40,25 @@ public class SwerveDriveConstants {
     public static final double TurnSysIdQuasistatic = 1;
     public static final double TurnSysIdDynamic = 7;
 
-    // DriveToPose PIDs (DTP-General)
-    public static final double KP = 2; // 2.5
-    public static final double KI = 0;
-    public static final double KD = 0; // 0.2
-
+    // Angular motion PIDs
     public static final double KP_ANGULAR = 3;
     public static final double KI_ANGULAR = 0;
     public static final double KD_ANGULAR = 0;
 
-    // Physical-based function
-    public static final double MAX_SPEED_F = 4.5;
-    public static final double MAX_DECEL_F = 6;
-    public static final double SWITCH_DIST = 0.1;
+    // Autopilot
+    private static final APConstraints kConstraints = new APConstraints()
+        .withAcceleration(7039.0) // Temporary?
+        .withJerk(2.0); // Simulation-induced
+
+    private static final APProfile kProfile = new APProfile(kConstraints)
+        .withErrorXY(Centimeters.of(2))
+        .withErrorTheta(Degrees.of(0.5))
+        .withBeelineRadius(Centimeters.of(8));
+
+    public static final Autopilot kAutopilot = new Autopilot(kProfile);
 
     // PROXIMITY TOLERANCE
-    public static final double CLOSE_DISTANCE_ERROR_CAP = 0.1;
+    public static final double CLOSE_DISTANCE_ERROR_CAP = 0.3;
     public static final double CLOSE_ANGLE_ERROR_CAP = Math.toRadians(5);
 
     // ERROR TOLERANCE

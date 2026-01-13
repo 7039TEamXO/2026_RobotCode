@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.SysIdMode;
 import frc.robot.subsystems.SubsystemManager;
 import frc.robot.subsystems.IO.Real.CameraReal;
-// import frc.robot.subsystems.IO.Sim.CameraSim;
+import frc.robot.subsystems.IO.Sim.CameraSim;
 import frc.robot.subsystems.IO.Stub.CameraStub;
 
 import java.util.Optional;
@@ -32,7 +32,7 @@ public class RobotContainer {
         Limelight.init(new CameraStub());
         break;
       case SIM:
-        // Limelight.init(new CameraSim());
+        Limelight.init(new CameraSim());
         break;
     }
 

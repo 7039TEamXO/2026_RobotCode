@@ -9,11 +9,7 @@ public class SwerveDriveTuning {
     private static final LoggedNetworkNumber MIN_SPEED = new LoggedNetworkNumber("/Tuning/Swerve/Minimum Speed", SwerveDriveConstants.MIN_SPEED);
     private static final LoggedNetworkNumber CLIMB_SPEED = new LoggedNetworkNumber("/Tuning/Swerve/Climb Speed", SwerveDriveConstants.CLIMB_SPEED);
     private static final LoggedNetworkNumber MAX_ROTATION_V = new LoggedNetworkNumber("/Tuning/Swerve/Maximum Rotation Velocity", SwerveDriveConstants.MAX_ROTATION_V);
-    private static final LoggedNetworkNumber MIN_ROTATION_V = new LoggedNetworkNumber("/Tuning/Swerve/Minimum Rotation Velocity", SwerveDriveConstants.MIN_ROTATION_V);
-    
-    private static final LoggedNetworkNumber KP = new LoggedNetworkNumber("/Tuning/Swerve/(DTP) kP", SwerveDriveConstants.KP);
-    private static final LoggedNetworkNumber KI = new LoggedNetworkNumber("/Tuning/Swerve/(DTP) kI", SwerveDriveConstants.KI);
-    private static final LoggedNetworkNumber KD = new LoggedNetworkNumber("/Tuning/Swerve/(DTP) kD", SwerveDriveConstants.KD);
+
     private static final LoggedNetworkNumber KP_ANGULAR = new LoggedNetworkNumber("/Tuning/Swerve/(DTP) Angle kP", SwerveDriveConstants.KP_ANGULAR);
     private static final LoggedNetworkNumber KI_ANGULAR = new LoggedNetworkNumber("/Tuning/Swerve/(DTP) Angle kI", SwerveDriveConstants.KI_ANGULAR);
     private static final LoggedNetworkNumber KD_ANGULAR = new LoggedNetworkNumber("/Tuning/Swerve/(DTP) Angle kD", SwerveDriveConstants.KD_ANGULAR);
@@ -35,22 +31,6 @@ public class SwerveDriveTuning {
 
     public static final double MAX_ROTATION_V_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? MAX_ROTATION_V.get() : SwerveDriveConstants.MAX_ROTATION_V;
-    }
-
-    public static final double MIN_ROTATION_V_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? MIN_ROTATION_V.get() : SwerveDriveConstants.MIN_ROTATION_V;
-    }
-
-    public static final double KP_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? KP.get() : SwerveDriveConstants.KP;
-    }
-
-    public static final double KI_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? KI.get() : SwerveDriveConstants.KI;
-    }
-
-    public static final double KD_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? KD.get() : SwerveDriveConstants.KD;
     }
 
     public static final double KP_ANGULAR_get() {
