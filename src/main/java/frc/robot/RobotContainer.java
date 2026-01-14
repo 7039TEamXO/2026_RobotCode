@@ -11,8 +11,12 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.SysIdMode;
 import frc.robot.subsystems.SubsystemManager;
 import frc.robot.subsystems.IO.Real.CameraReal;
+import frc.robot.subsystems.IO.Real.IntakeReal;
 import frc.robot.subsystems.IO.Sim.CameraSim;
+import frc.robot.subsystems.IO.Sim.IntakeSim;
 import frc.robot.subsystems.IO.Stub.CameraStub;
+import frc.robot.subsystems.IO.Stub.IntakeStub;
+import frc.robot.subsystems.Intake.Intake;
 
 import java.util.Optional;
 
@@ -23,15 +27,21 @@ import com.ctre.phoenix6.SignalLogger;
 public class RobotContainer {
   private static Command driveFieldOrientedAngularVelocity;
 
+  public static Intake intake;
+  private static final double periodicDt = 0.02;
+
   public static void init() {
     switch(Constants.CurrentMode) {
       case REAL:
+        intake = new Intake(new IntakeReal());
         Limelight.init(new CameraReal());
         break;
       case REPLAY: 
+        intake = new Intake(new IntakeStub());
         Limelight.init(new CameraStub());
         break;
       case SIM:
+        intake = new Intake(new IntakeSim(periodicDt));
         Limelight.init(new CameraSim());
         break;
     }

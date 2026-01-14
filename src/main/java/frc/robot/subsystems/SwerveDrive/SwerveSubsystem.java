@@ -98,7 +98,7 @@ public class SwerveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     if(Constants.GetTuningMode() == TuningMode.ACTIVE) {
-      rotationPID.setPID(SwerveDriveTuning.KP_ANGULAR_get(), SwerveDriveTuning.KI_ANGULAR_get(), SwerveDriveTuning.KD_ANGULAR_get());
+      rotationPID.setPID(SwerveDriveTuning.KP_ANGULAR_get(), 0, SwerveDriveTuning.KD_ANGULAR_get());
     }
 
     // if(isAuto) filter by isRobotVBelowOne too
@@ -112,7 +112,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     Logger.recordOutput("Odometry/Pose", getPose());
     if(Constants.CurrentMode != frc.robot.Constants.Mode.REAL) Logger.recordOutput("Odometry/RealPose", getSimulationPose());
-    if(!SubsystemManager.isDriveToPoseActive()) {
+    if(!SubsystemManager.isInAutoDrive()) {
       Logger.recordOutput("Odometry/RequestedPose", new Pose2d(Double.MAX_VALUE, Double.MAX_VALUE, new Rotation2d()));
     }
     // Logger.recordOutput("Odometry/BasicPose", swerveDriveOdometry.getPose()); // Tuning
@@ -134,7 +134,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
   }
 
-  private PIDController rotationPID = new PIDController(SwerveDriveConstants.KP_ANGULAR, SwerveDriveConstants.KI_ANGULAR, SwerveDriveConstants.KD_ANGULAR);
+  private PIDController rotationPID = new PIDController(SwerveDriveConstants.KP_ANGULAR, 0, SwerveDriveConstants.KD_ANGULAR);
 
   public Command driveToPose(Pose2d pose) {
     return run(() -> {
@@ -303,8 +303,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public Pose2d getPose() {
-    // return swerveDrive.getPose();
-    return getSimulationPose();
+    return swerveDrive.getPose();
   }
 
   public Rotation2d getHeading()

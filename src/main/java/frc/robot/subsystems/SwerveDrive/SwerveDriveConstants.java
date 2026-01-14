@@ -42,7 +42,6 @@ public class SwerveDriveConstants {
 
     // Angular motion PIDs
     public static final double KP_ANGULAR = 3;
-    public static final double KI_ANGULAR = 0;
     public static final double KD_ANGULAR = 0;
 
     // Autopilot
@@ -59,7 +58,7 @@ public class SwerveDriveConstants {
 
     // PROXIMITY TOLERANCE
     public static final double CLOSE_DISTANCE_ERROR_CAP = 0.3;
-    public static final double CLOSE_ANGLE_ERROR_CAP = Math.toRadians(5);
+    public static final double CLOSE_ANGLE_ERROR_CAP = Math.toRadians(3);
 
     // ERROR TOLERANCE
     public static final double MAXIMUM_DISTANCE_ERROR = 0.5;
