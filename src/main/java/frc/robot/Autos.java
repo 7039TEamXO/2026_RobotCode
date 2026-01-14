@@ -1,10 +1,7 @@
 package frc.robot;
 
 public enum Autos {
-    Blue_Right_Coral("Blue Right Coral"),
-    Red_Right_Coral("Red Right Coral"),
-    Blue_Left_Coral("Blue Left Coral"),
-    Red_Left_Coral("Red Left Coral");
+    TestAuto("Test Auto");
     
     private final String autoName;
     

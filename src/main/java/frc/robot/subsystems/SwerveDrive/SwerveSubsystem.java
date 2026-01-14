@@ -129,7 +129,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public Command getAutonomousCommand(String pathName) {
     switch(pathName) {
       default:
-      case "SimpleAuto":
+      case "TestAuto":
         return new TestAuto();
     }
   }
