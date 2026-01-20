@@ -9,21 +9,7 @@ import com.therekrab.autopilot.Autopilot;
 
 import edu.wpi.first.math.util.Units;
 
-/*
-      -----------DRIVER STATION-----------
-
- *                  FACE ONE
- *               -----------
- *              /             \ 
- *   FACE SIX  /               \  FACE TWO
- *            /                 \
- *            \                 /
- *  FACE FIVE  \               /  FACE THREE
- *              \             /
- *                -----------
- *                 FACE FOUR
- *       
- */                   
+               
 public class SwerveDriveConstants {
     // SPEED LIMITATIONS
     public static final double MAX_SPEED = 4.5; // NOT TUNEABLE [!]

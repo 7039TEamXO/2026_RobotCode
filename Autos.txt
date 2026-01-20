@@ -1,0 +1,35 @@
+
+Score autos
+    Left side:
+    1. Start at ramp, intake close fuel, back to score, 
+        intake alliance zone depot and score - approx 20 sec
+    2. Start at ramp, intake deep fuel, back to score
+        intake alliance zone depot and score - approx 22 sec
+        a. Will mess up close fuel 
+    3. Start at ramp, intake close fuel, back to score,
+        climb 
+    
+    Middle:
+    1. Start from middle, intake depot and outpost, shoot, climb
+    
+    Right side:
+    1. Start at ramp, intake close fuel, back to score, 
+        intake alliance zone outpost (feeder) and score - approx 23 sec
+    2. Start at ramp, intake deep fuel, back to score
+        intake alliance zone outpost (feeder) and score - approx 25 sec
+        a. Will mess up close fuel 
+    3. Start at ramp, intake close fuel, back to score,
+        climb
+
+Delivery Autos:
+    1. Delivery close first, then deep 
+    2. Delivery deep first, then close 
+    3. Delivery deep - cross field while moving 
+    4. Delivery close - cross field while moving
+    5. Climb, go down, go to deliver
+    
+    
+20/1/26 Tasks: 
+1. Auto tests - (paths, go over ramp) + autos simulation -> to get auto time 
+2. Plan states
+3. Start subsystems
