@@ -48,7 +48,7 @@ public class Intake implements Subsystem {
         Logger.processInputs("Intake", inputs);
 
         switch (state) {
-            case INTAKE:
+            case ACTIVE:
                 power = IntakeConstants.INTAKE_POWER_INTAKE;
                 break;
 
@@ -56,7 +56,7 @@ public class Intake implements Subsystem {
                 power = IntakeConstants.INTAKE_POWER_DEPLETE;
                 break;
             
-            case STOP:
+            case INACTIVE:
                 power = IntakeConstants.INTAKE_POWER_STOP;
                 break;
         }

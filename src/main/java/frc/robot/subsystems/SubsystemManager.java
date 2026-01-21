@@ -8,11 +8,9 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.RobotState;
 import frc.robot.Constants.Mode;
 import frc.robot.Constants.SysIdMode;
 import frc.robot.subsystems.Intake.IntakeState;
@@ -25,17 +23,13 @@ public class SubsystemManager {
     private static final CommandPS4Controller ps4Joystick = new CommandPS4Controller(0);
     private static final PS4Controller psControllerHID = ps4Joystick.getHID();
 
-    private static RobotState state;
-    // private static RobotState lastState;
 
     private static IntakeState intakeState;
     private static IntakeState lastIntakeState;
 
     public static void init() {
-        state = RobotState.TRAVEL;
-        // lastState = state;
 
-        intakeState = IntakeState.STOP;
+        intakeState = IntakeState.INACTIVE;
         lastIntakeState = intakeState;
     }
 
@@ -59,9 +53,9 @@ public class SubsystemManager {
     }
 
     private static void computeInputStates() {
-        intakeState = psControllerHID.getCircleButton() ? IntakeState.INTAKE :
+        intakeState = psControllerHID.getCircleButton() ? IntakeState.ACTIVE :
                       psControllerHID.getSquareButton() ? IntakeState.DEPLETE :
-                      psControllerHID.getCrossButton() ? IntakeState.STOP :
+                      psControllerHID.getCrossButton() ? IntakeState.INACTIVE :
                       lastIntakeState;
     }
 
@@ -86,12 +80,6 @@ public class SubsystemManager {
         // lastState = state;
         lastIntakeState = intakeState;
     }
-    
-    public static Command operateAuto(RobotState chosenState) {
-        return new InstantCommand(() -> {
-            state = chosenState == null ? state : chosenState;
-        });
-    }
 
     private static void simulationPeriodic() {
         RobotContainer.intake.simulationPeriodic();
@@ -109,15 +97,8 @@ public class SubsystemManager {
         return ps4Joystick;
     } 
 
-    public static RobotState getRobotState() {
-        return state;
-    }
-
     public static boolean isInAutoDrive() {
         return isInAutoDrive;
     }
-
-    public static void setStateToDefault() {
-        state = RobotState.TRAVEL;
-    }
 }
+

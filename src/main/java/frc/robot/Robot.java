@@ -145,8 +145,6 @@ public class Robot extends LoggedRobot {
     if (autoCommand != null) {
       CommandScheduler.getInstance().schedule(autoCommand);
     }
-
-    SubsystemManager.setStateToDefault();
   }
 
   @Override
