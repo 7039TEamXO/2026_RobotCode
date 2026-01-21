@@ -8,7 +8,6 @@ import com.therekrab.autopilot.APProfile;
 import com.therekrab.autopilot.Autopilot;
 
 import edu.wpi.first.math.util.Units;
-
                
 public class SwerveDriveConstants {
     // SPEED LIMITATIONS
@@ -43,7 +42,7 @@ public class SwerveDriveConstants {
     public static final Autopilot kAutopilot = new Autopilot(kProfile);
 
     // PROXIMITY TOLERANCE
-    public static final double CLOSE_DISTANCE_ERROR_CAP = 0.3;
+    public static final double CLOSE_DISTANCE_ERROR_CAP = 0.05;
     public static final double CLOSE_ANGLE_ERROR_CAP = Math.toRadians(3);
 
     // ERROR TOLERANCE

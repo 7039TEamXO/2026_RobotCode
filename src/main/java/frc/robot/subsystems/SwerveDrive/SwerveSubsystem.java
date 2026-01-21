@@ -160,7 +160,7 @@ public class SwerveSubsystem extends SubsystemBase {
       Translation2d fieldRelative = new Translation2d(output.vx().in(MetersPerSecond), output.vy().in(MetersPerSecond));
       double omegaRadiansPerSecond = R.calculate(robotAngle);
 
-      swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
+      swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
     });
   }
 
@@ -190,12 +190,12 @@ public class SwerveSubsystem extends SubsystemBase {
       Translation2d fieldRelative = new Translation2d(output.vx().in(MetersPerSecond), output.vy().in(MetersPerSecond));
       double omegaRadiansPerSecond = R.calculate(robotAngle);
 
-      // Hoppin onto the next waypoint
+      // Hopping onto the next waypoint
       if(isCloseEnoughToPose(targets[waypointNumber].getReference())) {
         if(waypointNumber < targets.length - 1) waypointNumber++; 
       }
 
-      swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
+      swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
     });
   }
 
