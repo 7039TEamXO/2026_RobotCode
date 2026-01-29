@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.SysIdMode;
 import frc.robot.subsystems.SubsystemManager;
 import frc.robot.subsystems.IO.Real.CameraReal;
-import frc.robot.subsystems.IO.Real.IntakeReal;
+// import frc.robot.subsystems.IO.Real.IntakeReal;
 import frc.robot.subsystems.IO.Sim.CameraSim;
 import frc.robot.subsystems.IO.Sim.IntakeSim;
 import frc.robot.subsystems.IO.Stub.CameraStub;
@@ -33,7 +33,7 @@ public class RobotContainer {
   public static void init() {
     switch(Constants.CurrentMode) {
       case REAL:
-        intake = new Intake(new IntakeReal());
+        intake = new Intake(new IntakeSim(periodicDt)); // Temporary
         Limelight.init(new CameraReal());
         break;
       case REPLAY: 
