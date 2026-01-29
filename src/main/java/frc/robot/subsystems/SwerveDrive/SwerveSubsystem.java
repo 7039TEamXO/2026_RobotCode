@@ -5,6 +5,8 @@
 package frc.robot.subsystems.SwerveDrive;
 
 import com.ctre.phoenix6.SignalLogger;
+import com.therekrab.autopilot.APTarget;
+import com.therekrab.autopilot.Autopilot.APResult;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -12,7 +14,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,10 +21,11 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Limelight;
 import frc.robot.Constants.TuningMode;
-import frc.robot.commands.SimpleAuto;
+import frc.robot.commands.TestAuto;
 import frc.robot.subsystems.SubsystemManager;
 
 import static edu.wpi.first.units.Units.Meter;
+import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Volts;
 
@@ -43,13 +45,13 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class SwerveSubsystem extends SubsystemBase {
   private SwerveDrive swerveDrive;
-  private SwerveDrive swerveDriveOdometry; // Tuning
+  // private SwerveDrive swerveDriveOdometry; // Tuning
 
   public SwerveSubsystem(File directory) {
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try {
       swerveDrive = new SwerveParser(directory).createSwerveDrive(SwerveDriveConstants.MAX_SPEED);
-      swerveDriveOdometry = new SwerveParser(directory).createSwerveDrive(SwerveDriveConstants.MAX_SPEED);
+      // swerveDriveOdometry = new SwerveParser(directory).createSwerveDrive(SwerveDriveConstants.MAX_SPEED);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -96,8 +98,7 @@ public class SwerveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     if(Constants.GetTuningMode() == TuningMode.ACTIVE) {
-      drivePID.setPID(SwerveDriveTuning.KP_get(), SwerveDriveTuning.KI_get(), SwerveDriveTuning.KD_get());
-      rotationPID.setPID(SwerveDriveTuning.KP_ANGULAR_get(), SwerveDriveTuning.KI_ANGULAR_get(), SwerveDriveTuning.KD_ANGULAR_get());
+      rotationPID.setPID(SwerveDriveTuning.KP_ANGULAR_get(), 0, SwerveDriveTuning.KD_ANGULAR_get());
     }
 
     // if(isAuto) filter by isRobotVBelowOne too
@@ -107,14 +108,14 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     swerveDrive.updateOdometry();
-    swerveDriveOdometry.updateOdometry(); // Tuning
+    // swerveDriveOdometry.updateOdometry(); // Tuning
 
     Logger.recordOutput("Odometry/Pose", getPose());
     if(Constants.CurrentMode != frc.robot.Constants.Mode.REAL) Logger.recordOutput("Odometry/RealPose", getSimulationPose());
-    if(!SubsystemManager.isDriveToPoseActive()) {
+    if(!SubsystemManager.isInAutoDrive()) {
       Logger.recordOutput("Odometry/RequestedPose", new Pose2d(Double.MAX_VALUE, Double.MAX_VALUE, new Rotation2d()));
     }
-    Logger.recordOutput("Odometry/BasicPose", swerveDriveOdometry.getPose()); // Tuning
+    // Logger.recordOutput("Odometry/BasicPose", swerveDriveOdometry.getPose()); // Tuning
   }
 
   @Override
@@ -128,67 +129,78 @@ public class SwerveSubsystem extends SubsystemBase {
   public Command getAutonomousCommand(String pathName) {
     switch(pathName) {
       default:
-      case "SimpleAuto":
-        return new SimpleAuto();
+      case "TestAuto":
+        return new TestAuto();
     }
   }
 
-  // PathPlannerPath currentPath = null;
-
-  // public Command avoidToPose(Pose2d pose) {
-  //   return run(() -> {
-  //     localADStarAK.setStartPosition(getPose().getTranslation());
-  //     localADStarAK.setGoalPosition(pose.getTranslation());
-
-  //     if(currentPath == null) { 
-  //       currentPath = localADStarAK.getCurrentPath(
-  //         new PathConstraints(SwerveDriveConstants.MAX_SPEED, SwerveDriveConstants.MAX_ACCEL, SwerveDriveTuning.MAX_ROTATION_V_get(), Math.toRadians(720)), 
-  //         new GoalEndState(0, pose.getRotation()));
-  //     }
-
-  //     if(currentPath != null) {
-  //       Logger.recordOutput("Odometry/RequestedPose", pose);
-  //     }
-  //   });
-  // }
-
-  private PIDController drivePID = new PIDController(SwerveDriveConstants.KP, SwerveDriveConstants.KI, SwerveDriveConstants.KD);
-  private PIDController rotationPID = new PIDController(SwerveDriveConstants.KP_ANGULAR, SwerveDriveConstants.KI_ANGULAR, SwerveDriveConstants.KD_ANGULAR);
+  private PIDController rotationPID = new PIDController(SwerveDriveConstants.KP_ANGULAR, 0, SwerveDriveConstants.KD_ANGULAR);
 
   public Command driveToPose(Pose2d pose) {
     return run(() -> {
       Logger.recordOutput("Odometry/RequestedPose", pose);
 
+      // Drive compute
+      ChassisSpeeds robotRelativeSpeeds = getRobotVelocity();
+      APTarget target = new APTarget(pose);
+      APResult output = SwerveDriveConstants.kAutopilot.calculate(getPose(), robotRelativeSpeeds, target);
+
+      // Rotation compute
       PIDController R = rotationPID;
 
-      double errX = pose.getX() - getPose().getX();
-      double errY = pose.getY() - getPose().getY();
-      double dist = Math.sqrt(errX * errX + errY * errY);
-
-      double vel = Math.min(SwerveDriveConstants.MAX_SPEED_F, Math.sqrt(2 * SwerveDriveConstants.MAX_DECEL_F * dist));
-
-      if(dist < SwerveDriveConstants.SWITCH_DIST) {
-        PIDController D = drivePID;
-
-        D.setSetpoint(0);
-        vel = -D.calculate(dist);
-      }
-
-      Rotation2d rot = new Translation2d(errX, errY).getAngle();
       // Ensuring that the error is in the -180 ... +180 degree range
       double robotAngle = getPose().getRotation().getRadians();
 
-      R.setSetpoint(pose.getRotation().getRadians());
+      R.setSetpoint(output.targetAngle().getRadians());
       double angleError = robotAngle - R.getSetpoint();
 
       if(angleError > Math.PI) robotAngle -= 2 * Math.PI;
       if(angleError < -Math.PI) robotAngle += 2 * Math.PI;
 
-      Translation2d fieldRelative = new Translation2d(vel, rot);
+      Translation2d fieldRelative = new Translation2d(output.vx().in(MetersPerSecond), output.vy().in(MetersPerSecond));
       double omegaRadiansPerSecond = R.calculate(robotAngle);
 
       swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
     });
+  }
+
+  private Integer waypointNumber = 0;
+
+  public Command waypointToPose(APTarget[] targets) {
+    return run(() -> {
+      Logger.recordOutput("Odometry/RequestedPose", targets[waypointNumber].getReference());
+
+      // Drive compute
+      ChassisSpeeds robotRelativeSpeeds = getRobotVelocity();
+      APTarget target = targets[waypointNumber];
+      APResult output = SwerveDriveConstants.kAutopilot.calculate(getPose(), robotRelativeSpeeds, target);
+
+      // Rotation compute
+      PIDController R = rotationPID;
+
+      // Ensuring that the error is in the -180 ... +180 degree range
+      double robotAngle = getPose().getRotation().getRadians();
+
+      R.setSetpoint(output.targetAngle().getRadians());
+      double angleError = robotAngle - R.getSetpoint();
+
+      if(angleError > Math.PI) robotAngle -= 2 * Math.PI;
+      if(angleError < -Math.PI) robotAngle += 2 * Math.PI;
+
+      Translation2d fieldRelative = new Translation2d(output.vx().in(MetersPerSecond), output.vy().in(MetersPerSecond));
+      double omegaRadiansPerSecond = R.calculate(robotAngle);
+
+      // Hopping onto the next waypoint
+      if(isCloseEnoughToPose(targets[waypointNumber].getReference())) {
+        if(waypointNumber < targets.length - 1) waypointNumber++; 
+      }
+
+      swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
+    });
+  }
+
+  public void resetWaypointToPose() {
+    waypointNumber = 0;
   }
 
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier headingX,
@@ -259,11 +271,6 @@ public class SwerveSubsystem extends SubsystemBase {
   public void setChassisSpeeds(ChassisSpeeds chassisSpeeds)
   {
     swerveDrive.setChassisSpeeds(chassisSpeeds);
-  }
-
-  public void postTrajectory(Trajectory trajectory)
-  {
-    swerveDrive.postTrajectory(trajectory);
   }
 
   public void zeroGyro()

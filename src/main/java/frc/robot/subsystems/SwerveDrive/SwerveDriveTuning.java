@@ -9,21 +9,16 @@ public class SwerveDriveTuning {
     private static final LoggedNetworkNumber MIN_SPEED = new LoggedNetworkNumber("/Tuning/Swerve/Minimum Speed", SwerveDriveConstants.MIN_SPEED);
     private static final LoggedNetworkNumber CLIMB_SPEED = new LoggedNetworkNumber("/Tuning/Swerve/Climb Speed", SwerveDriveConstants.CLIMB_SPEED);
     private static final LoggedNetworkNumber MAX_ROTATION_V = new LoggedNetworkNumber("/Tuning/Swerve/Maximum Rotation Velocity", SwerveDriveConstants.MAX_ROTATION_V);
-    private static final LoggedNetworkNumber MIN_ROTATION_V = new LoggedNetworkNumber("/Tuning/Swerve/Minimum Rotation Velocity", SwerveDriveConstants.MIN_ROTATION_V);
-    
-    private static final LoggedNetworkNumber KP = new LoggedNetworkNumber("/Tuning/Swerve/(DTP) kP", SwerveDriveConstants.KP);
-    private static final LoggedNetworkNumber KI = new LoggedNetworkNumber("/Tuning/Swerve/(DTP) kI", SwerveDriveConstants.KI);
-    private static final LoggedNetworkNumber KD = new LoggedNetworkNumber("/Tuning/Swerve/(DTP) kD", SwerveDriveConstants.KD);
+
     private static final LoggedNetworkNumber KP_ANGULAR = new LoggedNetworkNumber("/Tuning/Swerve/(DTP) Angle kP", SwerveDriveConstants.KP_ANGULAR);
-    private static final LoggedNetworkNumber KI_ANGULAR = new LoggedNetworkNumber("/Tuning/Swerve/(DTP) Angle kI", SwerveDriveConstants.KI_ANGULAR);
     private static final LoggedNetworkNumber KD_ANGULAR = new LoggedNetworkNumber("/Tuning/Swerve/(DTP) Angle kD", SwerveDriveConstants.KD_ANGULAR);
 
     private static final LoggedNetworkNumber CLOSE_DISTANCE_ERROR_CAP = new LoggedNetworkNumber("/Tuning/Swerve/Close Distance Error Cap", SwerveDriveConstants.CLOSE_DISTANCE_ERROR_CAP);
     private static final LoggedNetworkNumber CLOSE_ANGLE_ERROR_CAP = new LoggedNetworkNumber("/Tuning/Swerve/Close Angle Error Cap", SwerveDriveConstants.CLOSE_ANGLE_ERROR_CAP);
 
-    private static final LoggedNetworkNumber TEST_DRIVE_X = new LoggedNetworkNumber("/Tuning/Swerve/(Test L3) X", 12.25);
-    private static final LoggedNetworkNumber TEST_DRIVE_Y = new LoggedNetworkNumber("/Tuning/Swerve/(Test L3) Y", 5.1);
-    private static final LoggedNetworkNumber TEST_DRIVE_ANGLE = new LoggedNetworkNumber("/Tuning/Swerve/(Test L3) Angle", -60);
+    private static final LoggedNetworkNumber TEST_DRIVE_X = new LoggedNetworkNumber("/Tuning/Swerve/(Test L3) X", 0);
+    private static final LoggedNetworkNumber TEST_DRIVE_Y = new LoggedNetworkNumber("/Tuning/Swerve/(Test L3) Y", 0);
+    private static final LoggedNetworkNumber TEST_DRIVE_ANGLE = new LoggedNetworkNumber("/Tuning/Swerve/(Test L3) Angle", 0);
 
     public static final double MIN_SPEED_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? MIN_SPEED.get() : SwerveDriveConstants.MIN_SPEED;
@@ -37,28 +32,8 @@ public class SwerveDriveTuning {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? MAX_ROTATION_V.get() : SwerveDriveConstants.MAX_ROTATION_V;
     }
 
-    public static final double MIN_ROTATION_V_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? MIN_ROTATION_V.get() : SwerveDriveConstants.MIN_ROTATION_V;
-    }
-
-    public static final double KP_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? KP.get() : SwerveDriveConstants.KP;
-    }
-
-    public static final double KI_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? KI.get() : SwerveDriveConstants.KI;
-    }
-
-    public static final double KD_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? KD.get() : SwerveDriveConstants.KD;
-    }
-
     public static final double KP_ANGULAR_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? KP_ANGULAR.get() : SwerveDriveConstants.KP_ANGULAR;
-    }
-
-    public static final double KI_ANGULAR_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? KI_ANGULAR.get() : SwerveDriveConstants.KI_ANGULAR;
     }
 
     public static final double KD_ANGULAR_get() {
