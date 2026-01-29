@@ -34,7 +34,6 @@ public class CameraReal implements CameraIO {
         stdDevs = VecBuilder.fill(0.1, 0.1, 0.01);
     }
 
-    @Override
     public void init() {
         LimelightHelpers.setPipelineIndex("limelight", 2);
         setConfigurationToLimelight();
@@ -54,7 +53,6 @@ public class CameraReal implements CameraIO {
         ); // Could in principle borrow from Constants.Limelight.RobotToCamera, but no
     }
 
-    @Override
     public void updateInputs(CameraIOInputs inputs) {
         inputs.doRejectUpdate = doRejectUpdate;
         inputs.estimatedPose = estimatedPose;
@@ -68,7 +66,6 @@ public class CameraReal implements CameraIO {
         inputs.MT1 = angleFromMT1;
     }
 
-    @Override
     public void periodic() {
         doRejectUpdate = false;
 

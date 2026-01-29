@@ -1,7 +1,10 @@
 package frc.robot.subsystems.Intake;
 
 public class IntakeConstants {
-    public static final int IntakeMotorID = 14;
+    public static final int IntakeMotorID = -1;
+    public static final int ControlMotorID = -1;
+    
+    public static final double SimulationGearRatio = 10.0;
 
     public static final double SysIdQuasistatic = 0.5;
     public static final double SysIdDynamic = 2;

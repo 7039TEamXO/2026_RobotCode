@@ -63,12 +63,10 @@ public class CameraSim implements CameraIO {
         stdDevs = singleTagStdDevs;
     }
 
-    @Override
     public void init() {
         // ...
     }
 
-    @Override
     public void updateInputs(CameraIOInputs inputs) {
         inputs.doRejectUpdate = doRejectUpdate;
         inputs.estimatedPose = estimatedPose;
@@ -82,7 +80,6 @@ public class CameraSim implements CameraIO {
         inputs.MT1 = estimatedPose != null ? estimatedPose.getRotation().getDegrees() : 0;
     }
 
-    @Override
     public void periodic() {
         visionSim.update(SubsystemManager.getDrivebase().getSimulationPose());
 

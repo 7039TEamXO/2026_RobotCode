@@ -29,7 +29,7 @@ public class Intake implements Subsystem {
         var talonFXConfigs = new TalonFXConfiguration();
         talonFXConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
-        io.applyTalonFXConfig(talonFXConfigs);
+        io.applyIntakeTalonFXConfig(talonFXConfigs);
 
         io.updateInputs(inputs);
         Logger.processInputs("Intake", inputs);
@@ -40,7 +40,7 @@ public class Intake implements Subsystem {
                 Volts.of(IntakeConstants.SysIdDynamic), null, state -> {
                     SignalLogger.writeString("state", state.toString());
             }),
-            new SysIdRoutine.Mechanism(v -> io.setVoltage(v), null, this));
+            new SysIdRoutine.Mechanism(v -> io.setIntakeVoltage(v), null, this));
     }
 
     public void operate(IntakeState state) {
@@ -61,11 +61,11 @@ public class Intake implements Subsystem {
                 break;
         }
 
-        io.setMotionMagic(new DutyCycleOut(power));
+        io.setIntakeMotionMagic(new DutyCycleOut(power));
     }
 
     public double getHandlerMotorDistance() {
-        return inputs.position;
+        return inputs.Intake_Position;
     }
 
     public void simulationPeriodic() {

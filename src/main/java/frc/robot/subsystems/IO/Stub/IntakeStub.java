@@ -13,16 +13,28 @@ public class IntakeStub implements IntakeIO {
     public void updateInputs(IntakeIOInputs inputs) {}
 
     @Override
-    public void applyTalonFXConfig(TalonFXConfiguration configuration) {}
+    public void applyIntakeTalonFXConfig(TalonFXConfiguration configuration) {}
 
     @Override
-    public void setPosition(double newValue) {}
+    public void applyControlTalonFXConfig(TalonFXConfiguration configuration) {}
 
     @Override
-    public void setMotionMagic(DutyCycleOut request) {}
+    public void setIntakePosition(double newValue) {}
 
     @Override
-    public void setVoltage(Voltage voltage) {}
+    public void setControlPosition(double newValue) {}
+
+    @Override
+    public void setIntakeMotionMagic(DutyCycleOut request) {}
+
+    @Override
+    public void setControlMotionMagic(DutyCycleOut request) {}
+
+    @Override
+    public void setIntakeVoltage(Voltage voltage) {}
+
+    @Override
+    public void setControlVoltage(Voltage voltage) {}
 
     @Override
     public void simulationPeriodic() {}

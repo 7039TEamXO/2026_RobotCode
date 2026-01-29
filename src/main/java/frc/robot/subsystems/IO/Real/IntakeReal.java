@@ -11,45 +11,58 @@ import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.subsystems.IO.IntakeIO;
 
 public class IntakeReal implements IntakeIO {
-    private final TalonFX master;
+    private final TalonFX intakeMotor;
+    private final TalonFX controlMotor;
 
     public IntakeReal() {        
-        master = new TalonFX(IntakeConstants.IntakeMotorID);
+        intakeMotor = new TalonFX(IntakeConstants.IntakeMotorID);
+        controlMotor = new TalonFX(IntakeConstants.ControlMotorID);
     }
 
-    @Override
     public void updateInputs(IntakeIOInputs inputs) {
-        inputs.position = master.getPosition().getValueAsDouble();
-        inputs.velocity = master.getVelocity().getValueAsDouble();
-        inputs.appliedVolts = master.getMotorVoltage().getValueAsDouble();
-        inputs.currentAmps = master.getStatorCurrent().getValueAsDouble();
+        inputs.Intake_Position = intakeMotor.getPosition().getValueAsDouble();
+        inputs.Intake_Velocity = intakeMotor.getVelocity().getValueAsDouble();
+        inputs.Intake_AppliedVolts = intakeMotor.getMotorVoltage().getValueAsDouble();
+        inputs.Intake_CurrentAmps = intakeMotor.getStatorCurrent().getValueAsDouble();
     }
 
-    @Override
-    public void applyTalonFXConfig(TalonFXConfiguration configuration) {
-        master.getConfigurator().apply(configuration);
+    public void applyIntakeTalonFXConfig(TalonFXConfiguration configuration) {
+        intakeMotor.getConfigurator().apply(configuration);
     }
 
-    @Override
-    public void setPosition(double newValue) {
-        master.setPosition(newValue);
+    public void applyControlTalonFXConfig(TalonFXConfiguration configuration) {
+        controlMotor.getConfigurator().apply(configuration);
     }
 
-    @Override
-    public void setMotionMagic(DutyCycleOut request) {
-        master.setControl(request);
+    public void setIntakePosition(double newValue) {
+        intakeMotor.setPosition(newValue);
     }
 
-    @Override
-    public void setVoltage(Voltage voltage) {
-        master.setVoltage(voltage.in(Volts));
+    public void setControlPosition(double newValue) {
+        controlMotor.setPosition(newValue);
     }
 
-    @Override
+    public void setIntakeMotionMagic(DutyCycleOut request) {
+        intakeMotor.setControl(request);
+    }
+
+    public void setControlMotionMagic(DutyCycleOut request) {
+        controlMotor.setControl(request);
+    }
+
+    public void setIntakeVoltage(Voltage voltage) {
+        intakeMotor.setVoltage(voltage.in(Volts));
+    }
+
+    public void setControlVoltage(Voltage voltage) {
+        controlMotor.setVoltage(voltage.in(Volts));
+    }
+
     public void simulationPeriodic() {}
 
     @Override
     public void close() throws Exception {
-        master.close();
+        intakeMotor.close();
+        controlMotor.close();
     }
 }
