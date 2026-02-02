@@ -13,9 +13,7 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.subsystems.Delivery.Conveyor.ConveyorConstants;
-import frc.robot.subsystems.Delivery.Shooter.ShooterConstants;
 import frc.robot.subsystems.IO.ConveyorIO;
-import frc.robot.subsystems.Intake.IntakeConstants;
 
 public class ConveyorSim implements ConveyorIO {
     private final TalonFX motor;
@@ -33,7 +31,7 @@ public class ConveyorSim implements ConveyorIO {
         motorSim = motor.getSimState();
         motorSimModel = new DCMotorSim(
             LinearSystemId.createDCMotorSystem(
-                DCMotor.getKrakenX60Foc(1), 0.001, ShooterConstants.SimulationGearRatio
+                DCMotor.getKrakenX60Foc(1), 0.001, ConveyorConstants.SimulationMotorGearRatio
             ),
             DCMotor.getKrakenX60Foc(1)
         );
@@ -71,8 +69,8 @@ public class ConveyorSim implements ConveyorIO {
 
         motorSimModel.update(periodicDt);
     
-        motorSim.setRawRotorPosition(motorSimModel.getAngularPosition().times(IntakeConstants.SimulationGearRatio));
-        motorSim.setRotorVelocity(motorSimModel.getAngularVelocity().times(IntakeConstants.SimulationGearRatio));
+        motorSim.setRawRotorPosition(motorSimModel.getAngularPosition().times(ConveyorConstants.SimulationMotorGearRatio));
+        motorSim.setRotorVelocity(motorSimModel.getAngularVelocity().times(ConveyorConstants.SimulationMotorGearRatio));
     }
 
     @Override

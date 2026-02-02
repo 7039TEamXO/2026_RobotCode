@@ -4,10 +4,9 @@ import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
-
-import edu.wpi.first.units.measure.Voltage;
 
 public interface ShooterIO extends AutoCloseable {
     public static class ShooterIOInputs implements LoggableInputs {
@@ -31,6 +30,8 @@ public interface ShooterIO extends AutoCloseable {
         public double ShootSlave_AppliedVolts = 0.0;
         public double ShootSlave_CurrentAmps = 0.0;
 
+        public double AngleEncoder_RawPosition = 0.0;
+
         public void toLog(LogTable table) {
             table.put("Entry Motor Position", EntryMotor_Position);
             table.put("Entry Motor Velocity", EntryMotor_Velocity);
@@ -51,6 +52,8 @@ public interface ShooterIO extends AutoCloseable {
             table.put("Shoot Slave Velocity", ShootSlave_Velocity);
             table.put("Shoot Slave Applied Volts", ShootSlave_AppliedVolts);
             table.put("Shoot Slave Current Amps", ShootSlave_CurrentAmps);
+
+            table.put("Angle Encoder Raw Position", AngleEncoder_RawPosition);
         }
 
         public void fromLog(LogTable table) {
@@ -73,6 +76,8 @@ public interface ShooterIO extends AutoCloseable {
             ShootSlave_Velocity = table.get("Shoot Slave Velocity", 0.0);
             ShootSlave_AppliedVolts = table.get("Shoot Slave Applied Volts", 0.0);
             ShootSlave_CurrentAmps = table.get("Shoot Slave Current Amps", 0.0);
+
+            AngleEncoder_RawPosition = table.get("Angle Encoder Raw Position", 0.0);
         }
     }
 
@@ -83,22 +88,13 @@ public interface ShooterIO extends AutoCloseable {
     public void applyMasterTalonFXConfig(TalonFXConfiguration configuration);
     public void applySlaveTalonFXConfig(TalonFXConfiguration configuration);
 
-    public void setEntryMotorPosition(double newValue);
     public void setAngleMotorPosition(double newValue);
-    public void setMasterMotorPosition(double newValue);
-    public void setSlaveMotorPosition(double newValue);
 
-    public void setEntryMotionMagic(MotionMagicExpoVoltage request);
+    public void setEntryMotionMagic(DutyCycleOut request);
     public void setAngleMotionMagic(MotionMagicExpoVoltage request);
-    public void setMasterMotionMagic(MotionMagicExpoVoltage request);
+    public void setMasterMotionMagic(DutyCycleOut request);
 
-    public Follower createMasterFollower();
     public void setSlaveMotionMagic(Follower request);
-
-    public void setEntryMotorVoltage(Voltage voltage);
-    public void setAngleMotorVoltage(Voltage voltage);
-    public void setMasterMotorVoltage(Voltage voltage);
-    public void setSlaveMotorVoltage(Voltage voltage);
 
     public void simulationPeriodic();
 }

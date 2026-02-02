@@ -3,12 +3,13 @@ package frc.robot.subsystems.IO.Real;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.MotorAlignmentValue;
 
 import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.robot.subsystems.Delivery.Shooter.ShooterConstants;
 import frc.robot.subsystems.IO.ShooterIO;
 
@@ -18,11 +19,15 @@ public class ShooterReal implements ShooterIO {
     private final TalonFX masterMotor;
     private final TalonFX slaveMotor;
 
+    private final DutyCycleEncoder absoluteEncoder;
+
     public ShooterReal() {
         entryMotor = new TalonFX(ShooterConstants.ShooterEntryMotorID);
         angleMotor = new TalonFX(ShooterConstants.ShooterAngleMotorID);
         masterMotor = new TalonFX(ShooterConstants.ShooterMasterMotorID);
         slaveMotor = new TalonFX(ShooterConstants.ShooterSlaveMotorID);
+
+        absoluteEncoder = new DutyCycleEncoder(ShooterConstants.AbsoluteEncoderID);
     }
 
     public void updateInputs(ShooterIOInputs inputs) {
@@ -42,9 +47,11 @@ public class ShooterReal implements ShooterIO {
         inputs.ShootMaster_CurrentAmps = masterMotor.getStatorCurrent().getValueAsDouble();
 
         inputs.ShootSlave_Position = slaveMotor.getPosition().getValueAsDouble();
-        inputs.ShootSlave_Position = slaveMotor.getVelocity().getValueAsDouble();
-        inputs.ShootSlave_Position = slaveMotor.getMotorVoltage().getValueAsDouble();
-        inputs.ShootSlave_Position = slaveMotor.getStatorCurrent().getValueAsDouble();
+        inputs.ShootSlave_Velocity = slaveMotor.getVelocity().getValueAsDouble();
+        inputs.ShootSlave_AppliedVolts = slaveMotor.getMotorVoltage().getValueAsDouble();
+        inputs.ShootSlave_CurrentAmps = slaveMotor.getStatorCurrent().getValueAsDouble();
+
+        inputs.AngleEncoder_RawPosition = absoluteEncoder.get();
     }
 
     public void applyEntryTalonFXConfig(TalonFXConfiguration configuration) {
@@ -79,7 +86,7 @@ public class ShooterReal implements ShooterIO {
         slaveMotor.setPosition(newValue);
     }
 
-    public void setEntryMotionMagic(MotionMagicExpoVoltage request) {
+    public void setEntryMotionMagic(DutyCycleOut request) {
         entryMotor.setControl(request);
     }
 
@@ -87,12 +94,8 @@ public class ShooterReal implements ShooterIO {
         angleMotor.setControl(request);
     }
 
-    public void setMasterMotionMagic(MotionMagicExpoVoltage request) {
+    public void setMasterMotionMagic(DutyCycleOut request) {
         masterMotor.setControl(request);
-    }
-
-    public Follower createMasterFollower() {
-        return new Follower(masterMotor.getDeviceID(), MotorAlignmentValue.Aligned);
     }
 
     public void setSlaveMotionMagic(Follower request) {

@@ -6,5 +6,64 @@ public class ShooterConstants {
     public static final int ShooterMasterMotorID = -1;
     public static final int ShooterSlaveMotorID = -1;
 
-    public static final double SimulationGearRatio = 10.0;
+    public static final int AbsoluteEncoderID = -1;
+
+    public static final double EncoderGearRatio = 1/6.0;
+    public static final double EncoderOffset = 0.0;
+
+    public static final double SimulationMotorGearRatio = 12.8;
+
+    // --- ENTRY MOTOR ---
+
+    public static final double Entry_kS = 0;
+    public static final double Entry_kV = 0;
+    public static final double Entry_kA = 0;
+    public static final double Entry_kP = 0;
+    public static final double Entry_kI = 0;
+    public static final double Entry_kD = 0;
+
+    public static final double Entry_Expo_CV = 0;
+    public static final double Entry_Expo_kV = 0;
+    public static final double Entry_Expo_kA = 0;
+
+    public static final double Entry_StatorCurrentLimit = 30;
+    public static final double Entry_SupplyCurrentLimit = 30;
+
+    public static final double ENTRY_POWER_STOP = 0;
+    public static final double ENTRY_POWER_ROLL = 0;
+
+    // --- ANGLE MOTOR ---
+    
+    public static final double Angle_kS = 0;
+    public static final double Angle_kV = 0;
+    public static final double Angle_kA = 0;
+    public static final double Angle_kP = 0;
+    public static final double Angle_kI = 0;
+    public static final double Angle_kD = 0;
+
+    public static final double Angle_Expo_CV = 0;
+    public static final double Angle_Expo_kV = 0;
+    public static final double Angle_Expo_kA = 0;
+
+    public static final double Angle_StatorCurrentLimit = 30;
+    public static final double Angle_SupplyCurrentLimit = 30;
+
+    // --- SHOOT MOTOR ---
+
+    public static final double Shoot_kS = 0;
+    public static final double Shoot_kV = 0;
+    public static final double Shoot_kA = 0;
+    public static final double Shoot_kP = 0;
+    public static final double Shoot_kI = 0;
+    public static final double Shoot_kD = 0;
+
+    public static final double Shoot_Expo_CV = 0;
+    public static final double Shoot_Expo_kV = 0;
+    public static final double Shoot_Expo_kA = 0;
+
+    public static final double Shoot_StatorCurrentLimit = 50;
+    public static final double Shoot_SupplyCurrentLimit = 50;
+
+    public static final double SHOOT_POWER_IDLE = 0;
+    public static final double SHOOT_POWER_FIRE = 0;
 }

@@ -13,7 +13,6 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.subsystems.Intake.IntakeConstants;
-import frc.robot.subsystems.Delivery.Shooter.ShooterConstants;
 import frc.robot.subsystems.IO.IntakeIO;
 
 public class IntakeSim implements IntakeIO {
@@ -35,7 +34,7 @@ public class IntakeSim implements IntakeIO {
         intakeSim = intakeMotor.getSimState();
         intakeSimModel = new DCMotorSim(
             LinearSystemId.createDCMotorSystem(
-                DCMotor.getKrakenX60Foc(1), 0.001, ShooterConstants.SimulationGearRatio
+                DCMotor.getKrakenX60Foc(1), 0.001, IntakeConstants.SimulationMotorGearRatio
             ),
             DCMotor.getKrakenX60Foc(1)
         );
@@ -44,7 +43,7 @@ public class IntakeSim implements IntakeIO {
         controlSim = controlMotor.getSimState();
         controlSimModel = new DCMotorSim(
             LinearSystemId.createDCMotorSystem(
-                DCMotor.getKrakenX60Foc(1), 0.001, ShooterConstants.SimulationGearRatio
+                DCMotor.getKrakenX60Foc(1), 0.001, IntakeConstants.SimulationMotorGearRatio
             ),
             DCMotor.getKrakenX60Foc(1)
         );
@@ -102,10 +101,10 @@ public class IntakeSim implements IntakeIO {
         intakeSimModel.update(periodicDt);
         controlSimModel.update(periodicDt);
     
-        intakeSim.setRawRotorPosition(intakeSimModel.getAngularPosition().times(IntakeConstants.SimulationGearRatio));
-        intakeSim.setRotorVelocity(intakeSimModel.getAngularVelocity().times(IntakeConstants.SimulationGearRatio));
-        controlSim.setRawRotorPosition(controlSimModel.getAngularPosition().times(IntakeConstants.SimulationGearRatio));
-        controlSim.setRotorVelocity(controlSimModel.getAngularVelocity().times(IntakeConstants.SimulationGearRatio));
+        intakeSim.setRawRotorPosition(intakeSimModel.getAngularPosition().times(IntakeConstants.SimulationMotorGearRatio));
+        intakeSim.setRotorVelocity(intakeSimModel.getAngularVelocity().times(IntakeConstants.SimulationMotorGearRatio));
+        controlSim.setRawRotorPosition(controlSimModel.getAngularPosition().times(IntakeConstants.SimulationMotorGearRatio));
+        controlSim.setRotorVelocity(controlSimModel.getAngularVelocity().times(IntakeConstants.SimulationMotorGearRatio));
     }
 
     @Override

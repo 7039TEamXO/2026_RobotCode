@@ -1,17 +1,14 @@
 package frc.robot.subsystems.IO.Sim;
 
-import static edu.wpi.first.units.Units.Volts;
-
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
-import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.subsystems.Delivery.Shooter.ShooterConstants;
@@ -44,7 +41,7 @@ public class ShooterSim implements ShooterIO {
         entrySim = entryMotor.getSimState();
         entrySimModel = new DCMotorSim(
             LinearSystemId.createDCMotorSystem(
-                DCMotor.getKrakenX60Foc(1), 0.001, ShooterConstants.SimulationGearRatio
+                DCMotor.getKrakenX60Foc(1), 0.001, ShooterConstants.SimulationMotorGearRatio
             ),
             DCMotor.getKrakenX60Foc(1)
         );
@@ -53,7 +50,7 @@ public class ShooterSim implements ShooterIO {
         angleSim = entryMotor.getSimState();
         angleSimModel = new DCMotorSim(
             LinearSystemId.createDCMotorSystem(
-                DCMotor.getKrakenX60Foc(1), 0.001, ShooterConstants.SimulationGearRatio
+                DCMotor.getKrakenX60Foc(1), 0.001, ShooterConstants.SimulationMotorGearRatio
             ),
             DCMotor.getKrakenX60Foc(1)
         );
@@ -62,7 +59,7 @@ public class ShooterSim implements ShooterIO {
         masterSim = masterMotor.getSimState();
         masterSimModel = new DCMotorSim(
             LinearSystemId.createDCMotorSystem(
-                DCMotor.getKrakenX60Foc(1), 0.001, ShooterConstants.SimulationGearRatio
+                DCMotor.getKrakenX60Foc(1), 0.001, ShooterConstants.SimulationMotorGearRatio
             ),
             DCMotor.getKrakenX60Foc(1)
         );
@@ -71,7 +68,7 @@ public class ShooterSim implements ShooterIO {
         slaveSim = masterMotor.getSimState();
         slaveSimModel = new DCMotorSim(
             LinearSystemId.createDCMotorSystem(
-                DCMotor.getKrakenX60Foc(1), 0.001, ShooterConstants.SimulationGearRatio
+                DCMotor.getKrakenX60Foc(1), 0.001, ShooterConstants.SimulationMotorGearRatio
             ),
             DCMotor.getKrakenX60Foc(1)
         );
@@ -97,6 +94,8 @@ public class ShooterSim implements ShooterIO {
         inputs.ShootSlave_Position = slaveMotor.getVelocity().getValueAsDouble();
         inputs.ShootSlave_Position = slaveMotor.getMotorVoltage().getValueAsDouble();
         inputs.ShootSlave_Position = slaveMotor.getStatorCurrent().getValueAsDouble();
+
+        inputs.AngleEncoder_RawPosition = inputs.AngleMotor_Position / ShooterConstants.EncoderGearRatio + ShooterConstants.EncoderOffset;
     }
 
     public void applyEntryTalonFXConfig(TalonFXConfiguration configuration) {
@@ -115,23 +114,11 @@ public class ShooterSim implements ShooterIO {
         slaveMotor.getConfigurator().apply(configuration);
     }
 
-    public void setEntryMotorPosition(double newValue) {
-        entryMotor.setPosition(newValue);
-    }
-
     public void setAngleMotorPosition(double newValue) {
         angleMotor.setPosition(newValue);
     }
 
-    public void setMasterMotorPosition(double newValue) {
-        masterMotor.setPosition(newValue);
-    }
-
-    public void setSlaveMotorPosition(double newValue) {
-        slaveMotor.setPosition(newValue);
-    }
-
-    public void setEntryMotionMagic(MotionMagicExpoVoltage request) {
+    public void setEntryMotionMagic(DutyCycleOut request) {
         entryMotor.setControl(request);
     }
 
@@ -139,32 +126,12 @@ public class ShooterSim implements ShooterIO {
         angleMotor.setControl(request);
     }
 
-    public void setMasterMotionMagic(MotionMagicExpoVoltage request) {
+    public void setMasterMotionMagic(DutyCycleOut request) {
         masterMotor.setControl(request);
-    }
-
-    public Follower createMasterFollower() {
-        return new Follower(masterMotor.getDeviceID(), MotorAlignmentValue.Aligned);
     }
 
     public void setSlaveMotionMagic(Follower request) {
         slaveMotor.setControl(request);
-    }
-
-    public void setEntryMotorVoltage(Voltage voltage) {
-        entryMotor.setVoltage(voltage.in(Volts));
-    }
-
-    public void setAngleMotorVoltage(Voltage voltage) {
-        angleMotor.setVoltage(voltage.in(Volts));
-    }
-
-    public void setMasterMotorVoltage(Voltage voltage) {
-        masterMotor.setVoltage(voltage.in(Volts));
-    }
-
-    public void setSlaveMotorVoltage(Voltage voltage) {
-        slaveMotor.setVoltage(voltage.in(Volts));
     }
 
     public void simulationPeriodic() {
@@ -188,14 +155,14 @@ public class ShooterSim implements ShooterIO {
         masterSimModel.update(periodicDt);
         slaveSimModel.update(periodicDt);
     
-        entrySim.setRawRotorPosition(entrySimModel.getAngularPosition().times(ShooterConstants.SimulationGearRatio));
-        entrySim.setRotorVelocity(entrySimModel.getAngularVelocity().times(ShooterConstants.SimulationGearRatio));
-        angleSim.setRawRotorPosition(angleSimModel.getAngularPosition().times(ShooterConstants.SimulationGearRatio));
-        angleSim.setRotorVelocity(angleSimModel.getAngularVelocity().times(ShooterConstants.SimulationGearRatio));
-        masterSim.setRawRotorPosition(masterSimModel.getAngularPosition().times(ShooterConstants.SimulationGearRatio));
-        masterSim.setRotorVelocity(masterSimModel.getAngularVelocity().times(ShooterConstants.SimulationGearRatio));
-        slaveSim.setRawRotorPosition(slaveSimModel.getAngularPosition().times(ShooterConstants.SimulationGearRatio));
-        slaveSim.setRotorVelocity(slaveSimModel.getAngularVelocity().times(ShooterConstants.SimulationGearRatio));
+        entrySim.setRawRotorPosition(entrySimModel.getAngularPosition().times(ShooterConstants.SimulationMotorGearRatio));
+        entrySim.setRotorVelocity(entrySimModel.getAngularVelocity().times(ShooterConstants.SimulationMotorGearRatio));
+        angleSim.setRawRotorPosition(angleSimModel.getAngularPosition().times(ShooterConstants.SimulationMotorGearRatio));
+        angleSim.setRotorVelocity(angleSimModel.getAngularVelocity().times(ShooterConstants.SimulationMotorGearRatio));
+        masterSim.setRawRotorPosition(masterSimModel.getAngularPosition().times(ShooterConstants.SimulationMotorGearRatio));
+        masterSim.setRotorVelocity(masterSimModel.getAngularVelocity().times(ShooterConstants.SimulationMotorGearRatio));
+        slaveSim.setRawRotorPosition(slaveSimModel.getAngularPosition().times(ShooterConstants.SimulationMotorGearRatio));
+        slaveSim.setRotorVelocity(slaveSimModel.getAngularVelocity().times(ShooterConstants.SimulationMotorGearRatio));
     }
 
     @Override
