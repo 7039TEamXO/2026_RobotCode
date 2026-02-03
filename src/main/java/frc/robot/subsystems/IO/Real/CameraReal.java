@@ -7,6 +7,8 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.Constants;
+import frc.robot.Constants.Limelight;
 import frc.robot.subsystems.SubsystemManager;
 import frc.robot.subsystems.IO.CameraIO;
 import frc.robot.utils.LimelightHelpers;
@@ -24,7 +26,7 @@ public class CameraReal implements CameraIO {
 
     public CameraReal() {
         limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
-        allValidIDs = new int[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22};
+        allValidIDs = new int[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32};
 
         angleFromMT1 = 0;
 
@@ -44,13 +46,13 @@ public class CameraReal implements CameraIO {
         // Process at half resolution for improved framerate and reduced range
         LimelightHelpers.SetFiducialDownscalingOverride("limelight", 2.0f); 
         LimelightHelpers.setCameraPose_RobotSpace("limelight", 
-            0.1,   // Forward offset (meters)
-            0.0,      // Side offset (meters)
-            0.2,        // Height offset (meters)
-            0.0,      // Roll (degrees)
-            20,      // Pitch (degrees)
-            0          // Yaw (degrees)
-        ); // Could in principle borrow from Constants.Limelight.RobotToCamera, but no
+            Constants.Limelight.RobotToCamera.getX(),                   // Forward offset (meters)
+            Constants.Limelight.RobotToCamera.getY(),                   // Side offset (meters)
+            Constants.Limelight.RobotToCamera.getZ(),                   // Height offset (meters)
+            Constants.Limelight.RobotToCamera.getRotation().getX(),     // Roll (degrees)
+            Constants.Limelight.RobotToCamera.getRotation().getY(),     // Pitch (degrees)
+            Constants.Limelight.RobotToCamera.getRotation().getZ()      // Yaw (degrees)
+        );
     }
 
     public void updateInputs(CameraIOInputs inputs) {
@@ -72,7 +74,7 @@ public class CameraReal implements CameraIO {
         double suppliedAngle = SubsystemManager.getDrivebase().getHeading().getDegrees();
 
         // Temporary replacement due to Pigeon's unpredictability
-        if(hasTargetFromReef()) { 
+        if(LimelightHelpers.getTA("limelight") > Limelight.TAForMT1) { 
             Double[] inputArray = limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new Double[]{});
             if(inputArray.length > 5) {
                 angleFromMT1 = limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new Double[]{})[5];
@@ -104,21 +106,6 @@ public class CameraReal implements CameraIO {
 
     private boolean hasTarget() {
         return LimelightHelpers.getTV("limelight");
-    }
-
-    private boolean hasTargetFromReef() {
-        return getMainAprilTagID() == 6 ||
-            getMainAprilTagID() == 7 ||
-            getMainAprilTagID() == 8 ||
-            getMainAprilTagID() == 9 ||
-            getMainAprilTagID() == 10 ||
-            getMainAprilTagID() == 11 ||
-            getMainAprilTagID() == 17 ||
-            getMainAprilTagID() == 18 ||
-            getMainAprilTagID() == 19 ||
-            getMainAprilTagID() == 20 ||
-            getMainAprilTagID() == 21 ||
-            getMainAprilTagID() == 22;
     }
 
     private int getMainAprilTagID() {

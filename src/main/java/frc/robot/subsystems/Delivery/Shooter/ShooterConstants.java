@@ -22,10 +22,6 @@ public class ShooterConstants {
     public static final double Entry_kI = 0;
     public static final double Entry_kD = 0;
 
-    public static final double Entry_Expo_CV = 0;
-    public static final double Entry_Expo_kV = 0;
-    public static final double Entry_Expo_kA = 0;
-
     public static final double Entry_StatorCurrentLimit = 30;
     public static final double Entry_SupplyCurrentLimit = 30;
 
@@ -56,10 +52,6 @@ public class ShooterConstants {
     public static final double Shoot_kP = 0;
     public static final double Shoot_kI = 0;
     public static final double Shoot_kD = 0;
-
-    public static final double Shoot_Expo_CV = 0;
-    public static final double Shoot_Expo_kV = 0;
-    public static final double Shoot_Expo_kA = 0;
 
     public static final double Shoot_StatorCurrentLimit = 50;
     public static final double Shoot_SupplyCurrentLimit = 50;

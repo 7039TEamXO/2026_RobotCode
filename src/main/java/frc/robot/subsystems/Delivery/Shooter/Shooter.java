@@ -48,19 +48,21 @@ public class Shooter implements Subsystem {
             case SPEED_UP:
                 Shoot_Power = ShooterTuning.Shoot_Fire_get();
                 break;
+
             case SHOOT:
                 Entry_Power = ShooterTuning.Entry_Power_get();
                 Shoot_Power = ShooterTuning.Shoot_Fire_get();
                 break;
+
             default:
             case IDLE:
                 // Do nothing
                 break;
         }
 
-        io.setEntryMotionMagic(new DutyCycleOut(Entry_Power));
-        io.setAngleMotionMagic(new MotionMagicExpoVoltage(Angle_Position));
-        io.setMasterMotionMagic(new DutyCycleOut(Shoot_Power));
+        io.setEntryRequest(new DutyCycleOut(Entry_Power));
+        io.setAngleRequest(new MotionMagicExpoVoltage(Angle_Position));
+        io.setMasterRequest(new DutyCycleOut(Shoot_Power));
     }
 
     private double calculateShooterPosition() {
@@ -79,18 +81,13 @@ public class Shooter implements Subsystem {
         slot0Configs.kI = ShooterTuning.Entry_kI_get();
         slot0Configs.kD = ShooterTuning.Entry_kD_get();
 
-        MotionMagicConfigs motionMagicConfigs = talonFXConfigs.MotionMagic;
-        motionMagicConfigs.MotionMagicCruiseVelocity = ShooterTuning.Entry_Expo_CV_get();
-        motionMagicConfigs.MotionMagicExpo_kV = ShooterTuning.Entry_Expo_kV_get();
-        motionMagicConfigs.MotionMagicExpo_kA = ShooterTuning.Entry_Expo_kA_get();
-
         talonFXConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         talonFXConfigs.CurrentLimits.StatorCurrentLimit = ShooterConstants.Entry_StatorCurrentLimit;
         talonFXConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
         talonFXConfigs.CurrentLimits.SupplyCurrentLimit = ShooterConstants.Entry_SupplyCurrentLimit;
         talonFXConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-        io.applyEntryTalonFXConfig(talonFXConfigs);
+        io.applyEntryConfiguration(talonFXConfigs);
     }
 
     private void setAngleMotorConfigs() {
@@ -114,11 +111,11 @@ public class Shooter implements Subsystem {
         talonFXConfigs.CurrentLimits.SupplyCurrentLimit = ShooterConstants.Angle_SupplyCurrentLimit;
         talonFXConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-        io.applyAngleTalonFXConfig(talonFXConfigs);
+        io.applyAngleConfiguration(talonFXConfigs);
     }
 
     private void setShootMotorsConfigs() {
-        io.setSlaveMotionMagic(new Follower(ShooterConstants.ShooterMasterMotorID, MotorAlignmentValue.Aligned));
+        io.setSlaveFollower(new Follower(ShooterConstants.ShooterMasterMotorID, MotorAlignmentValue.Aligned));
 
         TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
         Slot0Configs slot0Configs = talonFXConfigs.Slot0;
@@ -129,18 +126,13 @@ public class Shooter implements Subsystem {
         slot0Configs.kI = ShooterTuning.Shoot_kI_get();
         slot0Configs.kD = ShooterTuning.Shoot_kD_get();
 
-        MotionMagicConfigs motionMagicConfigs = talonFXConfigs.MotionMagic;
-        motionMagicConfigs.MotionMagicCruiseVelocity = ShooterTuning.Shoot_Expo_CV_get();
-        motionMagicConfigs.MotionMagicExpo_kV = ShooterTuning.Shoot_Expo_kV_get();
-        motionMagicConfigs.MotionMagicExpo_kA = ShooterTuning.Shoot_Expo_kA_get();
-
         talonFXConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         talonFXConfigs.CurrentLimits.StatorCurrentLimit = ShooterConstants.Shoot_StatorCurrentLimit;
         talonFXConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
         talonFXConfigs.CurrentLimits.SupplyCurrentLimit = ShooterConstants.Shoot_SupplyCurrentLimit;
         talonFXConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-        io.applyMasterTalonFXConfig(talonFXConfigs);
+        io.applyMasterConfiguration(talonFXConfigs);
 
         TalonFXConfiguration slaveTalonFXConfigs = new TalonFXConfiguration();
 
@@ -151,12 +143,16 @@ public class Shooter implements Subsystem {
         slaveTalonFXConfigs.CurrentLimits.SupplyCurrentLimit = ShooterConstants.Shoot_SupplyCurrentLimit;
         slaveTalonFXConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-        io.applySlaveTalonFXConfig(slaveTalonFXConfigs);
+        io.applySlaveConfiguration(slaveTalonFXConfigs);
     }
 
     private void setMotorConfigs() {
         setEntryMotorConfigs();
         setAngleMotorConfigs();
         setShootMotorsConfigs();
+    }
+
+    public void simulationPeriodic() {
+        io.simulationPeriodic();
     }
 }

@@ -4,9 +4,7 @@ import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
-
-import edu.wpi.first.units.measure.Voltage;
+import com.ctre.phoenix6.controls.ControlRequest;
 
 public interface ConveyorIO extends AutoCloseable {
     public static class ConveyorIOInputs implements LoggableInputs {
@@ -32,13 +30,11 @@ public interface ConveyorIO extends AutoCloseable {
 
     public void updateInputs(ConveyorIOInputs inputs);
 
-    public void applyTalonFXConfig(TalonFXConfiguration configuration);
+    public void applyConfiguration(TalonFXConfiguration configuration);
 
     public void setPosition(double newValue);
 
-    public void setMotionMagic(DutyCycleOut request);
-
-    public void setVoltage(Voltage voltage);
+    public void setRequest(ControlRequest request);
 
     public void simulationPeriodic();
 }

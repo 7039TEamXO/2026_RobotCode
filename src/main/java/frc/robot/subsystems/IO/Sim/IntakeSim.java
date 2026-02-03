@@ -1,15 +1,12 @@
 package frc.robot.subsystems.IO.Sim;
 
-import static edu.wpi.first.units.Units.Volts;
-
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
-import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.subsystems.Intake.IntakeConstants;
@@ -56,36 +53,24 @@ public class IntakeSim implements IntakeIO {
         inputs.Intake_CurrentAmps = intakeMotor.getStatorCurrent().getValueAsDouble();
     }
 
-    public void applyIntakeTalonFXConfig(TalonFXConfiguration configuration) {
+    public void applyIntakeConfiguration(TalonFXConfiguration configuration) {
         intakeMotor.getConfigurator().apply(configuration);
     }
 
-    public void applyControlTalonFXConfig(TalonFXConfiguration configuration) {
+    public void applyControlConfiguration(TalonFXConfiguration configuration) {
         controlMotor.getConfigurator().apply(configuration);
-    }
-
-    public void setIntakePosition(double newValue) {
-        intakeMotor.setPosition(newValue);
     }
 
     public void setControlPosition(double newValue) {
         controlMotor.setPosition(newValue);
     }
 
-    public void setIntakeMotionMagic(DutyCycleOut request) {
+    public void setIntakeRequest(ControlRequest request) {
         intakeMotor.setControl(request);
     }
 
-    public void setControlMotionMagic(DutyCycleOut request) {
+    public void setControlRequest(ControlRequest request) {
         controlMotor.setControl(request);
-    }
-
-    public void setIntakeVoltage(Voltage voltage) {
-        intakeMotor.setVoltage(voltage.in(Volts));
-    }
-
-    public void setControlVoltage(Voltage voltage) {
-        controlMotor.setVoltage(voltage.in(Volts));
     }
 
     public void simulationPeriodic() {

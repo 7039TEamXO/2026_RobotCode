@@ -6,38 +6,30 @@ import frc.robot.Constants;
 import frc.robot.Constants.TuningMode;
 
 public class ShooterTuning {
-    private static final LoggedNetworkNumber Entry_kS = new LoggedNetworkNumber("/Tuning/Elevator/(Entry) kS", ShooterConstants.Entry_kS);
-    private static final LoggedNetworkNumber Entry_kV = new LoggedNetworkNumber("/Tuning/Elevator/(Entry) kV", ShooterConstants.Entry_kV);
-    private static final LoggedNetworkNumber Entry_kA = new LoggedNetworkNumber("/Tuning/Elevator/(Entry) kA", ShooterConstants.Entry_kA);
-    private static final LoggedNetworkNumber Entry_kP = new LoggedNetworkNumber("/Tuning/Elevator/(Entry) kP", ShooterConstants.Entry_kP);
-    private static final LoggedNetworkNumber Entry_kI = new LoggedNetworkNumber("/Tuning/Elevator/(Entry) kI", ShooterConstants.Entry_kI);
-    private static final LoggedNetworkNumber Entry_kD = new LoggedNetworkNumber("/Tuning/Elevator/(Entry) kD", ShooterConstants.Entry_kD);
+    private static final LoggedNetworkNumber Entry_kS = new LoggedNetworkNumber("/Tuning/Shooter/(Entry) kS", ShooterConstants.Entry_kS);
+    private static final LoggedNetworkNumber Entry_kV = new LoggedNetworkNumber("/Tuning/Shooter/(Entry) kV", ShooterConstants.Entry_kV);
+    private static final LoggedNetworkNumber Entry_kA = new LoggedNetworkNumber("/Tuning/Shooter/(Entry) kA", ShooterConstants.Entry_kA);
+    private static final LoggedNetworkNumber Entry_kP = new LoggedNetworkNumber("/Tuning/Shooter/(Entry) kP", ShooterConstants.Entry_kP);
+    private static final LoggedNetworkNumber Entry_kI = new LoggedNetworkNumber("/Tuning/Shooter/(Entry) kI", ShooterConstants.Entry_kI);
+    private static final LoggedNetworkNumber Entry_kD = new LoggedNetworkNumber("/Tuning/Shooter/(Entry) kD", ShooterConstants.Entry_kD);
 
-    private static final LoggedNetworkNumber Entry_Expo_CV = new LoggedNetworkNumber("/Tuning/Elevator/(Entry) Motion Magic CV", ShooterConstants.Entry_Expo_CV);
-    private static final LoggedNetworkNumber Entry_Expo_kV = new LoggedNetworkNumber("/Tuning/Elevator/(Entry) Motion Magic kV", ShooterConstants.Entry_Expo_kV);
-    private static final LoggedNetworkNumber Entry_Expo_kA = new LoggedNetworkNumber("/Tuning/Elevator/(Entry) Motion Magic kA", ShooterConstants.Entry_Expo_kA);
+    private static final LoggedNetworkNumber Angle_kS = new LoggedNetworkNumber("/Tuning/Shooter/(Angle) kS", ShooterConstants.Angle_kS);
+    private static final LoggedNetworkNumber Angle_kV = new LoggedNetworkNumber("/Tuning/Shooter/(Angle) kV", ShooterConstants.Angle_kV);
+    private static final LoggedNetworkNumber Angle_kA = new LoggedNetworkNumber("/Tuning/Shooter/(Angle) kA", ShooterConstants.Angle_kA);
+    private static final LoggedNetworkNumber Angle_kP = new LoggedNetworkNumber("/Tuning/Shooter/(Angle) kP", ShooterConstants.Angle_kP);
+    private static final LoggedNetworkNumber Angle_kI = new LoggedNetworkNumber("/Tuning/Shooter/(Angle) kI", ShooterConstants.Angle_kI);
+    private static final LoggedNetworkNumber Angle_kD = new LoggedNetworkNumber("/Tuning/Shooter/(Angle) kD", ShooterConstants.Angle_kD);
 
-    private static final LoggedNetworkNumber Angle_kS = new LoggedNetworkNumber("/Tuning/Elevator/(Angle) kS", ShooterConstants.Angle_kS);
-    private static final LoggedNetworkNumber Angle_kV = new LoggedNetworkNumber("/Tuning/Elevator/(Angle) kV", ShooterConstants.Angle_kV);
-    private static final LoggedNetworkNumber Angle_kA = new LoggedNetworkNumber("/Tuning/Elevator/(Angle) kA", ShooterConstants.Angle_kA);
-    private static final LoggedNetworkNumber Angle_kP = new LoggedNetworkNumber("/Tuning/Elevator/(Angle) kP", ShooterConstants.Angle_kP);
-    private static final LoggedNetworkNumber Angle_kI = new LoggedNetworkNumber("/Tuning/Elevator/(Angle) kI", ShooterConstants.Angle_kI);
-    private static final LoggedNetworkNumber Angle_kD = new LoggedNetworkNumber("/Tuning/Elevator/(Angle) kD", ShooterConstants.Angle_kD);
+    private static final LoggedNetworkNumber Angle_Expo_CV = new LoggedNetworkNumber("/Tuning/Shooter/(Angle) Motion Magic CV", ShooterConstants.Angle_Expo_CV);
+    private static final LoggedNetworkNumber Angle_Expo_kV = new LoggedNetworkNumber("/Tuning/Shooter/(Angle) Motion Magic kV", ShooterConstants.Angle_Expo_kV);
+    private static final LoggedNetworkNumber Angle_Expo_kA = new LoggedNetworkNumber("/Tuning/Shooter/(Angle) Motion Magic kA", ShooterConstants.Angle_Expo_kA);
 
-    private static final LoggedNetworkNumber Angle_Expo_CV = new LoggedNetworkNumber("/Tuning/Elevator/(Angle) Motion Magic CV", ShooterConstants.Angle_Expo_CV);
-    private static final LoggedNetworkNumber Angle_Expo_kV = new LoggedNetworkNumber("/Tuning/Elevator/(Angle) Motion Magic kV", ShooterConstants.Angle_Expo_kV);
-    private static final LoggedNetworkNumber Angle_Expo_kA = new LoggedNetworkNumber("/Tuning/Elevator/(Angle) Motion Magic kA", ShooterConstants.Angle_Expo_kA);
-
-    private static final LoggedNetworkNumber Shoot_kS = new LoggedNetworkNumber("/Tuning/Elevator/(Shoot) kS", ShooterConstants.Shoot_kS);
-    private static final LoggedNetworkNumber Shoot_kV = new LoggedNetworkNumber("/Tuning/Elevator/(Shoot) kV", ShooterConstants.Shoot_kV);
-    private static final LoggedNetworkNumber Shoot_kA = new LoggedNetworkNumber("/Tuning/Elevator/(Shoot) kA", ShooterConstants.Shoot_kA);
-    private static final LoggedNetworkNumber Shoot_kP = new LoggedNetworkNumber("/Tuning/Elevator/(Shoot) kP", ShooterConstants.Shoot_kP);
-    private static final LoggedNetworkNumber Shoot_kI = new LoggedNetworkNumber("/Tuning/Elevator/(Shoot) kI", ShooterConstants.Shoot_kI);
-    private static final LoggedNetworkNumber Shoot_kD = new LoggedNetworkNumber("/Tuning/Elevator/(Shoot) kD", ShooterConstants.Shoot_kD);
-
-    private static final LoggedNetworkNumber Shoot_Expo_CV = new LoggedNetworkNumber("/Tuning/Elevator/(Shoot) Motion Magic CV", ShooterConstants.Shoot_Expo_CV);
-    private static final LoggedNetworkNumber Shoot_Expo_kV = new LoggedNetworkNumber("/Tuning/Elevator/(Shoot) Motion Magic kV", ShooterConstants.Shoot_Expo_kV);
-    private static final LoggedNetworkNumber Shoot_Expo_kA = new LoggedNetworkNumber("/Tuning/Elevator/(Shoot) Motion Magic kA", ShooterConstants.Shoot_Expo_kA);
+    private static final LoggedNetworkNumber Shoot_kS = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) kS", ShooterConstants.Shoot_kS);
+    private static final LoggedNetworkNumber Shoot_kV = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) kV", ShooterConstants.Shoot_kV);
+    private static final LoggedNetworkNumber Shoot_kA = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) kA", ShooterConstants.Shoot_kA);
+    private static final LoggedNetworkNumber Shoot_kP = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) kP", ShooterConstants.Shoot_kP);
+    private static final LoggedNetworkNumber Shoot_kI = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) kI", ShooterConstants.Shoot_kI);
+    private static final LoggedNetworkNumber Shoot_kD = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) kD", ShooterConstants.Shoot_kD);
 
     private static final LoggedNetworkNumber Entry_Power_Roll = new LoggedNetworkNumber("/Tuning/Shooter/(Entry) Power Roll", ShooterConstants.ENTRY_POWER_ROLL);
 
@@ -66,18 +58,6 @@ public class ShooterTuning {
 
     public static final double Entry_kD_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? Entry_kD.get() : ShooterConstants.Entry_kD;
-    }
-
-    public static final double Entry_Expo_CV_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? Entry_Expo_CV.get() : ShooterConstants.Entry_Expo_CV;
-    }
-
-    public static final double Entry_Expo_kV_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? Entry_Expo_kV.get() : ShooterConstants.Entry_Expo_kV;
-    }
-
-    public static final double Entry_Expo_kA_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? Entry_Expo_kA.get() : ShooterConstants.Entry_Expo_kA;
     }
 
     public static final double Angle_kS_get() {
@@ -138,18 +118,6 @@ public class ShooterTuning {
 
     public static final double Shoot_kD_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? Shoot_kD.get() : ShooterConstants.Shoot_kD;
-    }
-
-    public static final double Shoot_Expo_CV_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? Shoot_Expo_CV.get() : ShooterConstants.Shoot_Expo_CV;
-    }
-
-    public static final double Shoot_Expo_kV_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? Shoot_Expo_kV.get() : ShooterConstants.Shoot_Expo_kV;
-    }
-
-    public static final double Shoot_Expo_kA_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? Shoot_Expo_kA.get() : ShooterConstants.Shoot_Expo_kA;
     }
 
     public static final double Entry_Power_get() {

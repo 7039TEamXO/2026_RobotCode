@@ -14,11 +14,12 @@ public class TestAuto extends SequentialCommandGroup {
         addCommands(
             new InstantCommand(() -> {
                 if(!Limelight.hasTarget() || Robot.isSimulation()) 
-                    SubsystemManager.getDrivebase().resetOdometry(new Pose2d(0, 0, Rotation2d.kZero));
+                    SubsystemManager.getDrivebase().resetOdometry(new Pose2d(13.5, 5.5, Rotation2d.fromDegrees(-135)));
                 SubsystemManager.getDrivebase().resetWaypointToPose();
             }),
             SubsystemManager.getDrivebase().waypointToPose(new APTarget[]{
-                new APTarget(new Pose2d(4, 0, Rotation2d.kZero)).withEntryAngle(Rotation2d.kZero).withVelocity(0)
+                new APTarget(new Pose2d(10, 5.5, Rotation2d.fromDegrees(-135))).withVelocity(2),
+
             })
         );
     }

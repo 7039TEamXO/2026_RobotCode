@@ -4,9 +4,8 @@ import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
 
 public interface ShooterIO extends AutoCloseable {
     public static class ShooterIOInputs implements LoggableInputs {
@@ -83,18 +82,17 @@ public interface ShooterIO extends AutoCloseable {
 
     public void updateInputs(ShooterIOInputs inputs);
 
-    public void applyEntryTalonFXConfig(TalonFXConfiguration configuration);
-    public void applyAngleTalonFXConfig(TalonFXConfiguration configuration);
-    public void applyMasterTalonFXConfig(TalonFXConfiguration configuration);
-    public void applySlaveTalonFXConfig(TalonFXConfiguration configuration);
+    public void applyEntryConfiguration(TalonFXConfiguration configuration);
+    public void applyAngleConfiguration(TalonFXConfiguration configuration);
+    public void applyMasterConfiguration(TalonFXConfiguration configuration);
+    public void applySlaveConfiguration(TalonFXConfiguration configuration);
 
     public void setAngleMotorPosition(double newValue);
 
-    public void setEntryMotionMagic(DutyCycleOut request);
-    public void setAngleMotionMagic(MotionMagicExpoVoltage request);
-    public void setMasterMotionMagic(DutyCycleOut request);
-
-    public void setSlaveMotionMagic(Follower request);
+    public void setEntryRequest(ControlRequest request);
+    public void setAngleRequest(ControlRequest request);
+    public void setMasterRequest(ControlRequest request);
+    public void setSlaveFollower(Follower request);
 
     public void simulationPeriodic();
 }

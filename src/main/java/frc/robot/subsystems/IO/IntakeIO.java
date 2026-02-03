@@ -4,9 +4,7 @@ import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
-
-import edu.wpi.first.units.measure.Voltage;
+import com.ctre.phoenix6.controls.ControlRequest;
 
 public interface IntakeIO extends AutoCloseable {
     public static class IntakeIOInputs implements LoggableInputs {
@@ -47,17 +45,13 @@ public interface IntakeIO extends AutoCloseable {
 
     public void updateInputs(IntakeIOInputs inputs);
 
-    public void applyIntakeTalonFXConfig(TalonFXConfiguration configuration);
-    public void applyControlTalonFXConfig(TalonFXConfiguration configuration);
+    public void applyIntakeConfiguration(TalonFXConfiguration configuration);
+    public void applyControlConfiguration(TalonFXConfiguration configuration);
 
-    public void setIntakePosition(double newValue);
     public void setControlPosition(double newValue);
 
-    public void setIntakeMotionMagic(DutyCycleOut request);
-    public void setControlMotionMagic(DutyCycleOut request);
-
-    public void setIntakeVoltage(Voltage voltage);
-    public void setControlVoltage(Voltage voltage);
+    public void setIntakeRequest(ControlRequest request);
+    public void setControlRequest(ControlRequest request);
 
     public void simulationPeriodic();
 }

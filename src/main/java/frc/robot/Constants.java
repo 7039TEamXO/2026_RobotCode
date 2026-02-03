@@ -83,6 +83,7 @@ public final class Constants
       public static final Matrix<N3, N1> singleTagStdDevs =  VecBuilder.fill(0.3, 0.3, 4);
       public static final Matrix<N3, N1> multiTagStdDevs = VecBuilder.fill(0.5, 0.5, 2);
     }
+    public static final double TAForMT1 = 0.2;
   }
 
   public static class Operator

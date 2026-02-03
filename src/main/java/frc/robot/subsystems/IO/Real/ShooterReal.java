@@ -1,14 +1,10 @@
 package frc.robot.subsystems.IO.Real;
 
-import static edu.wpi.first.units.Units.Volts;
-
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
-import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.robot.subsystems.Delivery.Shooter.ShooterConstants;
 import frc.robot.subsystems.IO.ShooterIO;
@@ -54,19 +50,19 @@ public class ShooterReal implements ShooterIO {
         inputs.AngleEncoder_RawPosition = absoluteEncoder.get();
     }
 
-    public void applyEntryTalonFXConfig(TalonFXConfiguration configuration) {
+    public void applyEntryConfiguration(TalonFXConfiguration configuration) {
         entryMotor.getConfigurator().apply(configuration);
     }
 
-    public void applyAngleTalonFXConfig(TalonFXConfiguration configuration) {
+    public void applyAngleConfiguration(TalonFXConfiguration configuration) {
         angleMotor.getConfigurator().apply(configuration);
     }
 
-    public void applyMasterTalonFXConfig(TalonFXConfiguration configuration) {
+    public void applyMasterConfiguration(TalonFXConfiguration configuration) {
         masterMotor.getConfigurator().apply(configuration);
     }
 
-    public void applySlaveTalonFXConfig(TalonFXConfiguration configuration) {
+    public void applySlaveConfiguration(TalonFXConfiguration configuration) {
         slaveMotor.getConfigurator().apply(configuration);
     }
 
@@ -86,36 +82,20 @@ public class ShooterReal implements ShooterIO {
         slaveMotor.setPosition(newValue);
     }
 
-    public void setEntryMotionMagic(DutyCycleOut request) {
+    public void setEntryRequest(ControlRequest request) {
         entryMotor.setControl(request);
     }
 
-    public void setAngleMotionMagic(MotionMagicExpoVoltage request) {
+    public void setAngleRequest(ControlRequest request) {
         angleMotor.setControl(request);
     }
 
-    public void setMasterMotionMagic(DutyCycleOut request) {
+    public void setMasterRequest(ControlRequest request) {
         masterMotor.setControl(request);
     }
 
-    public void setSlaveMotionMagic(Follower request) {
+    public void setSlaveFollower(Follower request) {
         slaveMotor.setControl(request);
-    }
-
-    public void setEntryMotorVoltage(Voltage voltage) {
-        entryMotor.setVoltage(voltage.in(Volts));
-    }
-
-    public void setAngleMotorVoltage(Voltage voltage) {
-        angleMotor.setVoltage(voltage.in(Volts));
-    }
-
-    public void setMasterMotorVoltage(Voltage voltage) {
-        masterMotor.setVoltage(voltage.in(Volts));
-    }
-
-    public void setSlaveMotorVoltage(Voltage voltage) {
-        slaveMotor.setVoltage(voltage.in(Volts));
     }
 
     public void simulationPeriodic() {}

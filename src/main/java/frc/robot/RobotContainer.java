@@ -13,10 +13,7 @@ import frc.robot.subsystems.SubsystemManager;
 import frc.robot.subsystems.IO.Real.CameraReal;
 // import frc.robot.subsystems.IO.Real.IntakeReal;
 import frc.robot.subsystems.IO.Sim.CameraSim;
-import frc.robot.subsystems.IO.Sim.IntakeSim;
 import frc.robot.subsystems.IO.Stub.CameraStub;
-import frc.robot.subsystems.IO.Stub.IntakeStub;
-import frc.robot.subsystems.Intake.Intake;
 
 import java.util.Optional;
 
@@ -27,21 +24,15 @@ import com.ctre.phoenix6.SignalLogger;
 public class RobotContainer {
   private static Command driveFieldOrientedAngularVelocity;
 
-  public static Intake intake;
-  private static final double periodicDt = 0.02;
-
   public static void init() {
     switch(Constants.CurrentMode) {
       case REAL:
-        intake = new Intake(new IntakeSim(periodicDt)); // Temporary
         Limelight.init(new CameraReal());
         break;
       case REPLAY: 
-        intake = new Intake(new IntakeStub());
         Limelight.init(new CameraStub());
         break;
       case SIM:
-        intake = new Intake(new IntakeSim(periodicDt));
         Limelight.init(new CameraSim());
         break;
     }
@@ -89,7 +80,7 @@ public class RobotContainer {
       driveFieldOrientedAngularVelocity = SubsystemManager.getDrivebase().driveCommand(
         () -> (modifyAxis(SubsystemManager.getPSJoystick().getLeftY(), Constants.Operator.LEFT_Y_DEADBAND)),
         () -> (modifyAxis(SubsystemManager.getPSJoystick().getLeftX(), Constants.Operator.LEFT_X_DEADBAND)),
-        () -> modifyAxis(SubsystemManager.getPSJoystick().getRightX(), Constants.Operator.RIGHT_X_DEADBAND));
+        () -> -modifyAxis(SubsystemManager.getPSJoystick().getRightX(), Constants.Operator.RIGHT_X_DEADBAND));
     } else if(teamColorIsBlue() == 1) {
       driveFieldOrientedAngularVelocity = SubsystemManager.getDrivebase().driveCommand(
         () -> (modifyAxis(-SubsystemManager.getPSJoystick().getLeftY(), Constants.Operator.LEFT_Y_DEADBAND)),

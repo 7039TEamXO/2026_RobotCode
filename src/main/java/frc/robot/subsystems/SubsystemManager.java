@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
+// import frc.robot.RobotContainer;
 import frc.robot.Constants.Mode;
 import frc.robot.Constants.SysIdMode;
 import frc.robot.subsystems.Intake.IntakeState;
@@ -67,14 +67,13 @@ public class SubsystemManager {
         if (!onAuto) {
             if(Constants.CurrentSysIdMode == SysIdMode.INACTIVE) {
                 scheduleAutoDrive();
-                RobotContainer.intake.operate(intakeState);
             }
 
             computeInputStates();
         }
 
         if(Constants.CurrentSysIdMode == SysIdMode.INACTIVE) {
-            RobotContainer.intake.operate(intakeState);
+            // ...
         }
 
         // lastState = state;
@@ -82,7 +81,7 @@ public class SubsystemManager {
     }
 
     private static void simulationPeriodic() {
-        RobotContainer.intake.simulationPeriodic();
+        // ...
     }
     
     public static SwerveSubsystem getDrivebase() {
