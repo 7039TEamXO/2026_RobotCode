@@ -19,7 +19,6 @@ public class TestAuto extends SequentialCommandGroup {
             }),
             SubsystemManager.getDrivebase().waypointToPose(new APTarget[]{
                 new APTarget(new Pose2d(10, 5.5, Rotation2d.fromDegrees(-135))).withVelocity(2),
-
             })
         );
     }

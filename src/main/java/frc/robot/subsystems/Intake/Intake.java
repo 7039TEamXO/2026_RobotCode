@@ -33,13 +33,21 @@ public class Intake implements Subsystem {
         io.updateInputs(inputs);
         Logger.processInputs("Intake", inputs);
 
-        sysIdRoutine = new SysIdRoutine(
+        Intake_SysIdRoutine = new SysIdRoutine(
             new SysIdRoutine.Config(
-                Volts.per(Second).of(IntakeConstants.SysIdQuasistatic), 
-                Volts.of(IntakeConstants.SysIdDynamic), null, state -> {
+                Volts.per(Second).of(IntakeConstants.Intake_SysIdQuasistatic), 
+                Volts.of(IntakeConstants.Intake_SysIdDynamic), null, state -> {
                     SignalLogger.writeString("state", state.toString());
             }),
             new SysIdRoutine.Mechanism(v -> io.setIntakeRequest(new VoltageOut(v)), null, this));
+
+        Control_SysIdRoutine = new SysIdRoutine(
+            new SysIdRoutine.Config(
+                Volts.per(Second).of(IntakeConstants.Control_SysIdQuasistatic), 
+                Volts.of(IntakeConstants.Control_SysIdDynamic), null, state -> {
+                    SignalLogger.writeString("state", state.toString());
+            }),
+            new SysIdRoutine.Mechanism(v -> io.setControlRequest(new VoltageOut(v)), null, this));
     }
 
     public void operate(IntakeState state) {
@@ -130,13 +138,22 @@ public class Intake implements Subsystem {
 
     // SysId routines //
 
-    private SysIdRoutine sysIdRoutine;    
+    private SysIdRoutine Intake_SysIdRoutine;    
+    private SysIdRoutine Control_SysIdRoutine;    
 
-    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-        return sysIdRoutine.quasistatic(direction);
+    public Command Intake_SysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return Intake_SysIdRoutine.quasistatic(direction);
     }
 
-    public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-        return sysIdRoutine.dynamic(direction);
+    public Command Intake_SysIdDynamic(SysIdRoutine.Direction direction) {
+        return Intake_SysIdRoutine.dynamic(direction);
+    }
+
+    public Command Control_SysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return Control_SysIdRoutine.quasistatic(direction);
+    }
+
+    public Command Control_SysIdDynamic(SysIdRoutine.Direction direction) {
+        return Control_SysIdRoutine.dynamic(direction);
     }
 }

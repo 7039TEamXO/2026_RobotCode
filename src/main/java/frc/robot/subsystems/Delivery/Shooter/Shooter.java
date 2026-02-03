@@ -1,22 +1,27 @@
 package frc.robot.subsystems.Delivery.Shooter;
 
+import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Volts;
+
 import org.littletonrobotics.junction.Logger;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import frc.robot.Constants;
-// import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.TuningMode;
-// import frc.robot.subsystems.SubsystemManager;
 import frc.robot.subsystems.IO.ShooterIO;
 import frc.robot.subsystems.IO.ShooterIO.ShooterIOInputs;
 
@@ -32,6 +37,30 @@ public class Shooter implements Subsystem {
 
         io.updateInputs(inputs);
         Logger.processInputs("Shooter", inputs);
+
+        Entry_SysIdRoutine = new SysIdRoutine(
+            new SysIdRoutine.Config(
+                Volts.per(Second).of(ShooterConstants.Entry_SysIdQuasistatic), 
+                Volts.of(ShooterConstants.Entry_SysIdDynamic), null, state -> {
+                    SignalLogger.writeString("state", state.toString());
+            }),
+            new SysIdRoutine.Mechanism(v -> io.setEntryRequest(new VoltageOut(v)), null, this));
+
+        Angle_SysIdRoutine = new SysIdRoutine(
+            new SysIdRoutine.Config(
+                Volts.per(Second).of(ShooterConstants.Angle_SysIdQuasistatic), 
+                Volts.of(ShooterConstants.Angle_SysIdDynamic), null, state -> {
+                    SignalLogger.writeString("state", state.toString());
+            }),
+            new SysIdRoutine.Mechanism(v -> io.setAngleRequest(new VoltageOut(v)), null, this));
+
+        Shoot_SysIdRoutine = new SysIdRoutine(
+            new SysIdRoutine.Config(
+                Volts.per(Second).of(ShooterConstants.Shoot_SysIdQuasistatic), 
+                Volts.of(ShooterConstants.Shoot_SysIdDynamic), null, state -> {
+                    SignalLogger.writeString("state", state.toString());
+            }),
+            new SysIdRoutine.Mechanism(v -> io.setMasterRequest(new VoltageOut(v)), null, this));
     }
 
     public void operate(ShooterState state) {
@@ -154,5 +183,35 @@ public class Shooter implements Subsystem {
 
     public void simulationPeriodic() {
         io.simulationPeriodic();
+    }
+
+    // SysId routines //
+
+    private SysIdRoutine Entry_SysIdRoutine;
+    private SysIdRoutine Angle_SysIdRoutine;
+    private SysIdRoutine Shoot_SysIdRoutine;
+
+    public Command Entry_SysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return Entry_SysIdRoutine.quasistatic(direction);
+    }
+
+    public Command Entry_SysIdDynamic(SysIdRoutine.Direction direction) {
+        return Entry_SysIdRoutine.dynamic(direction);
+    }
+
+    public Command Angle_SysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return Angle_SysIdRoutine.quasistatic(direction);
+    }
+
+    public Command Angle_SysIdDynamic(SysIdRoutine.Direction direction) {
+        return Angle_SysIdRoutine.dynamic(direction);
+    }
+
+    public Command Shoot_SysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return Shoot_SysIdRoutine.quasistatic(direction);
+    }
+
+    public Command Shoot_SysIdDynamic(SysIdRoutine.Direction direction) {
+        return Shoot_SysIdRoutine.dynamic(direction);
     }
 }

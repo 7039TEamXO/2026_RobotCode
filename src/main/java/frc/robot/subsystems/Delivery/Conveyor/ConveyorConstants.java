@@ -19,5 +19,12 @@ public class ConveyorConstants {
 
     public static final double UNJAM_HALF_CYCLE_LENGTH = 500; // in ms
 
+    // OTHER //
+
     public static final double SimulationMotorGearRatio = 12.8;
+
+    // SysId //
+
+    public static final double SysIdQuasistatic = 0.5;
+    public static final double SysIdDynamic = 2;
 }

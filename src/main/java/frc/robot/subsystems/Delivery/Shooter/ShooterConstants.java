@@ -11,9 +11,7 @@ public class ShooterConstants {
     public static final double EncoderGearRatio = 1/6.0;
     public static final double EncoderOffset = 0.0;
 
-    public static final double SimulationMotorGearRatio = 12.8;
-
-    // --- ENTRY MOTOR ---
+    // ENTRY MOTOR //
 
     public static final double Entry_kS = 0;
     public static final double Entry_kV = 0;
@@ -28,7 +26,7 @@ public class ShooterConstants {
     public static final double ENTRY_POWER_STOP = 0;
     public static final double ENTRY_POWER_ROLL = 0;
 
-    // --- ANGLE MOTOR ---
+    // ANGLE MOTOR //
     
     public static final double Angle_kS = 0;
     public static final double Angle_kV = 0;
@@ -44,7 +42,7 @@ public class ShooterConstants {
     public static final double Angle_StatorCurrentLimit = 30;
     public static final double Angle_SupplyCurrentLimit = 30;
 
-    // --- SHOOT MOTOR ---
+    // SHOOT MOTOR //
 
     public static final double Shoot_kS = 0;
     public static final double Shoot_kV = 0;
@@ -58,4 +56,19 @@ public class ShooterConstants {
 
     public static final double SHOOT_POWER_IDLE = 0;
     public static final double SHOOT_POWER_FIRE = 0;
+
+    // OTHER //
+
+    public static final double SimulationMotorGearRatio = 12.8;
+
+    // SysId //
+
+    public static final double Entry_SysIdQuasistatic = 0.5;
+    public static final double Entry_SysIdDynamic = 2;
+
+    public static final double Angle_SysIdQuasistatic = 0.5;
+    public static final double Angle_SysIdDynamic = 2;
+    
+    public static final double Shoot_SysIdQuasistatic = 0.5;
+    public static final double Shoot_SysIdDynamic = 2;
 }
