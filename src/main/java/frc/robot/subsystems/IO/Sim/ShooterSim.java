@@ -90,9 +90,9 @@ public class ShooterSim implements ShooterIO {
         inputs.ShootMaster_CurrentAmps = masterMotor.getStatorCurrent().getValueAsDouble();
 
         inputs.ShootSlave_Position = slaveMotor.getPosition().getValueAsDouble();
-        inputs.ShootSlave_Position = slaveMotor.getVelocity().getValueAsDouble();
-        inputs.ShootSlave_Position = slaveMotor.getMotorVoltage().getValueAsDouble();
-        inputs.ShootSlave_Position = slaveMotor.getStatorCurrent().getValueAsDouble();
+        inputs.ShootSlave_Velocity = slaveMotor.getVelocity().getValueAsDouble();
+        inputs.ShootSlave_AppliedVolts = slaveMotor.getMotorVoltage().getValueAsDouble();
+        inputs.ShootSlave_CurrentAmps = slaveMotor.getStatorCurrent().getValueAsDouble();
 
         inputs.AngleEncoder_RawPosition = inputs.AngleMotor_Position / ShooterConstants.EncoderGearRatio + ShooterConstants.EncoderOffset;
     }

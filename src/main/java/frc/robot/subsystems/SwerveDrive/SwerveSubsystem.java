@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Limelight;
+// import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.TuningMode;
 import frc.robot.commands.TestAuto;
@@ -40,6 +41,8 @@ import swervelib.math.SwerveMath;
 import swervelib.parser.SwerveControllerConfiguration;
 import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
+import swervelib.simulation.ironmaple.simulation.SimulatedArena;
+import swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026.Arena2026Rebuilt;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
@@ -50,6 +53,8 @@ public class SwerveSubsystem extends SubsystemBase {
   public SwerveSubsystem(File directory) {
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try {
+      SimulatedArena.overrideInstance(new Arena2026Rebuilt(false));
+
       swerveDrive = new SwerveParser(directory).createSwerveDrive(SwerveDriveConstants.MAX_SPEED);
       // swerveDriveOdometry = new SwerveParser(directory).createSwerveDrive(SwerveDriveConstants.MAX_SPEED);
     } catch (Exception e) {
@@ -103,7 +108,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     // if(isAuto) filter by isRobotVBelowOne too
     Object[] tuple = Limelight.update();
-    if (tuple != null && (double)tuple[3] > 0.2) {
+    if (tuple != null && (double)tuple[3] > Constants.Limelight.TAForUpdate) {
       swerveDrive.addVisionMeasurement((Pose2d)tuple[0], (double)tuple[1]);
     }
 
@@ -122,8 +127,25 @@ public class SwerveSubsystem extends SubsystemBase {
   public void simulationPeriodic() {}
 
   public boolean isCloseEnoughToPose(Pose2d pose) {
+    double angleError = pose.getRotation().getDegrees() - getPose().getRotation().getDegrees();
+
+    if(angleError > 180) angleError -= 360;
+    if(angleError < -180) angleError += 360; // Degrees
+
     return Math.abs(getPose().getX() - pose.getX()) < SwerveDriveTuning.CLOSE_DISTANCE_ERROR_CAP_get() &&
-      Math.abs(getPose().getY() - pose.getY()) < SwerveDriveTuning.CLOSE_DISTANCE_ERROR_CAP_get();
+      Math.abs(getPose().getY() - pose.getY()) < SwerveDriveTuning.CLOSE_DISTANCE_ERROR_CAP_get() &&
+      Math.abs(angleError) < SwerveDriveTuning.CLOSE_ANGLE_ERROR_CAP_get();
+  }
+
+  public boolean isCloseEnoughToPose(Pose2d pose, double distance) {
+    double angleError = pose.getRotation().getDegrees() - getPose().getRotation().getDegrees();
+
+    if(angleError > 180) angleError -= 360;
+    if(angleError < -180) angleError += 360; // Degrees
+
+    return Math.abs(getPose().getX() - pose.getX()) < distance &&
+      Math.abs(getPose().getY() - pose.getY()) < distance &&
+      Math.abs(angleError) < SwerveDriveTuning.CLOSE_ANGLE_ERROR_CAP_get();
   }
   
   public Command getAutonomousCommand(String pathName) {
@@ -166,7 +188,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   private Integer waypointNumber = 0;
 
-  public Command waypointToPose(APTarget[] targets) {
+  public Command waypointToPose(APTarget[] targets, double switchDistance) {
     return run(() -> {
       Logger.recordOutput("Odometry/RequestedPose", targets[waypointNumber].getReference());
 
@@ -191,7 +213,7 @@ public class SwerveSubsystem extends SubsystemBase {
       double omegaRadiansPerSecond = R.calculate(robotAngle);
 
       // Hopping onto the next waypoint
-      if(isCloseEnoughToPose(targets[waypointNumber].getReference())) {
+      if(isCloseEnoughToPose(targets[waypointNumber].getReference(), switchDistance)) {
         if(waypointNumber < targets.length - 1) waypointNumber++; 
       }
 
@@ -296,6 +318,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public Pose2d getPose() {
+    // if(Robot.isSimulation()) return getSimulationPose();
     return swerveDrive.getPose();
   }
 
