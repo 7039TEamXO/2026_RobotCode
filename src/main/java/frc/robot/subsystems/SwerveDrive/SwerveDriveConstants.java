@@ -44,6 +44,7 @@ public class SwerveDriveConstants {
     // PROXIMITY TOLERANCE
     public static final double CLOSE_DISTANCE_ERROR_CAP = 0.05;
     public static final double CLOSE_ANGLE_ERROR_CAP = 10;
+    public static final double PRECISE_ANGLE_ERROR_CAP = 3;
 
     // ERROR TOLERANCE
     public static final double MAXIMUM_DISTANCE_ERROR = 0.5;

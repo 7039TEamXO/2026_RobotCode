@@ -15,6 +15,7 @@ public class SwerveDriveTuning {
 
     private static final LoggedNetworkNumber CLOSE_DISTANCE_ERROR_CAP = new LoggedNetworkNumber("/Tuning/Swerve/Close Distance Error Cap", SwerveDriveConstants.CLOSE_DISTANCE_ERROR_CAP);
     private static final LoggedNetworkNumber CLOSE_ANGLE_ERROR_CAP = new LoggedNetworkNumber("/Tuning/Swerve/Close Angle Error Cap", SwerveDriveConstants.CLOSE_ANGLE_ERROR_CAP);
+    private static final LoggedNetworkNumber PRECISE_ANGLE_ERROR_CAP = new LoggedNetworkNumber("/Tuning/Swerve/Precise Angle Error Cap", SwerveDriveConstants.PRECISE_ANGLE_ERROR_CAP);
 
     private static final LoggedNetworkNumber TEST_DRIVE_X = new LoggedNetworkNumber("/Tuning/Swerve/(Test L3) X", 0);
     private static final LoggedNetworkNumber TEST_DRIVE_Y = new LoggedNetworkNumber("/Tuning/Swerve/(Test L3) Y", 0);
@@ -46,6 +47,10 @@ public class SwerveDriveTuning {
 
     public static final double CLOSE_ANGLE_ERROR_CAP_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? CLOSE_ANGLE_ERROR_CAP.get() : SwerveDriveConstants.CLOSE_ANGLE_ERROR_CAP;
+    }
+
+    public static final double PRECISE_ANGLE_ERROR_CAP_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? PRECISE_ANGLE_ERROR_CAP.get() : SwerveDriveConstants.PRECISE_ANGLE_ERROR_CAP;
     }
 
     // Activates on an R1 press

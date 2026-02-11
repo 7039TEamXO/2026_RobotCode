@@ -54,8 +54,9 @@ public class ShooterConstants {
     public static final double Shoot_StatorCurrentLimit = 50;
     public static final double Shoot_SupplyCurrentLimit = 50;
 
-    public static final double SHOOT_POWER_IDLE = 0;
-    public static final double SHOOT_POWER_FIRE = 0;
+    public static final double SHOOT_VOLTAGE_IDLE = 0;
+    public static final double SHOOT_VOLTAGE_FIRE = 0;
+    public static final double SHOOT_VOLTAGE_TOLERANCE = 0;
 
     // OTHER //
 

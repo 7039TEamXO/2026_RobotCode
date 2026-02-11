@@ -25,11 +25,11 @@ import frc.robot.Constants.TuningMode;
 import frc.robot.subsystems.IO.ShooterIO;
 import frc.robot.subsystems.IO.ShooterIO.ShooterIOInputs;
 
-public class Shooter implements Subsystem {
+public class ShooterSubsystem implements Subsystem {
     private final ShooterIO io;
     private final ShooterIOInputs inputs;
 
-    public Shooter(ShooterIO _io) {
+    public ShooterSubsystem(ShooterIO _io) {
         io = _io;
         inputs = new ShooterIOInputs();
 
@@ -71,16 +71,16 @@ public class Shooter implements Subsystem {
 
         double Entry_Power = ShooterConstants.ENTRY_POWER_STOP;
         double Angle_Position = calculateShooterPosition();
-        double Shoot_Power = ShooterTuning.Shoot_Idle_get();
+        double Shoot_Power = ShooterTuning.Shoot_Voltage_Idle_get();
         
         switch(state) {
             case SPEED_UP:
-                Shoot_Power = ShooterTuning.Shoot_Fire_get();
+                Shoot_Power = ShooterTuning.Shoot_Voltage_Fire_get();
                 break;
 
             case SHOOT:
-                Entry_Power = ShooterTuning.Entry_Power_get();
-                Shoot_Power = ShooterTuning.Shoot_Fire_get();
+                Entry_Power = ShooterTuning.Entry_Power_Roll_get();
+                Shoot_Power = ShooterTuning.Shoot_Voltage_Fire_get();
                 break;
 
             default:
@@ -91,7 +91,11 @@ public class Shooter implements Subsystem {
 
         io.setEntryRequest(new DutyCycleOut(Entry_Power));
         io.setAngleRequest(new MotionMagicExpoVoltage(Angle_Position));
-        io.setMasterRequest(new DutyCycleOut(Shoot_Power));
+        io.setMasterRequest(new VoltageOut(Shoot_Power));
+    }
+
+    public ShooterIOInputs getInputs() {
+        return inputs;
     }
 
     private double calculateShooterPosition() {

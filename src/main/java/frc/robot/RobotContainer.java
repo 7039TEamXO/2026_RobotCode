@@ -10,10 +10,19 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.SysIdMode;
 import frc.robot.subsystems.SubsystemManager;
+import frc.robot.subsystems.Delivery.Conveyor.ConveyorSubsystem;
+import frc.robot.subsystems.Delivery.Shooter.ShooterSubsystem;
 import frc.robot.subsystems.IO.Real.CameraReal;
+import frc.robot.subsystems.IO.Real.ConveyorReal;
+import frc.robot.subsystems.IO.Real.IntakeReal;
+import frc.robot.subsystems.IO.Real.ShooterReal;
 // import frc.robot.subsystems.IO.Real.IntakeReal;
 import frc.robot.subsystems.IO.Sim.CameraSim;
+import frc.robot.subsystems.IO.Sim.ConveyorSim;
+import frc.robot.subsystems.IO.Sim.IntakeSim;
+import frc.robot.subsystems.IO.Sim.ShooterSim;
 import frc.robot.subsystems.IO.Stub.CameraStub;
+import frc.robot.subsystems.Intake.IntakeSubsystem;
 
 import java.util.Optional;
 
@@ -24,16 +33,33 @@ import com.ctre.phoenix6.SignalLogger;
 public class RobotContainer {
   private static Command driveFieldOrientedAngularVelocity;
 
+  public static ShooterSubsystem Shooter;
+  public static IntakeSubsystem Intake;
+  public static ConveyorSubsystem Conveyor;
+
+  private static double periodicDt = 0.02;
+
   public static void init() {
     switch(Constants.CurrentMode) {
       case REAL:
         Limelight.init(new CameraReal());
+        Shooter = new ShooterSubsystem(new ShooterReal());
+        Intake = new IntakeSubsystem(new IntakeReal());
+        Conveyor = new ConveyorSubsystem(new ConveyorReal());
         break;
+
       case REPLAY: 
         Limelight.init(new CameraStub());
+        Shooter = new ShooterSubsystem(new ShooterReal());
+        Intake = new IntakeSubsystem(new IntakeReal());
+        Conveyor = new ConveyorSubsystem(new ConveyorReal());
         break;
+
       case SIM:
         Limelight.init(new CameraSim());
+        Shooter = new ShooterSubsystem(new ShooterSim(periodicDt));
+        Intake = new IntakeSubsystem(new IntakeSim(periodicDt));
+        Conveyor = new ConveyorSubsystem(new ConveyorSim(periodicDt));
         break;
     }
 
@@ -42,7 +68,7 @@ public class RobotContainer {
     configureBindings();
   }
 
-  private static void configureBindings() {    
+  private static void configureBindings() {
     SubsystemManager.getPSJoystick().PS().onTrue((Commands.runOnce(SubsystemManager.getDrivebase()::zeroGyroWithAlliance)));
       // to use in case the rotation is messed up
 

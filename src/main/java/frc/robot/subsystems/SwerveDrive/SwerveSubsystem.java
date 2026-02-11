@@ -126,26 +126,27 @@ public class SwerveSubsystem extends SubsystemBase {
   @Override
   public void simulationPeriodic() {}
 
-  public boolean isCloseEnoughToPose(Pose2d pose) {
-    double angleError = pose.getRotation().getDegrees() - getPose().getRotation().getDegrees();
+  public boolean isCloseEnoughToAngle(Rotation2d rotation, double cap) {
+    double angleError = rotation.getDegrees() - getPose().getRotation().getDegrees();
 
     if(angleError > 180) angleError -= 360;
     if(angleError < -180) angleError += 360; // Degrees
 
-    return Math.abs(getPose().getX() - pose.getX()) < SwerveDriveTuning.CLOSE_DISTANCE_ERROR_CAP_get() &&
-      Math.abs(getPose().getY() - pose.getY()) < SwerveDriveTuning.CLOSE_DISTANCE_ERROR_CAP_get() &&
-      Math.abs(angleError) < SwerveDriveTuning.CLOSE_ANGLE_ERROR_CAP_get();
+    return Math.abs(angleError) < cap;
+  }
+
+  public boolean isCloseEnoughToPose(Pose2d pose, double distance, double angle) {
+    return Math.abs(getPose().getX() - pose.getX()) < distance &&
+      Math.abs(getPose().getY() - pose.getY()) < distance &&
+      isCloseEnoughToAngle(getPose().getRotation(), angle);
   }
 
   public boolean isCloseEnoughToPose(Pose2d pose, double distance) {
-    double angleError = pose.getRotation().getDegrees() - getPose().getRotation().getDegrees();
+    return isCloseEnoughToPose(pose, distance, SwerveDriveTuning.CLOSE_ANGLE_ERROR_CAP_get());
+  }
 
-    if(angleError > 180) angleError -= 360;
-    if(angleError < -180) angleError += 360; // Degrees
-
-    return Math.abs(getPose().getX() - pose.getX()) < distance &&
-      Math.abs(getPose().getY() - pose.getY()) < distance &&
-      Math.abs(angleError) < SwerveDriveTuning.CLOSE_ANGLE_ERROR_CAP_get();
+  public boolean isCloseEnoughToPose(Pose2d pose) {
+    return isCloseEnoughToPose(pose, SwerveDriveTuning.CLOSE_DISTANCE_ERROR_CAP_get(), SwerveDriveTuning.CLOSE_ANGLE_ERROR_CAP_get());
   }
   
   public Command getAutonomousCommand(String pathName) {

@@ -36,7 +36,7 @@ public class IntakeConstants {
     public static final double Control_StatorCurrentLimit = 30;
     public static final double Control_SupplyCurrentLimit = 30;
 
-    public static final double CONTROL_POS_FOLD = 0;
+    public static final double CONTROL_POS_IN = 0;
     public static final double CONTROL_POS_OUT = 0;
 
     public static final double CONTROL_POS_TOLERANCE = 0;

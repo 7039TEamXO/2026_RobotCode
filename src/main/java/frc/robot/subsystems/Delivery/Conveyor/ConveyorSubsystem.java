@@ -21,11 +21,11 @@ import frc.robot.Constants.TuningMode;
 import frc.robot.subsystems.IO.ConveyorIO;
 import frc.robot.subsystems.IO.ConveyorIO.ConveyorIOInputs;
 
-public class Conveyor implements Subsystem {
+public class ConveyorSubsystem implements Subsystem {
     private final ConveyorIO io;
     private final ConveyorIOInputs inputs;
 
-    public Conveyor(ConveyorIO _io) {
+    public ConveyorSubsystem(ConveyorIO _io) {
         io = _io;
         inputs = new ConveyorIOInputs();
 

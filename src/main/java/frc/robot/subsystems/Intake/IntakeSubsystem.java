@@ -21,11 +21,11 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.subsystems.IO.IntakeIO;
 import frc.robot.subsystems.IO.IntakeIO.IntakeIOInputs;
 
-public class Intake implements Subsystem {
+public class IntakeSubsystem implements Subsystem {
     private IntakeIO io;
     private IntakeIOInputs inputs = new IntakeIOInputs();
 
-    public Intake(IntakeIO _io) {        
+    public IntakeSubsystem(IntakeIO _io) {        
         io = _io;
 
         setMotorConfigs();
@@ -50,7 +50,7 @@ public class Intake implements Subsystem {
             new SysIdRoutine.Mechanism(v -> io.setControlRequest(new VoltageOut(v)), null, this));
     }
 
-    public void operate(IntakeState state) {
+    public void operate(IntakeState state, StorageState storageState) {
         io.updateInputs(inputs);
         Logger.processInputs("Intake", inputs);
 
@@ -66,17 +66,23 @@ public class Intake implements Subsystem {
                 Power = IntakeTuning.Power_Deplete_get();
                 break;
 
-            case FOLD_IN:
-                Position = IntakeConstants.CONTROL_POS_FOLD;
-            
             default:
             case INACTIVE:
                 // Do nothing
                 break;
         }
 
+        switch(storageState) {
+            case IN:
+                Position = IntakeConstants.CONTROL_POS_IN;
+
+            default:
+            case OUT:
+                Position = IntakeConstants.CONTROL_POS_OUT;
+        }
+
         if(Math.abs(inputs.Control_Position - Position) > IntakeConstants.CONTROL_POS_TOLERANCE ||
-            Position == IntakeConstants.CONTROL_POS_FOLD) {
+            Position == IntakeConstants.CONTROL_POS_IN) {
             io.setControlRequest(new MotionMagicExpoVoltage(Position));
         } else {
             io.setControlRequest(new CoastOut());
