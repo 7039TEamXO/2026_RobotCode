@@ -10,13 +10,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 // import frc.robot.RobotContainer;
 import frc.robot.Constants.Mode;
 import frc.robot.Constants.SysIdMode;
 import frc.robot.subsystems.Delivery.Conveyor.ConveyorState;
-import frc.robot.subsystems.Delivery.Shooter.ShooterConstants;
 import frc.robot.subsystems.Delivery.Shooter.ShooterState;
 import frc.robot.subsystems.Delivery.Shooter.ShooterTuning;
 import frc.robot.subsystems.Intake.IntakeState;
@@ -52,9 +50,21 @@ public class SubsystemManager {
     private static boolean isInAutoDrive;
 
     private static void scheduleAutoDrive() {
-        if(psControllerHID.getL3Button()) { // Test drive
+        if(psControllerHID.getPOV() == 180) { // Outpost
+            hubAlignment = false;
+            autoDrive = drivebase.driveToPose(new Pose2d()); // ...
+            CommandScheduler.getInstance().schedule(autoDrive);
+        } else if(psControllerHID.getL1Button()) { // Tower
+            hubAlignment = false;
+            autoDrive = drivebase.driveToPose(new Pose2d()); // ...
+            CommandScheduler.getInstance().schedule(autoDrive);
+        } else if(psControllerHID.getL3Button()) { // Test
+            hubAlignment = false; 
             autoDrive = drivebase.driveToPose(new Pose2d(SwerveDriveTuning.TEST_DRIVE_X_get(), SwerveDriveTuning.TEST_DRIVE_Y_get(),
                 new Rotation2d(Math.toRadians(SwerveDriveTuning.TEST_DRIVE_ANGLE_get()))));
+            CommandScheduler.getInstance().schedule(autoDrive);
+        } else if(hubAlignment) { // Hub Alignment (Lowest priority)
+            autoDrive = drivebase.alignToHub();
             CommandScheduler.getInstance().schedule(autoDrive);
         } else {
             drivebase.resetWaypointToPose();
@@ -119,27 +129,43 @@ public class SubsystemManager {
             RobotContainer.Intake.operate(intakeState, storageState);
 
             Boolean atShootSpeed = Math.abs(RobotContainer.Shooter.getInputs().ShootMaster_Velocity - ShooterTuning.Shoot_Voltage_Fire_get()) < ShooterTuning.Shoot_Voltage_Tolerance_get();
-            Boolean atShootAngle = drivebase.isCloseEnoughToAngle(determineHubAngle(), SwerveDriveTuning.PRECISE_ANGLE_ERROR_CAP_get());
+            Boolean atShootAngle = drivebase.isCloseEnoughToAngle(drivebase.determineHubAngle(), SwerveDriveTuning.PRECISE_ANGLE_ERROR_CAP_get());
+
+            ConveyorState conveyorState = ConveyorState.STOP;
 
             switch(shooterState) {
                 case SHOOT:
-                    
+                    if(!atShootAngle || !atShootSpeed) shooterState = ShooterState.SPEED_UP;
+                    else shooterState = ShooterState.SHOOT;
+                    conveyorState = ConveyorState.GUIDE;
                     break;
 
                 case SPEED_UP:
-
+                    shooterState = ShooterState.SPEED_UP;
+                    conveyorState = ConveyorState.STOP;
                     break;
 
                 default:
                 case IDLE:
-                    
+                    shooterState = ShooterState.IDLE;
+                    conveyorState = ConveyorState.STOP;
                     break;
             }
-        }
-    }
 
-    private static Rotation2d determineHubAngle() {
-        return Rotation2d.kZero;
+            // Unjamming has the highest priority
+            if(conveyorUnjam) {
+                conveyorState = ConveyorState.UNJAM;
+                if(shooterState == ShooterState.SHOOT) shooterState = ShooterState.SPEED_UP;
+            }
+
+            // Intake depletion has the lowest priority
+            if(intakeState == IntakeState.DEPLETE && conveyorState == ConveyorState.STOP) {
+                conveyorState = ConveyorState.DEPLETE;
+            }
+
+            RobotContainer.Conveyor.operate(conveyorState);
+            RobotContainer.Shooter.operate(shooterState);
+        }
     }
 
     private static void simulationPeriodic() {

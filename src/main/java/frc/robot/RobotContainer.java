@@ -76,12 +76,12 @@ public class RobotContainer {
       SubsystemManager.getPSJoystick().L1().onTrue(Commands.runOnce(() -> SignalLogger.start()));
       SubsystemManager.getPSJoystick().R1().onTrue(Commands.runOnce(() -> SignalLogger.stop()));
 
-      // Elevator SysId [General subsystem template]
+      // Conveyor SysId [General subsystem template]
 
-      // SubsystemManager.getPSJoystick().circle().whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-      // SubsystemManager.getPSJoystick().square().whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-      // SubsystemManager.getPSJoystick().triangle().whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kForward));
-      // SubsystemManager.getPSJoystick().cross().whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+      // SubsystemManager.getPSJoystick().circle().whileTrue(Conveyor.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+      // SubsystemManager.getPSJoystick().square().whileTrue(Conveyor.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+      // SubsystemManager.getPSJoystick().triangle().whileTrue(Conveyor.sysIdDynamic(SysIdRoutine.Direction.kForward));
+      // SubsystemManager.getPSJoystick().cross().whileTrue(Conveyor.sysIdDynamic(SysIdRoutine.Direction.kReverse));
       
       // Swerves | Drive SysId
 
@@ -134,7 +134,7 @@ public class RobotContainer {
     }
   }
 
-  private static double modifyAxis(double joystickInput, double deadband) {
+  public static double modifyAxis(double joystickInput, double deadband) {
     double deadbandValue = MathUtil.applyDeadband(joystickInput, deadband);
     double scaled_input = 1 - (1 - Math.abs(deadbandValue)) * (1 - 0.1);
     return deadbandValue * scaled_input;

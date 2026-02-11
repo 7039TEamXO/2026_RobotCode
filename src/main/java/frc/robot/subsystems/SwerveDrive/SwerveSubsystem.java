@@ -224,24 +224,39 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public void resetWaypointToPose() {
     waypointNumber = 0;
+    rotationPID = new PIDController(SwerveDriveTuning.KP_ANGULAR_get(), 0, SwerveDriveTuning.KD_ANGULAR_get());
   }
 
-  public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier headingX,
-      DoubleSupplier headingY) {
-    // swerveDrive.setHeadingCorrection(true); // Normally you would want heading correction for this kind of control.
+  public Command alignToHub() {
     return run(() -> {
-      Translation2d scaledInputs = SwerveMath.scaleTranslation(new Translation2d(translationX.getAsDouble(),
-          translationY.getAsDouble()), 0.8);
+      // Joystick translation
+      double vx = RobotContainer.modifyAxis(SubsystemManager.getPSJoystick().getLeftY(), Constants.Operator.LEFT_Y_DEADBAND);
+      double vy = RobotContainer.modifyAxis(SubsystemManager.getPSJoystick().getLeftX(), Constants.Operator.LEFT_X_DEADBAND);
 
-      ChassisSpeeds speeds = swerveDrive.swerveController.getTargetSpeeds(scaledInputs.getX(), scaledInputs.getY(),
-          headingX.getAsDouble(),
-          headingY.getAsDouble(),
-          swerveDrive.getOdometryHeading().getRadians(),
-          swerveDrive.getMaximumChassisVelocity());
+      Translation2d translation = SwerveMath.scaleTranslation(new Translation2d(
+        vx * swerveDrive.getMaximumChassisVelocity(),
+        vy * swerveDrive.getMaximumChassisVelocity()), 0.8);
 
-      // Make the robot move
-      driveFieldOriented(speeds);
+      // Rotation compute
+      PIDController R = rotationPID;
+
+      // Ensuring that the error is in the -180 ... +180 degree range
+      double robotAngle = getPose().getRotation().getRadians();
+
+      R.setSetpoint(determineHubAngle().getRadians());
+      double angleError = robotAngle - R.getSetpoint();
+
+      if(angleError > Math.PI) robotAngle -= 2 * Math.PI;
+      if(angleError < -Math.PI) robotAngle += 2 * Math.PI;
+
+      double omegaRadiansPerSecond = R.calculate(robotAngle);
+
+      swerveDrive.drive(translation, omegaRadiansPerSecond, true, false);
     });
+  }
+
+  public Rotation2d determineHubAngle() {
+      return Rotation2d.kZero;
   }
 
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX)
@@ -265,16 +280,6 @@ public class SwerveSubsystem extends SubsystemBase {
                       rotation,
                       fieldRelative,
                       false); // Open loop is disabled since it shouldn't be used most of the time.
-  }
-
-  public void driveFieldOriented(ChassisSpeeds velocity)
-  {
-    swerveDrive.driveFieldOriented(velocity);
-  }
-
-  public void drive(ChassisSpeeds velocity)
-  {
-    swerveDrive.drive(velocity);
   }
 
   public SwerveDriveKinematics getKinematics()
@@ -328,17 +333,6 @@ public class SwerveSubsystem extends SubsystemBase {
     return getPose().getRotation();
   }
   
-  public ChassisSpeeds getTargetSpeeds(double xInput, double yInput, double headingX, double headingY)
-  {
-    Translation2d scaledInputs = SwerveMath.cubeTranslation(new Translation2d(xInput, yInput));
-    return swerveDrive.swerveController.getTargetSpeeds(scaledInputs.getX(),
-                                                        scaledInputs.getY(),
-                                                        headingX,
-                                                        headingY,
-                                                        getHeading().getRadians(),
-                                                        SwerveDriveConstants.MAX_SPEED);
-  }
-
   public ChassisSpeeds getTargetSpeeds(double xInput, double yInput, Rotation2d angle)
   {
     Translation2d scaledInputs = SwerveMath.cubeTranslation(new Translation2d(xInput, yInput));
