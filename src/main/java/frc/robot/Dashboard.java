@@ -1,8 +1,11 @@
 package frc.robot;
 
 import edu.wpi.first.cscore.HttpCamera;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.subsystems.SubsystemManager;
 
 public class Dashboard {
@@ -40,7 +43,173 @@ public class Dashboard {
         SmartDashboard.postListenerTask(() -> SmartDashboard.putNumber("Back Left", SubsystemManager.getDrivebase().getSwerveDriveConfiguration().modules[2].getPosition().angle.getDegrees()));
         SmartDashboard.postListenerTask(() -> SmartDashboard.putNumber("Back Right", SubsystemManager.getDrivebase().getSwerveDriveConfiguration().modules[3].getPosition().angle.getDegrees()));
 
+        SmartDashboard.postListenerTask(() -> SmartDashboard.putString("Shooter State", SubsystemManager.getShooterState().name()));
+        SmartDashboard.postListenerTask(() -> SmartDashboard.putString("Conveyor State", SubsystemManager.getConveyorState().name()));
+        SmartDashboard.postListenerTask(() -> SmartDashboard.putString("Intake State", SubsystemManager.getIntakeState().name()));
+        SmartDashboard.postListenerTask(() -> SmartDashboard.putString("Storage State", SubsystemManager.getStorageState().name()));
+
+        SmartDashboard.postListenerTask(() -> SmartDashboard.putNumber("Match Shift Timer", getMatchTimer()));
+        SmartDashboard.postListenerTask(() -> SmartDashboard.putBoolean("Can Shoot", whetherCanShoot()));
+        SmartDashboard.postListenerTask(() -> SmartDashboard.putString("Match Shift Color", getGameState().toHexString()));
+        SmartDashboard.postListenerTask(() -> SmartDashboard.putString("Autonomy Winner", whoWonAutonomy().toHexString()));
+        SmartDashboard.postListenerTask(() -> SmartDashboard.putString("Match Shift Name", getGameStateName()));
+
         SmartDashboard.updateValues();
+    }
+
+    public static double getMatchTimer() {
+        double matchTimer = Timer.getMatchTime();
+        if(!Robot.isAuto()) {
+            if(matchTimer >= 130) matchTimer -= 130;
+            else if(matchTimer >= 105) matchTimer -= 105;
+            else if(matchTimer >= 80) matchTimer -= 80;
+            else if(matchTimer >= 55) matchTimer -= 55;
+            else if(matchTimer >= 30) matchTimer -= 30;
+        }
+
+        return matchTimer;
+    }
+
+    public static Boolean whetherCanShoot() {
+        String message = DriverStation.getGameSpecificMessage();
+        char state = 'E'; // Empty
+        if(message.length() > 0) {
+            state = DriverStation.getGameSpecificMessage().charAt(0);
+        }
+        double matchTimer = Timer.getMatchTime();
+
+        int turn = -1;
+
+        if(!Robot.isAuto()) {
+            if(matchTimer >= 130) turn = -1;
+            else if(matchTimer >= 105) turn = 0;
+            else if(matchTimer >= 80) turn = 1;
+            else if(matchTimer >= 55) turn = 0;
+            else if(matchTimer >= 30) turn = 1;
+        }
+
+        Boolean answer = true;
+        int alliance = RobotContainer.teamColorIsBlue();
+
+        if(turn != -1) {
+            if(state == 'R') {
+                if(alliance == 1) { // Blue
+                    answer = turn == 1;
+                } else { // Red
+                    answer = turn == 0;
+                }
+            } else if(state == 'B') {
+                if(alliance == 1) { // Blue
+                    answer = turn == 0;
+                } else { // Red
+                    answer = turn == 1;
+                }
+            }
+        }
+
+        return answer;
+    }
+
+    public static Color getGameState() {
+        String message = DriverStation.getGameSpecificMessage();
+        char state = 'E'; // Empty
+        if(message.length() > 0) {
+            state = DriverStation.getGameSpecificMessage().charAt(0);
+        }
+        double matchTimer = Timer.getMatchTime();
+
+        int turn = -1;
+        Color color = Color.kLimeGreen; // Auto as the default
+
+        if(!Robot.isAuto()) {
+            if(matchTimer >= 130) { 
+                turn = -1;
+                color = Color.kMediumPurple;
+            }
+            else if(matchTimer >= 105) turn = 0;
+            else if(matchTimer >= 80) turn = 1;
+            else if(matchTimer >= 55) turn = 0;
+            else if(matchTimer >= 30) turn = 1;
+            else {
+                color = Color.kYellow;
+            }
+        }
+
+        if(turn != -1) {
+            if(state == 'R') {
+                if(turn == 0) { // Blue
+                    color = Color.kRed;
+                } else { // Red
+                    color = Color.kBlue;
+                }
+            } else if(state == 'B') {
+                if(turn == 0) { // Blue
+                    color = Color.kBlue;
+                } else { // Red
+                    color = Color.kRed;
+                }
+            }
+        }
+
+        return color;
+    }
+
+    public static String getGameStateName() {
+        String message = DriverStation.getGameSpecificMessage();
+        char state = 'E'; // Empty
+        if(message.length() > 0) {
+            state = DriverStation.getGameSpecificMessage().charAt(0);
+        }
+        double matchTimer = Timer.getMatchTime();
+
+        int turn = -1;
+        String name = "Autonomy"; // Auto as the default
+
+        if(!Robot.isAuto()) {
+            if(matchTimer >= 130) { 
+                turn = -1;
+                name = "Transition Shift";
+            }
+            else if(matchTimer >= 105) turn = 0;
+            else if(matchTimer >= 80) turn = 1;
+            else if(matchTimer >= 55) turn = 0;
+            else if(matchTimer >= 30) turn = 1;
+            else {
+                name = "Endgame";
+            }
+        }
+
+        if(turn != -1) {
+            if(state == 'R') {
+                if(turn == 0) { // Blue
+                    name = "Red Shift";
+                } else { // Red
+                    name = "Blue Shift";
+                }
+            } else if(state == 'B') {
+                if(turn == 0) { // Blue
+                    name = "Blue Shift";
+                } else { // Red
+                    name = "Red Shift";
+                }
+            }
+        }
+
+        return name;
+    }
+
+    public static Color whoWonAutonomy() {
+        String message = DriverStation.getGameSpecificMessage();
+        char state = 'E'; // Empty
+        if(message.length() > 0) {
+            state = DriverStation.getGameSpecificMessage().charAt(0);
+        }
+
+        Color color = Color.kYellow;
+        if(state == 'B') color = Color.kBlue;
+        else if(state == 'R') color = Color.kRed;
+
+        return color;
     }
         
     public static String getSelectedAutonomy() {

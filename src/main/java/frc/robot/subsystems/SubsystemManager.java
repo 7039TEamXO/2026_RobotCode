@@ -34,6 +34,8 @@ public class SubsystemManager {
 
     private static ShooterState shooterState;
 
+    private static ConveyorState conveyorState;
+
     private static Boolean conveyorUnjam;
     private static Boolean hubAlignment;
 
@@ -41,6 +43,8 @@ public class SubsystemManager {
         intakeState = IntakeState.INACTIVE;
         storageState = StorageState.IN;
         shooterState = ShooterState.IDLE;
+        conveyorState = ConveyorState.STOP;
+        
         conveyorUnjam = false;
         hubAlignment = false;
     }
@@ -186,6 +190,22 @@ public class SubsystemManager {
 
     public static boolean isInAutoDrive() {
         return isInAutoDrive;
+    }
+
+    public static ShooterState getShooterState() {
+        return shooterState;
+    }
+
+    public static ConveyorState getConveyorState() {
+        return conveyorState;
+    }
+
+    public static IntakeState getIntakeState() {
+        return intakeState;
+    }
+
+    public static StorageState getStorageState() {
+        return storageState;
     }
 }
 
