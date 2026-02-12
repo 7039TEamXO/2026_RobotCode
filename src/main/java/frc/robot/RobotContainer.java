@@ -23,6 +23,7 @@ import frc.robot.subsystems.IO.Sim.IntakeSim;
 import frc.robot.subsystems.IO.Sim.ShooterSim;
 import frc.robot.subsystems.IO.Stub.CameraStub;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
+import frc.robot.subsystems.SwerveDrive.SwerveSubsystem;
 
 import java.util.Optional;
 
@@ -118,7 +119,7 @@ public class RobotContainer {
   }
 
   public static Command getAutonomousCommand() {
-    return SubsystemManager.getDrivebase().getAutonomousCommand(Dashboard.getSelectedAutonomy());
+    return SwerveSubsystem.getAutonomousCommand(Dashboard.getSelectedAutonomy());
   }
 
   public static void setMotorBrake(boolean brake) {

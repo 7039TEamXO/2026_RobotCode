@@ -8,31 +8,27 @@
         "layouts": [],
         "containers": [
           {
-            "title": "Can Shoot",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 192.0,
-            "height": 160.0,
-            "type": "Boolean Box",
+            "title": "Autonomy Winner",
+            "x": 256.0,
+            "y": 224.0,
+            "width": 224.0,
+            "height": 128.0,
+            "type": "Single Color View",
             "properties": {
-              "topic": "/SmartDashboard/Can Shoot",
+              "topic": "/SmartDashboard/Autonomy Winner",
               "period": 0.06,
-              "data_type": "boolean",
-              "true_color": 4283215696,
-              "false_color": 4294198070,
-              "true_icon": "None",
-              "false_icon": "None"
+              "data_type": "string"
             }
           },
           {
-            "title": "Match Shift Timer",
+            "title": "Shift Timer",
             "x": 0.0,
-            "y": 288.0,
-            "width": 512.0,
-            "height": 256.0,
+            "y": 352.0,
+            "width": 480.0,
+            "height": 192.0,
             "type": "Match Time",
             "properties": {
-              "topic": "/SmartDashboard/Match Shift Timer",
+              "topic": "/SmartDashboard/Shift Timer",
               "period": 0.06,
               "data_type": "double",
               "time_display_mode": "Minutes and Seconds",
@@ -41,40 +37,53 @@
             }
           },
           {
-            "title": "Match Shift Color",
-            "x": 192.0,
+            "title": "Shift Name",
+            "x": 0.0,
+            "y": 160.0,
+            "width": 256.0,
+            "height": 192.0,
+            "type": "Large Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Shift Name",
+              "period": 0.06,
+              "data_type": "string"
+            }
+          },
+          {
+            "title": "Shift Color",
+            "x": 0.0,
             "y": 0.0,
-            "width": 320.0,
+            "width": 256.0,
             "height": 160.0,
             "type": "Single Color View",
             "properties": {
-              "topic": "/SmartDashboard/Match Shift Color",
+              "topic": "/SmartDashboard/Shift Color",
               "period": 0.06,
               "data_type": "string"
             }
           },
           {
-            "title": "Match Shift Name",
-            "x": 192.0,
-            "y": 160.0,
-            "width": 320.0,
-            "height": 128.0,
+            "title": "Match State",
+            "x": 256.0,
+            "y": 0.0,
+            "width": 224.0,
+            "height": 224.0,
             "type": "Large Text Display",
             "properties": {
-              "topic": "/SmartDashboard/Match Shift Name",
+              "topic": "/SmartDashboard/Match State",
               "period": 0.06,
               "data_type": "string"
             }
           },
           {
-            "title": "Autonomy Winner",
-            "x": 0.0,
-            "y": 160.0,
-            "width": 192.0,
-            "height": 128.0,
+            "title": "Flash Bar",
+            "x": 480.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 544.0,
             "type": "Single Color View",
             "properties": {
-              "topic": "/SmartDashboard/Autonomy Winner",
+              "topic": "/SmartDashboard/Flash Bar",
               "period": 0.06,
               "data_type": "string"
             }

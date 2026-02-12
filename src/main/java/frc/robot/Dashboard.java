@@ -48,11 +48,12 @@ public class Dashboard {
         SmartDashboard.postListenerTask(() -> SmartDashboard.putString("Intake State", SubsystemManager.getIntakeState().name()));
         SmartDashboard.postListenerTask(() -> SmartDashboard.putString("Storage State", SubsystemManager.getStorageState().name()));
 
-        SmartDashboard.postListenerTask(() -> SmartDashboard.putNumber("Match Shift Timer", getMatchTimer()));
-        SmartDashboard.postListenerTask(() -> SmartDashboard.putBoolean("Can Shoot", whetherCanShoot()));
-        SmartDashboard.postListenerTask(() -> SmartDashboard.putString("Match Shift Color", getGameState().toHexString()));
-        SmartDashboard.postListenerTask(() -> SmartDashboard.putString("Autonomy Winner", whoWonAutonomy().toHexString()));
-        SmartDashboard.postListenerTask(() -> SmartDashboard.putString("Match Shift Name", getGameStateName()));
+        SmartDashboard.postListenerTask(() -> SmartDashboard.putNumber("Shift Timer", getMatchTimer()));
+        SmartDashboard.postListenerTask(() -> SmartDashboard.putString("Match State", whetherCanShoot() ? "Active" : "Inactive"));
+        SmartDashboard.postListenerTask(() -> SmartDashboard.putString("Shift Color", getGameState().toHexString()));
+        SmartDashboard.postListenerTask(() -> SmartDashboard.putString("Autonomy Winner", getAutonomyWinner()));
+        SmartDashboard.postListenerTask(() -> SmartDashboard.putString("Shift Name", getGameStateName()));
+        SmartDashboard.postListenerTask(() -> SmartDashboard.putString("Flash Bar", getFlashbarColor().toHexString()));
 
         SmartDashboard.updateValues();
     }
@@ -163,6 +164,7 @@ public class Dashboard {
         double matchTimer = Timer.getMatchTime();
 
         int turn = -1;
+        String turnTime = "1";
         String name = "Autonomy"; // Auto as the default
 
         if(!Robot.isAuto()) {
@@ -172,8 +174,14 @@ public class Dashboard {
             }
             else if(matchTimer >= 105) turn = 0;
             else if(matchTimer >= 80) turn = 1;
-            else if(matchTimer >= 55) turn = 0;
-            else if(matchTimer >= 30) turn = 1;
+            else if(matchTimer >= 55) {
+                turn = 0;
+                turnTime = "2";
+            }
+            else if(matchTimer >= 30) {
+                turn = 1;
+                turnTime = "2";
+            }
             else {
                 name = "Endgame";
             }
@@ -182,15 +190,15 @@ public class Dashboard {
         if(turn != -1) {
             if(state == 'R') {
                 if(turn == 0) { // Blue
-                    name = "Blue Shift";
+                    name = "Blue Shift ".concat(turnTime);
                 } else { // Red
-                    name = "Red Shift";
+                    name = "Red Shift ".concat(turnTime);
                 }
             } else if(state == 'B') {
                 if(turn == 0) { // Blue
-                    name = "Red Shift";
+                    name = "Red Shift ".concat(turnTime);
                 } else { // Red
-                    name = "Blue Shift";
+                    name = "Blue Shift ".concat(turnTime);
                 }
             }
         }
@@ -198,7 +206,7 @@ public class Dashboard {
         return name;
     }
 
-    public static Color whoWonAutonomy() {
+    public static String getAutonomyWinner() {
         String message = DriverStation.getGameSpecificMessage();
         char state = 'E'; // Empty
         if(message.length() > 0) {
@@ -208,6 +216,33 @@ public class Dashboard {
         Color color = Color.kYellow;
         if(state == 'B') color = Color.kBlue;
         else if(state == 'R') color = Color.kRed;
+
+        if(Timer.getMatchTime() < 130 || Robot.isAuto()) {
+            return "";
+        }
+        return color.toHexString();
+    }
+
+    public static Color getFlashbarColor() {
+        Color allianceColor = RobotContainer.teamColorIsBlue() == 1 ? Color.kBlue : Color.kRed;
+
+        Color color = allianceColor;
+        double matchTimer = Timer.getMatchTime();
+
+        if(!Robot.isAuto()) {
+            if((matchTimer >= 130 && matchTimer <= 135) ||
+                (matchTimer >= 105 && matchTimer <= 110) ||
+                (matchTimer >= 80 && matchTimer <= 85) ||
+                (matchTimer >= 55 && matchTimer <= 60) ||
+                (matchTimer >= 30 && matchTimer <= 35) ||
+                (matchTimer <= 5)) {
+                    if(1000 * matchTimer % 200 <= 100) {
+                        color = Color.kWhite;
+                    } else {
+                        color = allianceColor;
+                    }
+            }
+        }
 
         return color;
     }

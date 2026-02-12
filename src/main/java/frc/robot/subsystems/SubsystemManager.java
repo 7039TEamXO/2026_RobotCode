@@ -2,8 +2,8 @@ package frc.robot.subsystems;
 
 import java.io.File;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
+// import edu.wpi.first.math.geometry.Pose2d;
+// import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-// import frc.robot.RobotContainer;
 import frc.robot.Constants.Mode;
 import frc.robot.Constants.SysIdMode;
 import frc.robot.subsystems.Delivery.Conveyor.ConveyorState;
@@ -54,21 +53,26 @@ public class SubsystemManager {
     private static boolean isInAutoDrive;
 
     private static void scheduleAutoDrive() {
+        // TO-DO: Check if in ramp zone
         if(psControllerHID.getPOV() == 180) { // Outpost
             hubAlignment = false;
-            autoDrive = drivebase.driveToPose(new Pose2d()); // ...
+            autoDrive = drivebase.driveToPose(SwerveSubsystem.getOutpostPose()); // ...
             CommandScheduler.getInstance().schedule(autoDrive);
         } else if(psControllerHID.getL1Button()) { // Tower
             hubAlignment = false;
-            autoDrive = drivebase.driveToPose(new Pose2d()); // ...
+            autoDrive = drivebase.driveToPose(SwerveSubsystem.getTowerPose()); // ...
             CommandScheduler.getInstance().schedule(autoDrive);
-        } else if(psControllerHID.getL3Button()) { // Test
+        } else if(psControllerHID.getL3Button()) { // Depot / Test
             hubAlignment = false; 
-            autoDrive = drivebase.driveToPose(new Pose2d(SwerveDriveTuning.TEST_DRIVE_X_get(), SwerveDriveTuning.TEST_DRIVE_Y_get(),
-                new Rotation2d(Math.toRadians(SwerveDriveTuning.TEST_DRIVE_ANGLE_get()))));
+            // autoDrive = drivebase.driveToPose(new Pose2d(SwerveDriveTuning.TEST_DRIVE_X_get(), SwerveDriveTuning.TEST_DRIVE_Y_get(),
+            //     new Rotation2d(Math.toRadians(SwerveDriveTuning.TEST_DRIVE_ANGLE_get()))));
+            autoDrive = drivebase.driveToPose(SwerveSubsystem.getDepotPose());
+            CommandScheduler.getInstance().schedule(autoDrive);
+        } else if(drivebase.isInRampZone()) { // Ramp Alignment (Lower priority)
+            autoDrive = drivebase.driveCommandWithAngle(drivebase.calculateOptimalDiagonalRotation());
             CommandScheduler.getInstance().schedule(autoDrive);
         } else if(hubAlignment) { // Hub Alignment (Lowest priority)
-            autoDrive = drivebase.alignToHub();
+            autoDrive = drivebase.driveCommandWithAngle(drivebase.determineHubAngle());
             CommandScheduler.getInstance().schedule(autoDrive);
         } else {
             drivebase.resetWaypointToPose();

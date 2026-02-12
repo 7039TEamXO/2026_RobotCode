@@ -149,7 +149,7 @@ public class SwerveSubsystem extends SubsystemBase {
     return isCloseEnoughToPose(pose, SwerveDriveTuning.CLOSE_DISTANCE_ERROR_CAP_get(), SwerveDriveTuning.CLOSE_ANGLE_ERROR_CAP_get());
   }
   
-  public Command getAutonomousCommand(String pathName) {
+  public static Command getAutonomousCommand(String pathName) {
     switch(pathName) {
       default:
       case "TestAuto":
@@ -227,11 +227,15 @@ public class SwerveSubsystem extends SubsystemBase {
     rotationPID = new PIDController(SwerveDriveTuning.KP_ANGULAR_get(), 0, SwerveDriveTuning.KD_ANGULAR_get());
   }
 
-  public Command alignToHub() {
+  public Command driveCommandWithAngle(Rotation2d angle) {
     return run(() -> {
       // Joystick translation
       double vx = RobotContainer.modifyAxis(SubsystemManager.getPSJoystick().getLeftY(), Constants.Operator.LEFT_Y_DEADBAND);
       double vy = RobotContainer.modifyAxis(SubsystemManager.getPSJoystick().getLeftX(), Constants.Operator.LEFT_X_DEADBAND);
+
+      if(RobotContainer.teamColorIsBlue() == 1) {
+        vx *= -1; vy *= -1; // Blue alliance joystick inversion
+      }
 
       Translation2d translation = SwerveMath.scaleTranslation(new Translation2d(
         vx * swerveDrive.getMaximumChassisVelocity(),
@@ -243,7 +247,7 @@ public class SwerveSubsystem extends SubsystemBase {
       // Ensuring that the error is in the -180 ... +180 degree range
       double robotAngle = getPose().getRotation().getRadians();
 
-      R.setSetpoint(determineHubAngle().getRadians());
+      R.setSetpoint(angle.getRadians());
       double angleError = robotAngle - R.getSetpoint();
 
       if(angleError > Math.PI) robotAngle -= 2 * Math.PI;
@@ -256,7 +260,64 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public Rotation2d determineHubAngle() {
-      return Rotation2d.kZero;
+    if(RobotContainer.teamColorIsBlue() == 1) { // Blue
+      return new Translation2d(Constants.Field.HUB_X_BLUE, Constants.Field.HUB_Y_BLUE)
+        .minus(getPose().getTranslation()).getAngle();
+    } else { // Red
+      return new Translation2d(Constants.Field.HUB_X_RED, Constants.Field.HUB_Y_RED)
+        .minus(getPose().getTranslation()).getAngle();
+    }
+  }
+
+  public Boolean isInRampZone() {
+    double x = getPose().getX();
+    double y = getPose().getY();
+
+    return ((Math.abs(x - Constants.Field.HUB_X_BLUE) < Constants.Field.RAMP_ZONE_WIDTH) &&
+          (Math.abs(y - Constants.Field.HUB_Y_BLUE) > Constants.Field.RAMP_ZONE_HEIGHT_START) &&
+          (Math.abs(y - Constants.Field.HUB_Y_BLUE) < Constants.Field.RAMP_ZONE_HEIGHT_END)) ||
+          ((Math.abs(x - Constants.Field.HUB_X_RED) < Constants.Field.RAMP_ZONE_WIDTH) &&
+          (Math.abs(y - Constants.Field.HUB_Y_RED) > Constants.Field.RAMP_ZONE_HEIGHT_START) &&
+          (Math.abs(y - Constants.Field.HUB_Y_RED) < Constants.Field.RAMP_ZONE_HEIGHT_END));
+  }
+
+  public Rotation2d calculateOptimalDiagonalRotation() {
+    final Rotation2d option1 = Rotation2d.fromDegrees(45);
+    final Rotation2d option2 = Rotation2d.fromDegrees(135);
+    final Rotation2d option3 = Rotation2d.fromDegrees(225);
+    final Rotation2d option4 = Rotation2d.fromDegrees(315);
+
+    Rotation2d finalChoice = option1;
+
+    if(isCloseEnoughToAngle(option2, 45)) finalChoice = option2;
+    else if(isCloseEnoughToAngle(option3, 45)) finalChoice = option3;
+    else if(isCloseEnoughToAngle(option4, 45)) finalChoice = option4;
+
+    return finalChoice;
+  }
+
+  public static Pose2d getOutpostPose() {
+    if(RobotContainer.teamColorIsBlue() == 1) {
+      return new Pose2d(Constants.Field.OUTPOST_X_BLUE, Constants.Field.OUTPOST_Y_BLUE, Rotation2d.kZero);
+    } else {
+      return new Pose2d(Constants.Field.OUTPOST_X_RED, Constants.Field.OUTPOST_Y_RED, Rotation2d.k180deg);
+    }
+  }
+
+  public static Pose2d getTowerPose() {
+    if(RobotContainer.teamColorIsBlue() == 1) {
+      return new Pose2d(Constants.Field.TOWER_X_BLUE, Constants.Field.TOWER_Y_BLUE, Rotation2d.k180deg);
+    } else {
+      return new Pose2d(Constants.Field.TOWER_X_RED, Constants.Field.TOWER_Y_RED, Rotation2d.kZero);
+    }
+  }
+
+  public static Pose2d getDepotPose() {
+    if(RobotContainer.teamColorIsBlue() == 1) {
+      return new Pose2d(Constants.Field.DEPOT_X_BLUE, Constants.Field.DEPOT_Y_BLUE, Rotation2d.kZero);
+    } else {
+      return new Pose2d(Constants.Field.DEPOT_X_RED, Constants.Field.DEPOT_Y_RED, Rotation2d.k180deg);
+    }
   }
 
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX)

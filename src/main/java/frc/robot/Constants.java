@@ -95,5 +95,29 @@ public final class Constants
     public static final double RIGHT_X_DEADBAND = 0.1;
   }
 
-  public static class Field {}
+  public static class Field {
+    public static final double HUB_X_RED = 11.915;
+    public static final double HUB_Y_RED = 4.0;
+    public static final double HUB_X_BLUE = 4.625;
+    public static final double HUB_Y_BLUE = 4.0;
+
+    public static final double OUTPOST_X_RED = 16.0;
+    public static final double OUTPOST_Y_RED = 7.4;
+    public static final double OUTPOST_X_BLUE = 0.55;
+    public static final double OUTPOST_Y_BLUE = 0.65;
+
+    public static final double TOWER_X_RED = 15.0;
+    public static final double TOWER_Y_RED = 4.3;
+    public static final double TOWER_X_BLUE = 1.55;
+    public static final double TOWER_Y_BLUE = 3.75;
+
+    public static final double DEPOT_X_RED = 16.0;
+    public static final double DEPOT_Y_RED = 2.1;
+    public static final double DEPOT_X_BLUE = 0.55;
+    public static final double DEPOT_Y_BLUE = 6.0;
+
+    public static final double RAMP_ZONE_WIDTH = 1.75; // really, it is half-width (distance to center)
+    public static final double RAMP_ZONE_HEIGHT_START = 1.0; // and these are too
+    public static final double RAMP_ZONE_HEIGHT_END = 2.5;
+  }
 }
