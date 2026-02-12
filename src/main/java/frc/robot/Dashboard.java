@@ -94,15 +94,15 @@ public class Dashboard {
         if(turn != -1) {
             if(state == 'R') {
                 if(alliance == 1) { // Blue
-                    answer = turn == 1;
-                } else { // Red
                     answer = turn == 0;
+                } else { // Red
+                    answer = turn == 1;
                 }
             } else if(state == 'B') {
                 if(alliance == 1) { // Blue
-                    answer = turn == 0;
-                } else { // Red
                     answer = turn == 1;
+                } else { // Red
+                    answer = turn == 0;
                 }
             }
         }
@@ -138,15 +138,15 @@ public class Dashboard {
         if(turn != -1) {
             if(state == 'R') {
                 if(turn == 0) { // Blue
-                    color = Color.kRed;
-                } else { // Red
                     color = Color.kBlue;
+                } else { // Red
+                    color = Color.kRed;
                 }
             } else if(state == 'B') {
                 if(turn == 0) { // Blue
-                    color = Color.kBlue;
-                } else { // Red
                     color = Color.kRed;
+                } else { // Red
+                    color = Color.kBlue;
                 }
             }
         }
@@ -182,15 +182,15 @@ public class Dashboard {
         if(turn != -1) {
             if(state == 'R') {
                 if(turn == 0) { // Blue
-                    name = "Red Shift";
-                } else { // Red
                     name = "Blue Shift";
+                } else { // Red
+                    name = "Red Shift";
                 }
             } else if(state == 'B') {
                 if(turn == 0) { // Blue
-                    name = "Blue Shift";
-                } else { // Red
                     name = "Red Shift";
+                } else { // Red
+                    name = "Blue Shift";
                 }
             }
         }
