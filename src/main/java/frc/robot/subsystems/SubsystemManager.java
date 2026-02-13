@@ -8,8 +8,10 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.Mode;
 import frc.robot.Constants.SysIdMode;
@@ -56,17 +58,17 @@ public class SubsystemManager {
         // TO-DO: Check if in ramp zone
         if(psControllerHID.getPOV() == 180) { // Outpost
             hubAlignment = false;
-            autoDrive = drivebase.driveToPose(SwerveSubsystem.getOutpostPose()); // ...
+            autoDrive = drivebase.driveToPose(SwerveSubsystem.getOutpostPose(), false);
             CommandScheduler.getInstance().schedule(autoDrive);
         } else if(psControllerHID.getL1Button()) { // Tower
             hubAlignment = false;
-            autoDrive = drivebase.driveToPose(SwerveSubsystem.getTowerPose()); // ...
+            autoDrive = drivebase.driveToPose(SwerveSubsystem.getTowerPose(), false);
             CommandScheduler.getInstance().schedule(autoDrive);
         } else if(psControllerHID.getL3Button()) { // Depot / Test
             hubAlignment = false; 
             // autoDrive = drivebase.driveToPose(new Pose2d(SwerveDriveTuning.TEST_DRIVE_X_get(), SwerveDriveTuning.TEST_DRIVE_Y_get(),
             //     new Rotation2d(Math.toRadians(SwerveDriveTuning.TEST_DRIVE_ANGLE_get()))));
-            autoDrive = drivebase.driveToPose(SwerveSubsystem.getDepotPose());
+            autoDrive = drivebase.driveToPose(SwerveSubsystem.getDepotPose(), false);
             CommandScheduler.getInstance().schedule(autoDrive);
         } else if(drivebase.isInRampZone()) { // Ramp Alignment (Lower priority)
             autoDrive = drivebase.driveCommandWithAngle(drivebase.calculateOptimalDiagonalRotation());
@@ -75,7 +77,6 @@ public class SubsystemManager {
             autoDrive = drivebase.driveCommandWithAngle(drivebase.determineHubAngle());
             CommandScheduler.getInstance().schedule(autoDrive);
         } else {
-            drivebase.resetWaypointToPose();
             if(autoDrive != null) {
                 CommandScheduler.getInstance().cancel(autoDrive);
                 autoDrive = null;
@@ -143,7 +144,9 @@ public class SubsystemManager {
 
             switch(shooterState) {
                 case SHOOT:
-                    if(!atShootAngle || !atShootSpeed) shooterState = ShooterState.SPEED_UP;
+                    if(!atShootAngle && (!atShootSpeed || !Robot.isAuto())) {
+                        shooterState = ShooterState.SPEED_UP;
+                    }
                     else shooterState = ShooterState.SHOOT;
                     conveyorState = ConveyorState.GUIDE;
                     break;
@@ -176,8 +179,18 @@ public class SubsystemManager {
         }
     }
 
+    public static Command operateAuto(ShooterState chosenShooterState, IntakeState chosenIntakeState, StorageState chosenStorageState) {
+        return new InstantCommand(() -> {
+            shooterState = chosenShooterState == null ? shooterState : chosenShooterState;
+            intakeState = chosenIntakeState == null ? intakeState : chosenIntakeState;
+            storageState = chosenStorageState == null ? storageState : chosenStorageState;
+        });
+    }
+
     private static void simulationPeriodic() {
-        // ...
+        RobotContainer.Conveyor.simulationPeriodic();
+        RobotContainer.Intake.simulationPeriodic();
+        RobotContainer.Shooter.simulationPeriodic();
     }
     
     public static SwerveSubsystem getDrivebase() {

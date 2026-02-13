@@ -13,13 +13,12 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Limelight;
-// import frc.robot.Robot;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.TuningMode;
 import frc.robot.commands.TestAuto;
@@ -35,7 +34,6 @@ import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
 
-import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.math.SwerveMath;
 import swervelib.parser.SwerveControllerConfiguration;
@@ -126,6 +124,8 @@ public class SwerveSubsystem extends SubsystemBase {
   @Override
   public void simulationPeriodic() {}
 
+  /* PROXIMITY VERIFIERS */
+
   public boolean isCloseEnoughToAngle(Rotation2d rotation, double cap) {
     double angleError = rotation.getDegrees() - getPose().getRotation().getDegrees();
 
@@ -138,7 +138,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public boolean isCloseEnoughToPose(Pose2d pose, double distance, double angle) {
     return Math.abs(getPose().getX() - pose.getX()) < distance &&
       Math.abs(getPose().getY() - pose.getY()) < distance &&
-      isCloseEnoughToAngle(getPose().getRotation(), angle);
+      isCloseEnoughToAngle(pose.getRotation(), angle);
   }
 
   public boolean isCloseEnoughToPose(Pose2d pose, double distance) {
@@ -148,18 +148,12 @@ public class SwerveSubsystem extends SubsystemBase {
   public boolean isCloseEnoughToPose(Pose2d pose) {
     return isCloseEnoughToPose(pose, SwerveDriveTuning.CLOSE_DISTANCE_ERROR_CAP_get(), SwerveDriveTuning.CLOSE_ANGLE_ERROR_CAP_get());
   }
-  
-  public static Command getAutonomousCommand(String pathName) {
-    switch(pathName) {
-      default:
-      case "TestAuto":
-        return new TestAuto();
-    }
-  }
+
+  /* DRIVE TO POSE COMMANDS (+ a lot of overloading) */
 
   private PIDController rotationPID = new PIDController(SwerveDriveConstants.KP_ANGULAR, 0, SwerveDriveConstants.KD_ANGULAR);
 
-  public Command driveToPose(Pose2d pose) {
+  public Command driveToPose(Pose2d pose, Boolean autoFinish) {
     return run(() -> {
       Logger.recordOutput("Odometry/RequestedPose", pose);
 
@@ -184,6 +178,68 @@ public class SwerveSubsystem extends SubsystemBase {
       double omegaRadiansPerSecond = R.calculate(robotAngle);
 
       swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
+    }).until(() -> {
+      if(autoFinish) return isCloseEnoughToPose(pose);
+      else return false;
+    });
+  }
+
+  public Command driveToPose(APTarget target, Boolean autoFinish) {
+    return run(() -> {
+      Logger.recordOutput("Odometry/RequestedPose", target.getReference());
+
+      // Drive compute
+      ChassisSpeeds robotRelativeSpeeds = getRobotVelocity();
+      APResult output = SwerveDriveConstants.kAutopilot.calculate(getPose(), robotRelativeSpeeds, target);
+
+      // Rotation compute
+      PIDController R = rotationPID;
+
+      // Ensuring that the error is in the -180 ... +180 degree range
+      double robotAngle = getPose().getRotation().getRadians();
+
+      R.setSetpoint(output.targetAngle().getRadians());
+      double angleError = robotAngle - R.getSetpoint();
+
+      if(angleError > Math.PI) robotAngle -= 2 * Math.PI;
+      if(angleError < -Math.PI) robotAngle += 2 * Math.PI;
+
+      Translation2d fieldRelative = new Translation2d(output.vx().in(MetersPerSecond), output.vy().in(MetersPerSecond));
+      double omegaRadiansPerSecond = R.calculate(robotAngle);
+
+      swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
+    }).until(() -> {
+      if(autoFinish) return isCloseEnoughToPose(target.getReference());
+      else return false;
+    });
+  }
+
+  public Command driveToPose(APTarget target, double distance, double angle) {
+    return run(() -> {
+      Logger.recordOutput("Odometry/RequestedPose", target.getReference());
+
+      // Drive compute
+      ChassisSpeeds robotRelativeSpeeds = getRobotVelocity();
+      APResult output = SwerveDriveConstants.kAutopilot.calculate(getPose(), robotRelativeSpeeds, target);
+
+      // Rotation compute
+      PIDController R = rotationPID;
+
+      // Ensuring that the error is in the -180 ... +180 degree range
+      double robotAngle = getPose().getRotation().getRadians();
+
+      R.setSetpoint(output.targetAngle().getRadians());
+      double angleError = robotAngle - R.getSetpoint();
+
+      if(angleError > Math.PI) robotAngle -= 2 * Math.PI;
+      if(angleError < -Math.PI) robotAngle += 2 * Math.PI;
+
+      Translation2d fieldRelative = new Translation2d(output.vx().in(MetersPerSecond), output.vy().in(MetersPerSecond));
+      double omegaRadiansPerSecond = R.calculate(robotAngle);
+
+      swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
+    }).until(() -> {
+      return isCloseEnoughToPose(target.getReference(), distance, angle);
     });
   }
 
@@ -219,13 +275,56 @@ public class SwerveSubsystem extends SubsystemBase {
       }
 
       swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
+    }).until(() -> {
+      Boolean condition = isCloseEnoughToPose(targets[targets.length - 1].getReference());
+      if(condition) SubsystemManager.getDrivebase().resetWaypointToPose();
+      return condition;
     });
   }
 
-  public void resetWaypointToPose() {
+  public Command waypointToPose(APTarget[] targets, double switchDistance, double endDistance, double endAngle) {
+    return run(() -> {
+      Logger.recordOutput("Odometry/RequestedPose", targets[waypointNumber].getReference());
+
+      // Drive compute
+      ChassisSpeeds robotRelativeSpeeds = getRobotVelocity();
+      APTarget target = targets[waypointNumber];
+      APResult output = SwerveDriveConstants.kAutopilot.calculate(getPose(), robotRelativeSpeeds, target);
+
+      // Rotation compute
+      PIDController R = rotationPID;
+
+      // Ensuring that the error is in the -180 ... +180 degree range
+      double robotAngle = getPose().getRotation().getRadians();
+
+      R.setSetpoint(output.targetAngle().getRadians());
+      double angleError = robotAngle - R.getSetpoint();
+
+      if(angleError > Math.PI) robotAngle -= 2 * Math.PI;
+      if(angleError < -Math.PI) robotAngle += 2 * Math.PI;
+
+      Translation2d fieldRelative = new Translation2d(output.vx().in(MetersPerSecond), output.vy().in(MetersPerSecond));
+      double omegaRadiansPerSecond = R.calculate(robotAngle);
+
+      // Hopping onto the next waypoint
+      if(isCloseEnoughToPose(targets[waypointNumber].getReference(), switchDistance)) {
+        if(waypointNumber < targets.length - 1) waypointNumber++; 
+      }
+
+      swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
+    }).until(() -> {
+      Boolean condition = isCloseEnoughToPose(targets[targets.length - 1].getReference());
+      if(condition) SubsystemManager.getDrivebase().resetWaypointToPose();
+      return condition;
+    });
+  }
+
+  private void resetWaypointToPose() {
     waypointNumber = 0;
     rotationPID = new PIDController(SwerveDriveTuning.KP_ANGULAR_get(), 0, SwerveDriveTuning.KD_ANGULAR_get());
   }
+
+  /* FEATURE DRIVE COMMANDS */
 
   public Command driveCommandWithAngle(Rotation2d angle) {
     return run(() -> {
@@ -320,6 +419,8 @@ public class SwerveSubsystem extends SubsystemBase {
     }
   }
 
+  /* JOYSTICK DRIVE COMMAND */
+
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX)
   {
     return run(() -> {
@@ -335,17 +436,14 @@ public class SwerveSubsystem extends SubsystemBase {
     });
   }
 
-  public void drive(Translation2d translation, double rotation, boolean fieldRelative)
-  {
-    swerveDrive.drive(translation,
-                      rotation,
-                      fieldRelative,
-                      false); // Open loop is disabled since it shouldn't be used most of the time.
-  }
+  /* GETTER/SETTER FUNCTIONS */
 
-  public SwerveDriveKinematics getKinematics()
-  {
-    return swerveDrive.kinematics;
+  public static Command getAutonomousCommand(String pathName) {
+    switch(pathName) {
+      default:
+      case "TestAuto":
+        return new TestAuto();
+    }
   }
 
   public void resetOdometry(Pose2d initialHolonomicPose)
@@ -355,11 +453,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public Pose2d getSimulationPose() {
     return swerveDrive.getSimulationDriveTrainPose().get();
-  }
-
-  public void setChassisSpeeds(ChassisSpeeds chassisSpeeds)
-  {
-    swerveDrive.setChassisSpeeds(chassisSpeeds);
   }
 
   public void zeroGyro()
@@ -385,7 +478,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public Pose2d getPose() {
-    // if(Robot.isSimulation()) return getSimulationPose();
+    if(Robot.isSimulation()) return getSimulationPose();
     return swerveDrive.getPose();
   }
 
@@ -393,31 +486,10 @@ public class SwerveSubsystem extends SubsystemBase {
   {
     return getPose().getRotation();
   }
-  
-  public ChassisSpeeds getTargetSpeeds(double xInput, double yInput, Rotation2d angle)
-  {
-    Translation2d scaledInputs = SwerveMath.cubeTranslation(new Translation2d(xInput, yInput));
-
-    return swerveDrive.swerveController.getTargetSpeeds(scaledInputs.getX(),
-                                                        scaledInputs.getY(),
-                                                        angle.getRadians(),
-                                                        getHeading().getRadians(),
-                                                        SwerveDriveConstants.MAX_SPEED);
-  }
-
-  public ChassisSpeeds getFieldVelocity()
-  {
-    return swerveDrive.getFieldVelocity();
-  }
 
   public ChassisSpeeds getRobotVelocity()
   {
     return swerveDrive.getRobotVelocity();
-  }
-
-  public SwerveController getSwerveController()
-  {
-    return swerveDrive.swerveController;
   }
 
   public SwerveDriveConfiguration getSwerveDriveConfiguration()
@@ -430,12 +502,7 @@ public class SwerveSubsystem extends SubsystemBase {
     swerveDrive.lockPose();
   }
 
-  public Rotation2d getPitch()
-  {
-    return swerveDrive.getPitch();
-  }
-
-  // SysId routines //
+  /* SYSID ROUTINES */
 
   private SysIdRoutine driveSysIdRoutine;    
   private SysIdRoutine turnSysIdRoutine;    
