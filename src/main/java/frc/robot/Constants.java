@@ -61,6 +61,12 @@ public final class Constants
     ACTIVE, INACTIVE
   }
 
+  public static final LimelightSimMode CurrentLimelightSimMode = LimelightSimMode.PROPER;
+
+  public static enum LimelightSimMode {
+    PROPER, BASIC
+  }
+
   public static final AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
 
   public static final double ROBOT_MASS = 50;
@@ -69,7 +75,8 @@ public final class Constants
 
   public static class Limelight
   {
-    public static final Transform3d RobotToCamera = new Transform3d(new Translation3d(0.1, 0.0, 0.2), new Rotation3d(0, Math.toRadians(-20), 0));
+    public static final Transform3d Main_RobotToCamera = new Transform3d(new Translation3d(0.1, 0.0, 0.2), new Rotation3d(0, Math.toRadians(-20), 0));
+    public static final Transform3d Back_RobotToCamera = new Transform3d(new Translation3d(-0.3, 0.0, 0.2), new Rotation3d(0, Math.toRadians(-20), Math.toRadians(180)));
     public static class CameraProperties {
       public static final int resWidth = 1280;
       public static final int resHeight = 960;
@@ -80,7 +87,7 @@ public final class Constants
       public static final double avgLatencyMs = 35;
       public static final double latencyStdDevMs = 5;
 
-      public static final Matrix<N3, N1> singleTagStdDevs =  VecBuilder.fill(0.3, 0.3, 4);
+      public static final Matrix<N3, N1> singleTagStdDevs = VecBuilder.fill(0.3, 0.3, 4);
       public static final Matrix<N3, N1> multiTagStdDevs = VecBuilder.fill(0.5, 0.5, 2);
     }
     public static final double TAForMT1 = 0.2;
@@ -96,6 +103,9 @@ public final class Constants
   }
 
   public static class Field {
+    public static final double FIELD_WIDTH = 16.54;
+    public static final double FIELD_HEIGHT = 8.07;
+
     public static final double HUB_X_RED = 11.915;
     public static final double HUB_Y_RED = 4.0;
     public static final double HUB_X_BLUE = 4.625;

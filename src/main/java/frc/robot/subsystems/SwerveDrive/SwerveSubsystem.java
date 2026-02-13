@@ -20,6 +20,7 @@ import frc.robot.Constants;
 import frc.robot.Limelight;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.LimelightSimMode;
 import frc.robot.Constants.TuningMode;
 import frc.robot.commands.TestAuto;
 import frc.robot.subsystems.SubsystemManager;
@@ -441,8 +442,17 @@ public class SwerveSubsystem extends SubsystemBase {
   public static Command getAutonomousCommand(String pathName) {
     switch(pathName) {
       default:
-      case "TestAuto":
-        return new TestAuto();
+      case "Test Auto Red Left":
+        return new TestAuto("red left");
+      
+      case "Test Auto Red Right":
+        return new TestAuto("red right");
+
+      case "Test Auto Blue Left":
+        return new TestAuto("blue left");
+
+      case "Test Auto Blue Right":
+        return new TestAuto("blue right");
     }
   }
 
@@ -478,7 +488,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public Pose2d getPose() {
-    if(Robot.isSimulation()) return getSimulationPose();
+    if(Robot.isSimulation() && Constants.CurrentLimelightSimMode == LimelightSimMode.BASIC) return getSimulationPose();
     return swerveDrive.getPose();
   }
 

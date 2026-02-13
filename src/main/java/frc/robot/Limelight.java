@@ -23,27 +23,25 @@ public class Limelight {
         io.updateInputs(inputs);
         Logger.processInputs("Limelight", inputs);
 
-        if(!inputs.doRejectUpdate) {
-            return new Object[]{ inputs.estimatedPose, inputs.timestampSeconds, VecBuilder.fill(inputs.stdDevs[0], inputs.stdDevs[1], inputs.stdDevs[2]), inputs.TA };
+        Object[] submission = null;
+
+        if(!inputs.Main_DoRejectUpdate) {
+            submission = new Object[]{ inputs.Main_EstimatedPose, inputs.Main_TimestampSeconds, VecBuilder.fill(inputs.Main_StdDevs[0], inputs.Main_StdDevs[1], inputs.Main_StdDevs[2]), inputs.Main_TA };
+        }
+
+        if(!inputs.Back_DoRejectUpdate && (inputs.Main_DoRejectUpdate || inputs.Back_TA > inputs.Main_TA)) {
+            submission = new Object[]{ inputs.Back_EstimatedPose, inputs.Back_TimestampSeconds, VecBuilder.fill(inputs.Back_StdDevs[0], inputs.Back_StdDevs[1], inputs.Back_StdDevs[2]), inputs.Back_TA };
         }
         
-        return null;  
+        return submission;  
     }
 
     public static boolean hasTarget() {
-        return inputs.hasTarget;
-    }
-
-    public static int getMainAprilTagID() {
-        return inputs.mainAprilTagID;
-    }
-
-    public static double getTX() {
-        return inputs.TX;
+        return inputs.Main_HasTarget || inputs.Back_HasTarget;
     }
 
     public static double getTA() {
-        return inputs.TA;
+        return Math.max(inputs.Main_TA, inputs.Back_TA);
     }
 
     public static boolean filterTargetByTA() {

@@ -87,6 +87,19 @@
               "period": 0.06,
               "data_type": "string"
             }
+          },
+          {
+            "title": "Autos",
+            "x": 1216.0,
+            "y": 0.0,
+            "width": 320.0,
+            "height": 160.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/SmartDashboard/Autos",
+              "period": 0.06,
+              "sort_options": false
+            }
           }
         ]
       }
