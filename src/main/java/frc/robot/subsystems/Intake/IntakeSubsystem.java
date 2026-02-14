@@ -43,7 +43,7 @@ public class IntakeSubsystem implements Subsystem {
                 io.setIntakeRequest(new VoltageOut(v));
                 
                 io.updateInputs(inputs);
-                Logger.processInputs("Shooter", inputs);
+                Logger.processInputs("Intake", inputs);
             }, null, this));
 
         Control_SysIdRoutine = new SysIdRoutine(
@@ -56,7 +56,7 @@ public class IntakeSubsystem implements Subsystem {
                 io.setControlRequest(new VoltageOut(v));
 
                 io.updateInputs(inputs);
-                Logger.processInputs("Shooter", inputs);
+                Logger.processInputs("Intake", inputs);
             }, null, this));
     }
 

@@ -44,7 +44,7 @@ public class ConveyorSubsystem implements Subsystem {
                 io.setRequest(new VoltageOut(v));
 
                 io.updateInputs(inputs);
-                Logger.processInputs("Shooter", inputs);
+                Logger.processInputs("Conveyor", inputs);
             }, null, this));
     }
 
