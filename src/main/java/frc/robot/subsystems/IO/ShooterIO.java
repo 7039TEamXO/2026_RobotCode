@@ -5,7 +5,6 @@ import org.littletonrobotics.junction.inputs.LoggableInputs;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.ControlRequest;
-import com.ctre.phoenix6.controls.Follower;
 
 public interface ShooterIO extends AutoCloseable {
     public static class ShooterIOInputs implements LoggableInputs {
@@ -92,7 +91,7 @@ public interface ShooterIO extends AutoCloseable {
     public void setEntryRequest(ControlRequest request);
     public void setAngleRequest(ControlRequest request);
     public void setMasterRequest(ControlRequest request);
-    public void setSlaveFollower(Follower request);
+    public void setSlaveRequest(ControlRequest request);
 
     public void simulationPeriodic();
 }

@@ -2,7 +2,6 @@ package frc.robot.subsystems.IO.Stub;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.ControlRequest;
-import com.ctre.phoenix6.controls.Follower;
 
 import frc.robot.subsystems.IO.ShooterIO;
 
@@ -27,7 +26,7 @@ public class ShooterStub implements ShooterIO {
 
     public void setMasterRequest(ControlRequest request) {}
 
-    public void setSlaveFollower(Follower request) {}
+    public void setSlaveRequest(ControlRequest request) {}
 
     public void simulationPeriodic() {}
 

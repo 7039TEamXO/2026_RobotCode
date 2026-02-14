@@ -40,7 +40,12 @@ public class ConveyorSubsystem implements Subsystem {
                 Volts.of(ConveyorConstants.SysIdDynamic), null, state -> {
                     SignalLogger.writeString("state", state.toString());
             }),
-            new SysIdRoutine.Mechanism(v -> io.setRequest(new VoltageOut(v)), null, this));
+            new SysIdRoutine.Mechanism(v -> {
+                io.setRequest(new VoltageOut(v));
+
+                io.updateInputs(inputs);
+                Logger.processInputs("Shooter", inputs);
+            }, null, this));
     }
 
     public void operate(ConveyorState state) {

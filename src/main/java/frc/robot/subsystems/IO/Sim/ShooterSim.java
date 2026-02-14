@@ -2,7 +2,6 @@ package frc.robot.subsystems.IO.Sim;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.ControlRequest;
-import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 
@@ -64,7 +63,7 @@ public class ShooterSim implements ShooterIO {
         );
 
         slaveMotor = new TalonFX(ShooterConstants.ShooterSlaveMotorID);
-        slaveSim = masterMotor.getSimState();
+        slaveSim = slaveMotor.getSimState();
         slaveSimModel = new DCMotorSim(
             LinearSystemId.createDCMotorSystem(
                 DCMotor.getKrakenX60Foc(1), 0.001, ShooterConstants.SimulationMotorGearRatio
@@ -129,7 +128,7 @@ public class ShooterSim implements ShooterIO {
         masterMotor.setControl(request);
     }
 
-    public void setSlaveFollower(Follower request) {
+    public void setSlaveRequest(ControlRequest request) {
         slaveMotor.setControl(request);
     }
 

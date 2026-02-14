@@ -1,4 +1,8 @@
 {
+  "conversionFactors": {
+	  "angle": {"gearRatio":21.4285714286},
+	  "drive": {"gearRatio":6.12 ,"diameter":4}
+  },
   "drive": {
     "type": "talonfx",
     "id": 6,
@@ -16,9 +20,9 @@
   },
   "inverted": {
     "drive": false,
-    "angle": true
+    "angle": false
   },
-  "absoluteEncoderOffset": 300.0,
+  "absoluteEncoderOffset": 177.01171875,
   "location": {
     "front": -11,
     "left": 11

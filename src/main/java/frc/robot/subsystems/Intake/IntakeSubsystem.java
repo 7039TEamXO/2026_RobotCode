@@ -39,7 +39,12 @@ public class IntakeSubsystem implements Subsystem {
                 Volts.of(IntakeConstants.Intake_SysIdDynamic), null, state -> {
                     SignalLogger.writeString("state", state.toString());
             }),
-            new SysIdRoutine.Mechanism(v -> io.setIntakeRequest(new VoltageOut(v)), null, this));
+            new SysIdRoutine.Mechanism(v -> {
+                io.setIntakeRequest(new VoltageOut(v));
+                
+                io.updateInputs(inputs);
+                Logger.processInputs("Shooter", inputs);
+            }, null, this));
 
         Control_SysIdRoutine = new SysIdRoutine(
             new SysIdRoutine.Config(
@@ -47,7 +52,12 @@ public class IntakeSubsystem implements Subsystem {
                 Volts.of(IntakeConstants.Control_SysIdDynamic), null, state -> {
                     SignalLogger.writeString("state", state.toString());
             }),
-            new SysIdRoutine.Mechanism(v -> io.setControlRequest(new VoltageOut(v)), null, this));
+            new SysIdRoutine.Mechanism(v -> {
+                io.setControlRequest(new VoltageOut(v));
+
+                io.updateInputs(inputs);
+                Logger.processInputs("Shooter", inputs);
+            }, null, this));
     }
 
     public void operate(IntakeState state, StorageState storageState) {

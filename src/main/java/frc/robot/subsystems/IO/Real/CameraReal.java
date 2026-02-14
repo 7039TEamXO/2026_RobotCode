@@ -15,7 +15,7 @@ import frc.robot.utils.LimelightHelpers;
 
 public class CameraReal implements CameraIO {
     private final NetworkTable limelightTable;
-    private final NetworkTable limelightTableBack;
+    // private final NetworkTable limelightTableBack;
     private final int allValidIDs[];
 
     private double Main_AngleFromMT1;
@@ -24,15 +24,15 @@ public class CameraReal implements CameraIO {
     private double Main_TimestampSeconds;
     private Matrix<N3, N1> Main_StdDevs;
 
-    private double Back_AngleFromMT1;
-    private boolean Back_DoRejectUpdate;
-    private Pose2d Back_EstimatedPose;
-    private double Back_TimestampSeconds;
-    private Matrix<N3, N1> Back_StdDevs;
+    // private double Back_AngleFromMT1;
+    // private boolean Back_DoRejectUpdate;
+    // private Pose2d Back_EstimatedPose;
+    // private double Back_TimestampSeconds;
+    // private Matrix<N3, N1> Back_StdDevs;
 
     public CameraReal() {
         limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
-        limelightTableBack = NetworkTableInstance.getDefault().getTable("limelight_back");
+        // limelightTableBack = NetworkTableInstance.getDefault().getTable("limelight_back");
         allValidIDs = new int[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32};
 
         Main_AngleFromMT1 = 0;
@@ -63,10 +63,10 @@ public class CameraReal implements CameraIO {
     }
 
     private void setBackLimelightConfiguration() {
-        LimelightHelpers.SetFiducialIDFiltersOverride("limelight_back", allValidIDs);
+        LimelightHelpers.SetFiducialIDFiltersOverride("limelight", allValidIDs);
         // Process at half resolution for improved framerate and reduced range
-        LimelightHelpers.SetFiducialDownscalingOverride("limelight_back", 2.0f); 
-        LimelightHelpers.setCameraPose_RobotSpace("limelight_back", 
+        LimelightHelpers.SetFiducialDownscalingOverride("limelight", 2.0f); 
+        LimelightHelpers.setCameraPose_RobotSpace("limelight", 
             Constants.Limelight.Back_RobotToCamera.getX(),                   // Forward offset (meters)
             Constants.Limelight.Back_RobotToCamera.getY(),                   // Side offset (meters)
             Constants.Limelight.Back_RobotToCamera.getZ(),                   // Height offset (meters)
@@ -87,6 +87,7 @@ public class CameraReal implements CameraIO {
         inputs.Main_TA = LimelightHelpers.getTA("limelight");
         inputs.Main_MT1 = Main_AngleFromMT1;
 
+        /*
         inputs.Back_DoRejectUpdate = Back_DoRejectUpdate;
         inputs.Back_EstimatedPose = Back_EstimatedPose;
         inputs.Back_TimestampSeconds = Back_TimestampSeconds;
@@ -94,13 +95,14 @@ public class CameraReal implements CameraIO {
 
         inputs.Back_HasTarget = Back_HasTarget();
         inputs.Back_MainAprilTagID = Back_GetMainAprilTagID();
-        inputs.Back_TA = LimelightHelpers.getTA("limelight_back");
+        inputs.Back_TA = LimelightHelpers.getTA("limelight");
         inputs.Back_MT1 = Back_AngleFromMT1;
+        */
     }
 
     public void periodic() {
         Main_Periodic();
-        Back_Periodic();
+        // Back_Periodic();
     }
 
     private void Main_Periodic() {
@@ -139,6 +141,7 @@ public class CameraReal implements CameraIO {
         } 
     }
 
+    /*
     private void Back_Periodic() {
         Back_DoRejectUpdate = false;
 
@@ -174,6 +177,7 @@ public class CameraReal implements CameraIO {
             }
         } 
     }
+    */
 
     private boolean Main_HasTarget() {
         return LimelightHelpers.getTV("limelight");
@@ -183,6 +187,7 @@ public class CameraReal implements CameraIO {
         return (int)LimelightHelpers.getFiducialID("limelight");
     }
 
+    /*
     private boolean Back_HasTarget() {
         return LimelightHelpers.getTV("limelight_back");
     }
@@ -190,6 +195,7 @@ public class CameraReal implements CameraIO {
     private int Back_GetMainAprilTagID() {
         return (int)LimelightHelpers.getFiducialID("limelight_back");
     }
+    */
 
     @Override
     public void close() throws Exception {

@@ -8,35 +8,35 @@ import frc.robot.subsystems.Delivery.Conveyor.ConveyorConstants;
 import frc.robot.subsystems.IO.ConveyorIO;
 
 public class ConveyorReal implements ConveyorIO {
-    private final TalonFX masterMotor;
+    private final TalonFX motor;
 
     public ConveyorReal() {
-        masterMotor = new TalonFX(ConveyorConstants.ConveyorMotorID);
+        motor = new TalonFX(ConveyorConstants.ConveyorMotorID);
     }
 
     public void updateInputs(ConveyorIOInputs inputs) {
-        inputs.Position = masterMotor.getPosition().getValueAsDouble();
-        inputs.Velocity = masterMotor.getVelocity().getValueAsDouble();
-        inputs.AppliedVolts = masterMotor.getMotorVoltage().getValueAsDouble();
-        inputs.CurrentAmps = masterMotor.getStatorCurrent().getValueAsDouble();
+        inputs.Position = motor.getPosition().getValueAsDouble();
+        inputs.Velocity = motor.getVelocity().getValueAsDouble();
+        inputs.AppliedVolts = motor.getMotorVoltage().getValueAsDouble();
+        inputs.CurrentAmps = motor.getStatorCurrent().getValueAsDouble();
     }
 
     public void applyConfiguration(TalonFXConfiguration configuration) {
-        masterMotor.getConfigurator().apply(configuration);
+        motor.getConfigurator().apply(configuration);
     }
 
     public void setPosition(double newValue) {
-        masterMotor.setPosition(newValue);
+        motor.setPosition(newValue);
     }
 
     public void setRequest(ControlRequest request) {
-        masterMotor.setControl(request);
+        motor.setControl(request);
     }
 
     public void simulationPeriodic() {}
 
     @Override
     public void close() throws Exception {
-        masterMotor.close();
+        motor.close();
     }
 }

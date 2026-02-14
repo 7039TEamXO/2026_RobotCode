@@ -127,14 +127,12 @@ public class SubsystemManager {
     public static void operate(boolean onAuto) { 
         if(Constants.CurrentMode != Mode.REAL) simulationPeriodic();
 
-        if (!onAuto) {
-            if(Constants.CurrentSysIdMode == SysIdMode.INACTIVE) {
+        if(Constants.CurrentSysIdMode == SysIdMode.INACTIVE) {
+            if (!onAuto) {
                 scheduleAutoDrive();
                 calculateButtonStates();
             }
-        }
 
-        if(Constants.CurrentSysIdMode == SysIdMode.INACTIVE) {
             RobotContainer.Intake.operate(intakeState, storageState);
 
             Boolean atShootSpeed = Math.abs(RobotContainer.Shooter.getInputs().ShootMaster_Velocity - ShooterTuning.Shoot_Voltage_Fire_get()) < ShooterTuning.Shoot_Voltage_Tolerance_get();

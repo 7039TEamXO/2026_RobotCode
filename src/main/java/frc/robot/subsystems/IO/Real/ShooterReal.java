@@ -2,7 +2,6 @@ package frc.robot.subsystems.IO.Real;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.ControlRequest;
-import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
@@ -94,7 +93,7 @@ public class ShooterReal implements ShooterIO {
         masterMotor.setControl(request);
     }
 
-    public void setSlaveFollower(Follower request) {
+    public void setSlaveRequest(ControlRequest request) {
         slaveMotor.setControl(request);
     }
 

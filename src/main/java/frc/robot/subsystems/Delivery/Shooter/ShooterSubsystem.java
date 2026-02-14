@@ -44,7 +44,12 @@ public class ShooterSubsystem implements Subsystem {
                 Volts.of(ShooterConstants.Entry_SysIdDynamic), null, state -> {
                     SignalLogger.writeString("state", state.toString());
             }),
-            new SysIdRoutine.Mechanism(v -> io.setEntryRequest(new VoltageOut(v)), null, this));
+            new SysIdRoutine.Mechanism(v -> {
+                io.setEntryRequest(new VoltageOut(v));
+
+                io.updateInputs(inputs);
+                Logger.processInputs("Shooter", inputs);
+            }, null, this));
 
         Angle_SysIdRoutine = new SysIdRoutine(
             new SysIdRoutine.Config(
@@ -52,7 +57,12 @@ public class ShooterSubsystem implements Subsystem {
                 Volts.of(ShooterConstants.Angle_SysIdDynamic), null, state -> {
                     SignalLogger.writeString("state", state.toString());
             }),
-            new SysIdRoutine.Mechanism(v -> io.setAngleRequest(new VoltageOut(v)), null, this));
+            new SysIdRoutine.Mechanism(v -> {
+                io.setAngleRequest(new VoltageOut(v));
+
+                io.updateInputs(inputs);
+                Logger.processInputs("Shooter", inputs);
+            }, null, this));
 
         Shoot_SysIdRoutine = new SysIdRoutine(
             new SysIdRoutine.Config(
@@ -60,7 +70,12 @@ public class ShooterSubsystem implements Subsystem {
                 Volts.of(ShooterConstants.Shoot_SysIdDynamic), null, state -> {
                     SignalLogger.writeString("state", state.toString());
             }),
-            new SysIdRoutine.Mechanism(v -> io.setMasterRequest(new VoltageOut(v)), null, this));
+            new SysIdRoutine.Mechanism(v -> {
+                io.setMasterRequest(new VoltageOut(v));
+
+                io.updateInputs(this.inputs);
+                Logger.processInputs("Shooter", inputs);
+            }, null, this));
     }
 
     public void operate(ShooterState state) {
@@ -148,7 +163,7 @@ public class ShooterSubsystem implements Subsystem {
     }
 
     private void setShootMotorsConfigs() {
-        io.setSlaveFollower(new Follower(ShooterConstants.ShooterMasterMotorID, MotorAlignmentValue.Aligned));
+        io.setSlaveRequest(new Follower(ShooterConstants.ShooterMasterMotorID, MotorAlignmentValue.Aligned));
 
         TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
         Slot0Configs slot0Configs = talonFXConfigs.Slot0;

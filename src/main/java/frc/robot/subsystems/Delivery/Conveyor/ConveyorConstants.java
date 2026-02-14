@@ -1,7 +1,7 @@
 package frc.robot.subsystems.Delivery.Conveyor;
 
 public class ConveyorConstants {
-    public static final int ConveyorMotorID = -1;
+    public static final int ConveyorMotorID = 18;
 
     public static final double kS = 0;
     public static final double kV = 0;
