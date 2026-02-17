@@ -1,5 +1,5 @@
 package frc.robot.subsystems.Delivery.Shooter;
 
 public enum ShooterState {
-    SHOOT, SPEED_UP, IDLE
+    SHOOT, INTAKE_HELP, SPEED_UP, IDLE
 }

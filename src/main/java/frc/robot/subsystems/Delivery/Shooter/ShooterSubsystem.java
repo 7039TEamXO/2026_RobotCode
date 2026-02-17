@@ -11,13 +11,15 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
+// import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import frc.robot.Constants;
+import frc.robot.Dashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -34,6 +36,7 @@ public class ShooterSubsystem implements Subsystem {
         inputs = new ShooterIOInputs();
 
         setMotorConfigs();
+        io.setAngleMotorPosition(0);
 
         io.updateInputs(inputs);
         Logger.processInputs("Shooter", inputs);
@@ -73,7 +76,7 @@ public class ShooterSubsystem implements Subsystem {
             new SysIdRoutine.Mechanism(v -> {
                 io.setMasterRequest(new VoltageOut(v));
 
-                io.updateInputs(this.inputs);
+                io.updateInputs(inputs);
                 Logger.processInputs("Shooter", inputs);
             }, null, this));
     }
@@ -89,6 +92,11 @@ public class ShooterSubsystem implements Subsystem {
         double Shoot_Power = ShooterTuning.Shoot_Voltage_Idle_get();
         
         switch(state) {
+            case INTAKE_HELP:
+                Entry_Power = ShooterTuning.Entry_Power_Roll_get();
+                Shoot_Power = ShooterTuning.Shoot_Voltage_Help_get();
+                break;
+                
             case SPEED_UP:
                 Shoot_Power = ShooterTuning.Shoot_Voltage_Fire_get();
                 break;
@@ -105,7 +113,7 @@ public class ShooterSubsystem implements Subsystem {
         }
 
         io.setEntryRequest(new DutyCycleOut(Entry_Power));
-        io.setAngleRequest(new MotionMagicExpoVoltage(Angle_Position));
+        io.setAngleRequest(new MotionMagicVoltage(Angle_Position));
         io.setMasterRequest(new VoltageOut(Shoot_Power));
     }
 
@@ -114,9 +122,8 @@ public class ShooterSubsystem implements Subsystem {
     }
 
     private double calculateShooterPosition() {
-        // Pose2d pose = SubsystemManager.getDrivebase().getPose();
-
-        return 0; // TO-DO
+        if(Dashboard.getAcceptAngleChanges()) return Dashboard.getAngleValue();
+        else return 0; // TO-DO
     }
 
     private void setEntryMotorConfigs() {
@@ -130,6 +137,7 @@ public class ShooterSubsystem implements Subsystem {
         slot0Configs.kD = ShooterTuning.Entry_kD_get();
 
         talonFXConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        talonFXConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // Inverted
         talonFXConfigs.CurrentLimits.StatorCurrentLimit = ShooterConstants.Entry_StatorCurrentLimit;
         talonFXConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
         talonFXConfigs.CurrentLimits.SupplyCurrentLimit = ShooterConstants.Entry_SupplyCurrentLimit;
@@ -150,8 +158,9 @@ public class ShooterSubsystem implements Subsystem {
 
         MotionMagicConfigs motionMagicConfigs = talonFXConfigs.MotionMagic;
         motionMagicConfigs.MotionMagicCruiseVelocity = ShooterTuning.Angle_Expo_CV_get();
+        motionMagicConfigs.MotionMagicAcceleration = ShooterTuning.Angle_Expo_kA_get();
         motionMagicConfigs.MotionMagicExpo_kV = ShooterTuning.Angle_Expo_kV_get();
-        motionMagicConfigs.MotionMagicExpo_kA = ShooterTuning.Angle_Expo_kA_get();
+        // motionMagicConfigs.MotionMagicExpo_kA = ShooterTuning.Angle_Expo_kA_get();
 
         talonFXConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         talonFXConfigs.CurrentLimits.StatorCurrentLimit = ShooterConstants.Angle_StatorCurrentLimit;
@@ -163,7 +172,7 @@ public class ShooterSubsystem implements Subsystem {
     }
 
     private void setShootMotorsConfigs() {
-        io.setSlaveRequest(new Follower(ShooterConstants.ShooterMasterMotorID, MotorAlignmentValue.Aligned));
+        io.setSlaveRequest(new Follower(ShooterConstants.ShooterMasterMotorID, MotorAlignmentValue.Opposed));
 
         TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
         Slot0Configs slot0Configs = talonFXConfigs.Slot0;
@@ -185,7 +194,6 @@ public class ShooterSubsystem implements Subsystem {
         TalonFXConfiguration slaveTalonFXConfigs = new TalonFXConfiguration();
 
         slaveTalonFXConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-        slaveTalonFXConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         slaveTalonFXConfigs.CurrentLimits.StatorCurrentLimit = ShooterConstants.Shoot_StatorCurrentLimit;
         slaveTalonFXConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
         slaveTalonFXConfigs.CurrentLimits.SupplyCurrentLimit = ShooterConstants.Shoot_SupplyCurrentLimit;

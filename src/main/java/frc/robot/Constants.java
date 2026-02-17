@@ -55,7 +55,7 @@ public final class Constants
     IGNORE
   }
 
-  public static final SysIdMode CurrentSysIdMode = SysIdMode.ACTIVE;
+  public static final SysIdMode CurrentSysIdMode = SysIdMode.INACTIVE;
 
   public static enum SysIdMode {
     ACTIVE, INACTIVE

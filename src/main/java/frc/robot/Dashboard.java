@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.cscore.HttpCamera;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -10,6 +11,9 @@ import frc.robot.subsystems.SubsystemManager;
 
 public class Dashboard {
     private final static SendableChooser<String> autoChooser = new SendableChooser<>();
+
+    private static NetworkTableEntry acceptAngleChanges;
+    private static NetworkTableEntry setAngleValue;
 
     @SuppressWarnings("unused")
     private static HttpCamera limelightCamera;
@@ -30,6 +34,12 @@ public class Dashboard {
         // -----------------------
           
         SmartDashboard.putData("Autos", autoChooser);
+
+        SmartDashboard.putBoolean("Accept Angle Changes", false);
+        acceptAngleChanges = SmartDashboard.getEntry("Accept Angle Changes");
+
+        SmartDashboard.putNumber("Set Angle Value", 0);
+        setAngleValue = SmartDashboard.getEntry("Set Angle Value");
 
         update();
     }
@@ -249,5 +259,13 @@ public class Dashboard {
         
     public static String getSelectedAutonomy() {
         return autoChooser.getSelected();
+    }
+
+    public static Boolean getAcceptAngleChanges() {
+        return acceptAngleChanges.getBoolean(false);
+    }
+
+    public static double getAngleValue() {
+        return setAngleValue.getDouble(0);
     }
 }

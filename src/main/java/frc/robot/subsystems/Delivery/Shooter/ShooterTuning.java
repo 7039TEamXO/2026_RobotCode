@@ -36,6 +36,8 @@ public class ShooterTuning {
     private static final LoggedNetworkNumber Shoot_Voltage_Idle = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Voltage Idle", ShooterConstants.SHOOT_VOLTAGE_IDLE);
     private static final LoggedNetworkNumber Shoot_Voltage_Fire = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Voltage Fire", ShooterConstants.SHOOT_VOLTAGE_FIRE); 
     private static final LoggedNetworkNumber Shoot_Voltage_Tolerance = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Voltage Tolerance", ShooterConstants.SHOOT_VOLTAGE_TOLERANCE);
+    private static final LoggedNetworkNumber Shoot_Voltage_Intake = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Voltage Help", ShooterConstants.SHOOT_VOLTAGE_INTAKE);
+
 
     public static final double Entry_kS_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? Entry_kS.get() : ShooterConstants.Entry_kS;
@@ -135,5 +137,9 @@ public class ShooterTuning {
 
     public static final double Shoot_Voltage_Tolerance_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? Shoot_Voltage_Tolerance.get() : ShooterConstants.SHOOT_VOLTAGE_TOLERANCE;
+    }
+
+    public static final double Shoot_Voltage_Help_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? Shoot_Voltage_Intake.get() : ShooterConstants.SHOOT_VOLTAGE_INTAKE;
     }
 }

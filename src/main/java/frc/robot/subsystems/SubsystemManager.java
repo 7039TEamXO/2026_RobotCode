@@ -4,10 +4,10 @@ import java.io.File;
 
 // import edu.wpi.first.math.geometry.Pose2d;
 // import edu.wpi.first.math.geometry.Rotation2d;
+// import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.Constants;
@@ -54,6 +54,7 @@ public class SubsystemManager {
 
     private static boolean isInAutoDrive;
 
+    /*
     private static void scheduleAutoDrive() {
         // TO-DO: Check if in ramp zone
         if(psControllerHID.getPOV() == 180) { // Outpost
@@ -84,6 +85,7 @@ public class SubsystemManager {
         }
         isInAutoDrive = autoDrive != null;
     }
+    */
 
     private static void calculateButtonStates() {
         /* INTAKE */
@@ -129,7 +131,7 @@ public class SubsystemManager {
 
         if(Constants.CurrentSysIdMode == SysIdMode.INACTIVE) {
             if (!onAuto) {
-                scheduleAutoDrive();
+                // scheduleAutoDrive();
                 calculateButtonStates();
             }
 
@@ -137,6 +139,8 @@ public class SubsystemManager {
 
             Boolean atShootSpeed = Math.abs(RobotContainer.Shooter.getInputs().ShootMaster_Velocity - ShooterTuning.Shoot_Voltage_Fire_get()) < ShooterTuning.Shoot_Voltage_Tolerance_get();
             Boolean atShootAngle = drivebase.isCloseEnoughToAngle(drivebase.determineHubAngle(), SwerveDriveTuning.PRECISE_ANGLE_ERROR_CAP_get());
+
+            atShootAngle = true;
 
             ConveyorState conveyorState = ConveyorState.STOP;
 
@@ -148,6 +152,10 @@ public class SubsystemManager {
                     else shooterState = ShooterState.SHOOT;
                     conveyorState = ConveyorState.GUIDE;
                     break;
+                
+                case INTAKE_HELP:
+                    shooterState = ShooterState.INTAKE_HELP;
+                    conveyorState = ConveyorState.GUIDE;
 
                 case SPEED_UP:
                     shooterState = ShooterState.SPEED_UP;

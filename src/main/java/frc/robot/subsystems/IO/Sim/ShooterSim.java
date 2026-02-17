@@ -45,12 +45,12 @@ public class ShooterSim implements ShooterIO {
         );
     
         angleMotor = new TalonFX(ShooterConstants.ShooterAngleMotorID);
-        angleSim = entryMotor.getSimState();
+        angleSim = angleMotor.getSimState();
         angleSimModel = new DCMotorSim(
             LinearSystemId.createDCMotorSystem(
-                DCMotor.getKrakenX60Foc(1), 0.001, ShooterConstants.SimulationMotorGearRatio
+                DCMotor.getFalcon500(1), 0.001, ShooterConstants.SimulationMotorGearRatio
             ),
-            DCMotor.getKrakenX60Foc(1)
+            DCMotor.getFalcon500Foc(1)
         );
 
         masterMotor = new TalonFX(ShooterConstants.ShooterMasterMotorID);

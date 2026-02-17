@@ -14,7 +14,6 @@ import frc.robot.subsystems.IO.Real.CameraReal;
 import frc.robot.subsystems.IO.Real.ConveyorReal;
 import frc.robot.subsystems.IO.Real.IntakeReal;
 import frc.robot.subsystems.IO.Real.ShooterReal;
-// import frc.robot.subsystems.IO.Real.IntakeReal;
 import frc.robot.subsystems.IO.Sim.CameraSim;
 import frc.robot.subsystems.IO.Sim.ConveyorSim;
 import frc.robot.subsystems.IO.Sim.IntakeSim;
@@ -91,17 +90,17 @@ public class RobotContainer {
       
       // Shooter Angle SysId
 
-      // SubsystemManager.getPSJoystick().circle().whileTrue(Shooter.Angle_SysIdQuasistatic(SysIdRoutine.Direction.kForward));
-      // SubsystemManager.getPSJoystick().square().whileTrue(Shooter.Angle_SysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-      // SubsystemManager.getPSJoystick().triangle().whileTrue(Shooter.Angle_SysIdDynamic(SysIdRoutine.Direction.kForward));
-      // SubsystemManager.getPSJoystick().cross().whileTrue(Shooter.Angle_SysIdDynamic(SysIdRoutine.Direction.kReverse));
+      //  SubsystemManager.getPSJoystick().circle().whileTrue(Shooter.Angle_SysIdQuasistatic(SysIdRoutine.Direction.kForward));
+      //  SubsystemManager.getPSJoystick().square().whileTrue(Shooter.Angle_SysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+      //  SubsystemManager.getPSJoystick().triangle().whileTrue(Shooter.Angle_SysIdDynamic(SysIdRoutine.Direction.kForward));
+      //  SubsystemManager.getPSJoystick().cross().whileTrue(Shooter.Angle_SysIdDynamic(SysIdRoutine.Direction.kReverse));
 
       // Shooter Master & Slave SysId
-
-      SubsystemManager.getPSJoystick().circle().whileTrue(Shooter.Shoot_SysIdQuasistatic(SysIdRoutine.Direction.kForward));
-      SubsystemManager.getPSJoystick().square().whileTrue(Shooter.Shoot_SysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-      SubsystemManager.getPSJoystick().triangle().whileTrue(Shooter.Shoot_SysIdDynamic(SysIdRoutine.Direction.kForward));
-      SubsystemManager.getPSJoystick().cross().whileTrue(Shooter.Shoot_SysIdDynamic(SysIdRoutine.Direction.kReverse));
+      
+      // SubsystemManager.getPSJoystick().circle().whileTrue(Shooter.Shoot_SysIdQuasistatic(SysIdRoutine.Direction.kForward));
+      // SubsystemManager.getPSJoystick().square().whileTrue(Shooter.Shoot_SysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+      // SubsystemManager.getPSJoystick().triangle().whileTrue(Shooter.Shoot_SysIdDynamic(SysIdRoutine.Direction.kForward));
+      // SubsystemManager.getPSJoystick().cross().whileTrue(Shooter.Shoot_SysIdDynamic(SysIdRoutine.Direction.kReverse));
 
       // Intake Actual SysId
 
@@ -170,6 +169,7 @@ public class RobotContainer {
   public static double modifyAxis(double joystickInput, double deadband) {
     double deadbandValue = MathUtil.applyDeadband(joystickInput, deadband);
     double scaled_input = 1 - (1 - Math.abs(deadbandValue)) * (1 - 0.1);
+    if(Constants.CurrentSysIdMode == SysIdMode.ACTIVE) scaled_input = 0;
     return deadbandValue * scaled_input;
   }
 }
