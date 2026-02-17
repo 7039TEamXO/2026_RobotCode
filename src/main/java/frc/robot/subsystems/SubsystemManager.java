@@ -89,25 +89,28 @@ public class SubsystemManager {
 
     private static void calculateButtonStates() {
         /* INTAKE */
-
-        if(psControllerHID.getSquareButton()) {
+        // 1. Emergency Stop / Reset (Square) takes priority
+        if (psControllerHID.getSquareButton()) {
             intakeState = IntakeState.INACTIVE;
-
             storageState = StorageState.IN;
-        } else {
-            intakeState = psControllerHID.getCrossButton() ? IntakeState.ACTIVE:
-                psControllerHID.getCircleButton() ? IntakeState.DEPLETE :
-                psControllerHID.getL2Button() ? IntakeState.INACTIVE :
-                intakeState;
-
-            if(psControllerHID.getCrossButton() || psControllerHID.getCircleButton()) {
-                storageState = StorageState.OUT;
-            }
+            conveyorState = ConveyorState.OFF; // Reset other systems too
+        } 
+        // 2. Main Intake Routine (Cross)
+        else if (psControllerHID.getCrossButton()) {
+            intakeState = IntakeState.ACTIVE;
+            storageState = StorageState.OUT;
+            conveyorState = ConveyorState.GUIDE;
+            shooterState = ShooterState.INTAKE_HELP;
+        } 
+        // 3. Reverse / Deplete (Circle)
+        else if (psControllerHID.getCircleButton()) {
+            intakeState = IntakeState.DEPLETE;
+            storageState = StorageState.OUT;
+        } 
+        // 4. Manual Stop (L2)
+        else if (psControllerHID.getL2Button()) {
+            intakeState = IntakeState.INACTIVE;
         }
-            if (psControllerHID.getCrossButton()) {
-                intakeState = IntakeState.ACTIVE;
-                conveyorState = ConveyorState.GUIDE;
-                shooterState = ShooterState.INTAKE_HELP;}
             
         /* SHOOTER */
 
