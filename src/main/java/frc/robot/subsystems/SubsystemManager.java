@@ -93,7 +93,7 @@ public class SubsystemManager {
         if (psControllerHID.getSquareButton()) {
             intakeState = IntakeState.INACTIVE;
             storageState = StorageState.IN;
-            conveyorState = ConveyorState.OFF; // Reset other systems too
+            conveyorState = ConveyorState.STOP; // Reset other systems too
         } 
         // 2. Main Intake Routine (Cross)
         else if (psControllerHID.getCrossButton()) {
@@ -149,7 +149,7 @@ public class SubsystemManager {
 
             atShootAngle = true;
 
-            ConveyorState conveyorState = ConveyorState.STOP;
+           /*  ConveyorState conveyorState = ConveyorState.STOP; */
 
             switch(shooterState) {
                 case SHOOT:
@@ -163,6 +163,7 @@ public class SubsystemManager {
                 case INTAKE_HELP:
                     shooterState = ShooterState.INTAKE_HELP;
                     conveyorState = ConveyorState.GUIDE;
+                    break; // <-- added break to prevent fall-through
 
                 case SPEED_UP:
                     shooterState = ShooterState.SPEED_UP;
