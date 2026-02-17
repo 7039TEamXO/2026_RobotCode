@@ -26,10 +26,13 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.TuningMode;
 import frc.robot.subsystems.IO.ShooterIO;
 import frc.robot.subsystems.IO.ShooterIO.ShooterIOInputs;
+import frc.robot.subsystems.Intake.IntakeState;
 
 public class ShooterSubsystem implements Subsystem {
     private final ShooterIO io;
     private final ShooterIOInputs inputs;
+    private static IntakeState intakestate;
+
 
     public ShooterSubsystem(ShooterIO _io) {
         io = _io;
@@ -92,10 +95,10 @@ public class ShooterSubsystem implements Subsystem {
         double Shoot_Power = ShooterTuning.Shoot_Voltage_Idle_get();
         
         switch(state) {
-            case INTAKE_HELP:
-                Entry_Power = ShooterTuning.Entry_Power_Roll_get();
-                Shoot_Power = ShooterTuning.Shoot_Voltage_Help_get();
-                break;
+            // case INTAKE_HELP:
+                // Entry_Power = ShooterTuning.Entry_Power_Roll_get();
+                // Shoot_Power = ShooterTuning.Shoot_Voltage_Help_get();
+                // break;
                 
             case SPEED_UP:
                 Shoot_Power = ShooterTuning.Shoot_Voltage_Fire_get();

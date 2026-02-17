@@ -95,7 +95,7 @@ public class SubsystemManager {
 
             storageState = StorageState.IN;
         } else {
-            intakeState = psControllerHID.getCrossButton() ? IntakeState.ACTIVE :
+            intakeState = psControllerHID.getCrossButton() ? IntakeState.ACTIVE:
                 psControllerHID.getCircleButton() ? IntakeState.DEPLETE :
                 psControllerHID.getL2Button() ? IntakeState.INACTIVE :
                 intakeState;
@@ -104,7 +104,11 @@ public class SubsystemManager {
                 storageState = StorageState.OUT;
             }
         }
-
+            if (psControllerHID.getCrossButton()) {
+                intakeState = IntakeState.ACTIVE;
+                conveyorState = ConveyorState.GUIDE;
+                shooterState = ShooterState.INTAKE_HELP;}
+            
         /* SHOOTER */
 
         shooterState = psControllerHID.getL1Button() ? ShooterState.SPEED_UP :

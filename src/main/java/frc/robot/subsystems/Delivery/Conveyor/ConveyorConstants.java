@@ -13,7 +13,7 @@ public class ConveyorConstants {
     public static final double StatorCurrentLimit = 30;
     public static final double SupplyCurrentLimit = 30;
 
-    public static final double CONVEYOR_POWER_GUIDE = 0;
+    public static final double CONVEYOR_POWER_GUIDE = 0.3;
     public static final double CONVEYOR_POWER_DEPLETE = 0;
     public static final double CONVEYOR_POWER_STOP = 0;
 
