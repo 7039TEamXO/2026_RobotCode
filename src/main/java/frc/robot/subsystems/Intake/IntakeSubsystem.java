@@ -33,31 +33,29 @@ public class IntakeSubsystem implements Subsystem {
         io.updateInputs(inputs);
         Logger.processInputs("Intake", inputs);
 
-        Intake_SysIdRoutine = new SysIdRoutine(
-            new SysIdRoutine.Config(
-                Volts.per(Second).of(IntakeConstants.Intake_SysIdQuasistatic), 
-                Volts.of(IntakeConstants.Intake_SysIdDynamic), null, state -> {
-                    SignalLogger.writeString("state", state.toString());
-            }),
-            new SysIdRoutine.Mechanism(v -> {
-                io.setIntakeRequest(new VoltageOut(v));
-                
-                io.updateInputs(inputs);
-                Logger.processInputs("Intake", inputs);
-            }, null, this));
+        SysIdRoutine.Config intakeConfig = new SysIdRoutine.Config(
+                Volts.per(Second).of(IntakeConstants.Intake_SysIdQuasistatic),
+                Volts.of(IntakeConstants.Intake_SysIdDynamic),
+                null,
+                state -> SignalLogger.writeString("state", state.toString()));
+        SysIdRoutine.Mechanism intakeMech = new SysIdRoutine.Mechanism(v -> {
+            io.setIntakeRequest(new VoltageOut(v));
+            io.updateInputs(inputs);
+            Logger.processInputs("Intake", inputs);
+        }, null, this);
+        Intake_SysIdRoutine = new SysIdRoutine(intakeConfig, intakeMech);
 
-        Control_SysIdRoutine = new SysIdRoutine(
-            new SysIdRoutine.Config(
-                Volts.per(Second).of(IntakeConstants.Control_SysIdQuasistatic), 
-                Volts.of(IntakeConstants.Control_SysIdDynamic), null, state -> {
-                    SignalLogger.writeString("state", state.toString());
-            }),
-            new SysIdRoutine.Mechanism(v -> {
-                io.setControlRequest(new VoltageOut(v));
-
-                io.updateInputs(inputs);
-                Logger.processInputs("Intake", inputs);
-            }, null, this));
+        SysIdRoutine.Config controlConfig = new SysIdRoutine.Config(
+                Volts.per(Second).of(IntakeConstants.Control_SysIdQuasistatic),
+                Volts.of(IntakeConstants.Control_SysIdDynamic),
+                null,
+                state -> SignalLogger.writeString("state", state.toString()));
+        SysIdRoutine.Mechanism controlMech = new SysIdRoutine.Mechanism(v -> {
+            io.setControlRequest(new VoltageOut(v));
+            io.updateInputs(inputs);
+            Logger.processInputs("Intake", inputs);
+        }, null, this);
+        Control_SysIdRoutine = new SysIdRoutine(controlConfig, controlMech);
     }
 
     public void operate(IntakeState state, StorageState storageState) {

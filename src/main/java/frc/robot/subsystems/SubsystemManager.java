@@ -28,15 +28,10 @@ public class SubsystemManager {
 
     private static final CommandPS4Controller ps4Joystick = new CommandPS4Controller(0);
     private static final PS4Controller psControllerHID = ps4Joystick.getHID();
-
     private static IntakeState intakeState;
-
     private static StorageState storageState;
-
     private static ShooterState shooterState;
-
     private static ConveyorState conveyorState;
-
     private static Boolean conveyorUnjam;
     private static Boolean hubAlignment;
 
@@ -45,13 +40,11 @@ public class SubsystemManager {
         storageState = StorageState.IN;
         shooterState = ShooterState.IDLE;
         conveyorState = ConveyorState.STOP;
-        
         conveyorUnjam = false;
         hubAlignment = false;
     }
 
     private static Command autoDrive;
-
     private static boolean isInAutoDrive;
 
     /*
@@ -99,7 +92,7 @@ public class SubsystemManager {
         else if (psControllerHID.getCrossButton()) {
             intakeState = IntakeState.ACTIVE;
             storageState = StorageState.OUT;
-            conveyorState = ConveyorState.GUIDE;
+            conveyorState = ConveyorState.INTAKE_HELP;
             shooterState = ShooterState.INTAKE_HELP;
         } 
         // 3. Reverse / Deplete (Circle)
@@ -113,7 +106,6 @@ public class SubsystemManager {
         }
             
         /* SHOOTER */
-
         shooterState = psControllerHID.getL1Button() ? ShooterState.SPEED_UP :
                         psControllerHID.getL2Button() ? ShooterState.SHOOT :
                         psControllerHID.getTriangleButton() ? ShooterState.IDLE : 
@@ -122,7 +114,8 @@ public class SubsystemManager {
         conveyorUnjam = psControllerHID.getPOV() == 0;
         if(psControllerHID.getPOV() == 90) {
             hubAlignment = true;
-        } else if(psControllerHID.getPOV() == 270) {
+        } 
+        else if(psControllerHID.getPOV() == 270) {
             hubAlignment = false;
         }
 
@@ -135,7 +128,6 @@ public class SubsystemManager {
 
     public static void operate(boolean onAuto) { 
         if(Constants.CurrentMode != Mode.REAL) simulationPeriodic();
-
         if(Constants.CurrentSysIdMode == SysIdMode.INACTIVE) {
             if (!onAuto) {
                 // scheduleAutoDrive();
@@ -143,27 +135,26 @@ public class SubsystemManager {
             }
 
             RobotContainer.Intake.operate(intakeState, storageState);
-
             Boolean atShootSpeed = Math.abs(RobotContainer.Shooter.getInputs().ShootMaster_Velocity - ShooterTuning.Shoot_Voltage_Fire_get()) < ShooterTuning.Shoot_Voltage_Tolerance_get();
             Boolean atShootAngle = drivebase.isCloseEnoughToAngle(drivebase.determineHubAngle(), SwerveDriveTuning.PRECISE_ANGLE_ERROR_CAP_get());
-
             atShootAngle = true;
 
-           /*  ConveyorState conveyorState = ConveyorState.STOP; */
+        //    ConveyorState conveyorState = ConveyorState.STOP; TODO: check if this is correct
 
-            switch(shooterState) {
+            switch (shooterState) {
                 case SHOOT:
-                    if(!atShootAngle && (!atShootSpeed || !Robot.isAuto())) {
+                    if (!atShootAngle && (!atShootSpeed || !Robot.isAuto())) {
                         shooterState = ShooterState.SPEED_UP;
+                    } else {
+                        shooterState = ShooterState.SHOOT;
                     }
-                    else shooterState = ShooterState.SHOOT;
                     conveyorState = ConveyorState.GUIDE;
                     break;
-                
+
                 case INTAKE_HELP:
                     shooterState = ShooterState.INTAKE_HELP;
-                    conveyorState = ConveyorState.GUIDE;
-                    break; // <-- added break to prevent fall-through
+                    conveyorState = ConveyorState.INTAKE_HELP;
+                    break;
 
                 case SPEED_UP:
                     shooterState = ShooterState.SPEED_UP;

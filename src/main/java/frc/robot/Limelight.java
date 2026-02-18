@@ -12,7 +12,6 @@ public class Limelight {
 
     public static void init(CameraIO _io) {
         io = _io;
-
         io.init();
         io.updateInputs(inputs);
         Logger.processInputs("Limelight", inputs);
@@ -26,11 +25,21 @@ public class Limelight {
         Object[] submission = null;
 
         if(!inputs.Main_DoRejectUpdate) {
-            submission = new Object[]{ inputs.Main_EstimatedPose, inputs.Main_TimestampSeconds, VecBuilder.fill(inputs.Main_StdDevs[0], inputs.Main_StdDevs[1], inputs.Main_StdDevs[2]), inputs.Main_TA };
+            submission = new Object[]{
+                inputs.Main_EstimatedPose,
+                inputs.Main_TimestampSeconds,
+                VecBuilder.fill(inputs.Main_StdDevs[0], inputs.Main_StdDevs[1], inputs.Main_StdDevs[2]),
+                inputs.Main_TA
+            };
         }
 
         if(!inputs.Back_DoRejectUpdate && (inputs.Main_DoRejectUpdate || inputs.Back_TA > inputs.Main_TA)) {
-            submission = new Object[]{ inputs.Back_EstimatedPose, inputs.Back_TimestampSeconds, VecBuilder.fill(inputs.Back_StdDevs[0], inputs.Back_StdDevs[1], inputs.Back_StdDevs[2]), inputs.Back_TA };
+            submission = new Object[]{
+                inputs.Back_EstimatedPose,
+                inputs.Back_TimestampSeconds,
+                VecBuilder.fill(inputs.Back_StdDevs[0], inputs.Back_StdDevs[1], inputs.Back_StdDevs[2]),
+                inputs.Back_TA
+            };
         }
         
         return submission;  

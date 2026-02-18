@@ -5,7 +5,6 @@ public class IntakeConstants {
     public static final int ControlMotorID = 16;
     
     // INTAKE MOTOR //
-
     public static final double Intake_kS = 0;
     public static final double Intake_kV = 0;
     public static final double Intake_kA = 0;
@@ -21,7 +20,6 @@ public class IntakeConstants {
     public static final double INTAKE_POWER_DEPLETE = 0;
 
     // CONTROL MOTOR //
-    
     public static final double Control_kS = 0;
     public static final double Control_kV = 0;
     public static final double Control_kA = 0;
@@ -42,14 +40,11 @@ public class IntakeConstants {
     public static final double CONTROL_POS_TOLERANCE = 0;
 
     // OTHER //
-
     public static final double SimulationMotorGearRatio = 12.8;
 
     // SysId //
-    
     public static final double Intake_SysIdQuasistatic = 0.5;
     public static final double Intake_SysIdDynamic = 2;
-
     public static final double Control_SysIdQuasistatic = 0.5;
     public static final double Control_SysIdDynamic = 2;
 }

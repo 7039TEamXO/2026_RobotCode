@@ -51,10 +51,8 @@ public class ConveyorSubsystem implements Subsystem {
     public void operate(ConveyorState state) {
         io.updateInputs(inputs);
         Logger.processInputs("Conveyor", inputs);
-
         if(Constants.GetTuningMode() == TuningMode.ACTIVE) setMotorConfigs();
-
-        double Power = ConveyorConstants.CONVEYOR_POWER_STOP;
+        double Power = ConveyorConstants.CONVEYOR_POWER_STOP; // TODO: check if this is correct
 
         switch(state) {
             case GUIDE:
@@ -72,6 +70,10 @@ public class ConveyorSubsystem implements Subsystem {
                 } else {
                     Power = ConveyorTuning.Power_Deplete_get();
                 }
+                break;
+
+            case INTAKE_HELP:
+                Power = ConveyorTuning.Power_Intake_Help_get();
                 break;
 
             default:

@@ -44,12 +44,9 @@ public interface IntakeIO extends AutoCloseable {
     }
 
     public void updateInputs(IntakeIOInputs inputs);
-
     public void applyIntakeConfiguration(TalonFXConfiguration configuration);
     public void applyControlConfiguration(TalonFXConfiguration configuration);
-
     public void setControlPosition(double newValue);
-
     public void setIntakeRequest(ControlRequest request);
     public void setControlRequest(ControlRequest request);
 
