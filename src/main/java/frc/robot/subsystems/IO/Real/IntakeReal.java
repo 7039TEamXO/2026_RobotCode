@@ -21,6 +21,11 @@ public class IntakeReal implements IntakeIO {
         inputs.Intake_Velocity = intakeMotor.getVelocity().getValueAsDouble();
         inputs.Intake_AppliedVolts = intakeMotor.getMotorVoltage().getValueAsDouble();
         inputs.Intake_CurrentAmps = intakeMotor.getStatorCurrent().getValueAsDouble();
+
+        inputs.Control_Position = controlMotor.getPosition().getValueAsDouble();
+        inputs.Control_Velocity = controlMotor.getVelocity().getValueAsDouble();
+        inputs.Control_AppliedVolts = controlMotor.getMotorVoltage().getValueAsDouble();
+        inputs.Control_CurrentAmps = controlMotor.getStatorCurrent().getValueAsDouble();
     }
 
     public void applyIntakeConfiguration(TalonFXConfiguration configuration) {

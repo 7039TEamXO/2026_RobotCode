@@ -24,7 +24,7 @@ import frc.robot.subsystems.SwerveDrive.SwerveSubsystem;
 
 import java.util.Optional;
 
-import com.ctre.phoenix6.SignalLogger;
+// import com.ctre.phoenix6.SignalLogger;
 
 // import org.littletonrobotics.junction.Logger;
 
@@ -71,23 +71,9 @@ public class RobotContainer {
       // to use in case the rotation is messed up
 
     if(Constants.CurrentSysIdMode == SysIdMode.ACTIVE) {
-      SubsystemManager.getPSJoystick().L1().onTrue(Commands.runOnce(() -> SignalLogger.start()));
-      SubsystemManager.getPSJoystick().R1().onTrue(Commands.runOnce(() -> SignalLogger.stop()));
+      // SubsystemManager.getPSJoystick().L1().onTrue(Commands.runOnce(() -> SignalLogger.start()));
+      // SubsystemManager.getPSJoystick().R1().onTrue(Commands.runOnce(() -> SignalLogger.stop()));
 
-      // Conveyor SysId
-
-      // SubsystemManager.getPSJoystick().circle().whileTrue(Conveyor.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-      // SubsystemManager.getPSJoystick().square().whileTrue(Conveyor.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-      // SubsystemManager.getPSJoystick().triangle().whileTrue(Conveyor.sysIdDynamic(SysIdRoutine.Direction.kForward));
-      // SubsystemManager.getPSJoystick().cross().whileTrue(Conveyor.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-      
-      // Shooter Entry SysId
-
-      // SubsystemManager.getPSJoystick().circle().whileTrue(Shooter.Entry_SysIdQuasistatic(SysIdRoutine.Direction.kForward));
-      // SubsystemManager.getPSJoystick().square().whileTrue(Shooter.Entry_SysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-      // SubsystemManager.getPSJoystick().triangle().whileTrue(Shooter.Entry_SysIdDynamic(SysIdRoutine.Direction.kForward));
-      // SubsystemManager.getPSJoystick().cross().whileTrue(Shooter.Entry_SysIdDynamic(SysIdRoutine.Direction.kReverse));
-      
       // Shooter Angle SysId
 
       //  SubsystemManager.getPSJoystick().circle().whileTrue(Shooter.Angle_SysIdQuasistatic(SysIdRoutine.Direction.kForward));
@@ -95,40 +81,12 @@ public class RobotContainer {
       //  SubsystemManager.getPSJoystick().triangle().whileTrue(Shooter.Angle_SysIdDynamic(SysIdRoutine.Direction.kForward));
       //  SubsystemManager.getPSJoystick().cross().whileTrue(Shooter.Angle_SysIdDynamic(SysIdRoutine.Direction.kReverse));
 
-      // Shooter Master & Slave SysId
-      
-      // SubsystemManager.getPSJoystick().circle().whileTrue(Shooter.Shoot_SysIdQuasistatic(SysIdRoutine.Direction.kForward));
-      // SubsystemManager.getPSJoystick().square().whileTrue(Shooter.Shoot_SysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-      // SubsystemManager.getPSJoystick().triangle().whileTrue(Shooter.Shoot_SysIdDynamic(SysIdRoutine.Direction.kForward));
-      // SubsystemManager.getPSJoystick().cross().whileTrue(Shooter.Shoot_SysIdDynamic(SysIdRoutine.Direction.kReverse));
-
-      // Intake Actual SysId
-
-      // SubsystemManager.getPSJoystick().circle().whileTrue(Intake.Intake_SysIdQuasistatic(SysIdRoutine.Direction.kForward));
-      // SubsystemManager.getPSJoystick().square().whileTrue(Intake.Intake_SysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-      // SubsystemManager.getPSJoystick().triangle().whileTrue(Intake.Intake_SysIdDynamic(SysIdRoutine.Direction.kForward));
-      // SubsystemManager.getPSJoystick().cross().whileTrue(Intake.Intake_SysIdDynamic(SysIdRoutine.Direction.kReverse));
-
       // Intake Control SysId
 
-      // SubsystemManager.getPSJoystick().circle().whileTrue(Intake.Control_SysIdQuasistatic(SysIdRoutine.Direction.kForward));
-      // SubsystemManager.getPSJoystick().square().whileTrue(Intake.Control_SysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-      // SubsystemManager.getPSJoystick().triangle().whileTrue(Intake.Control_SysIdDynamic(SysIdRoutine.Direction.kForward));
-      // SubsystemManager.getPSJoystick().cross().whileTrue(Intake.Control_SysIdDynamic(SysIdRoutine.Direction.kReverse));
-
-      // Swerves | Drive SysId
-
-      // SubsystemManager.getPSJoystick().circle().whileTrue(SubsystemManager.getDrivebase().driveSysIdQuasistatic(SysIdRoutine.Direction.kForward));
-      // SubsystemManager.getPSJoystick().square().whileTrue(SubsystemManager.getDrivebase().driveSysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-      // SubsystemManager.getPSJoystick().triangle().whileTrue(SubsystemManager.getDrivebase().driveSysIdDynamic(SysIdRoutine.Direction.kForward));
-      // SubsystemManager.getPSJoystick().cross().whileTrue(SubsystemManager.getDrivebase().driveSysIdDynamic(SysIdRoutine.Direction.kReverse));
-
-      // Swerves | Turn SysId
-
-      // SubsystemManager.getPSJoystick().circle().whileTrue(SubsystemManager.getDrivebase().turnSysIdQuasistatic(SysIdRoutine.Direction.kForward));
-      // SubsystemManager.getPSJoystick().square().whileTrue(SubsystemManager.getDrivebase().turnSysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-      // SubsystemManager.getPSJoystick().triangle().whileTrue(SubsystemManager.getDrivebase().turnSysIdDynamic(SysIdRoutine.Direction.kForward));
-      // SubsystemManager.getPSJoystick().cross().whileTrue(SubsystemManager.getDrivebase().turnSysIdDynamic(SysIdRoutine.Direction.kReverse));
+      SubsystemManager.getPSJoystick().circle().whileTrue(Intake.Control_SysIdQuasistatic(SysIdRoutine.Direction.kForward));
+      SubsystemManager.getPSJoystick().square().whileTrue(Intake.Control_SysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+      SubsystemManager.getPSJoystick().triangle().whileTrue(Intake.Control_SysIdDynamic(SysIdRoutine.Direction.kForward));
+      SubsystemManager.getPSJoystick().cross().whileTrue(Intake.Control_SysIdDynamic(SysIdRoutine.Direction.kReverse));
     }
   }
 

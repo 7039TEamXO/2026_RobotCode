@@ -54,7 +54,7 @@ public class SubsystemManager {
             hubAlignment = false;
             autoDrive = drivebase.driveToPose(SwerveSubsystem.getOutpostPose(), false);
             CommandScheduler.getInstance().schedule(autoDrive);
-        } else if(psControllerHID.getL1Button()) { // Tower
+        } else if(psControllerHID.getR2Button()) { // Tower
             hubAlignment = false;
             autoDrive = drivebase.driveToPose(SwerveSubsystem.getTowerPose(), false);
             CommandScheduler.getInstance().schedule(autoDrive);
@@ -82,34 +82,36 @@ public class SubsystemManager {
 
     private static void calculateButtonStates() {
         /* INTAKE */
-        // 1. Emergency Stop / Reset (Square) takes priority
+        // 1. Full Stop (Square) takes priority
         if (psControllerHID.getSquareButton()) {
             intakeState = IntakeState.INACTIVE;
             storageState = StorageState.IN;
-            conveyorState = ConveyorState.STOP; // Reset other systems too
+            if(shooterState == ShooterState.INTAKE_HELP) shooterState = ShooterState.IDLE;
         } 
         // 2. Main Intake Routine (Cross)
         else if (psControllerHID.getCrossButton()) {
             intakeState = IntakeState.ACTIVE;
             storageState = StorageState.OUT;
-            conveyorState = ConveyorState.INTAKE_HELP;
             shooterState = ShooterState.INTAKE_HELP;
         } 
         // 3. Reverse / Deplete (Circle)
         else if (psControllerHID.getCircleButton()) {
             intakeState = IntakeState.DEPLETE;
             storageState = StorageState.OUT;
+            shooterState = ShooterState.IDLE;
         } 
-        // 4. Manual Stop (L2)
-        else if (psControllerHID.getL2Button()) {
+        // 4. Manual Stop (Triangle)
+        else if (psControllerHID.getTriangleButton()) {
             intakeState = IntakeState.INACTIVE;
+            storageState = StorageState.OUT;
+            if(shooterState == ShooterState.INTAKE_HELP) shooterState = ShooterState.IDLE;
         }
             
         /* SHOOTER */
-        shooterState = psControllerHID.getL1Button() ? ShooterState.SPEED_UP :
-                        psControllerHID.getL2Button() ? ShooterState.SHOOT :
-                        psControllerHID.getTriangleButton() ? ShooterState.IDLE : 
-                        shooterState;
+        shooterState = psControllerHID.getL2Button() ? ShooterState.SHOOT :
+                        psControllerHID.getL1Button() ? ShooterState.SPEED_UP :
+                        psControllerHID.getR1Button() ? ShooterState.IDLE : 
+                        shooterState; 
 
         conveyorUnjam = psControllerHID.getPOV() == 0;
         if(psControllerHID.getPOV() == 90) {
@@ -135,35 +137,34 @@ public class SubsystemManager {
             }
 
             RobotContainer.Intake.operate(intakeState, storageState);
-            Boolean atShootSpeed = Math.abs(RobotContainer.Shooter.getInputs().ShootMaster_Velocity - ShooterTuning.Shoot_Voltage_Fire_get()) < ShooterTuning.Shoot_Voltage_Tolerance_get();
+            
+            Boolean atShootSpeed = Math.abs(RobotContainer.Shooter.getInputs().ShootMaster_Velocity - ShooterTuning.Shoot_RPM_Fire_get()) < ShooterTuning.Shoot_RPM_Tolerance_get();
             Boolean atShootAngle = drivebase.isCloseEnoughToAngle(drivebase.determineHubAngle(), SwerveDriveTuning.PRECISE_ANGLE_ERROR_CAP_get());
             atShootAngle = true;
 
-        //    ConveyorState conveyorState = ConveyorState.STOP; TODO: check if this is correct
+            conveyorState = ConveyorState.STOP;
 
             switch (shooterState) {
                 case SHOOT:
                     if (!atShootAngle && (!atShootSpeed || !Robot.isAuto())) {
                         shooterState = ShooterState.SPEED_UP;
+                        conveyorState = ConveyorState.STOP;
                     } else {
                         shooterState = ShooterState.SHOOT;
+                        conveyorState = ConveyorState.GUIDE;
                     }
-                    conveyorState = ConveyorState.GUIDE;
                     break;
 
                 case INTAKE_HELP:
-                    shooterState = ShooterState.INTAKE_HELP;
                     conveyorState = ConveyorState.INTAKE_HELP;
                     break;
 
                 case SPEED_UP:
-                    shooterState = ShooterState.SPEED_UP;
                     conveyorState = ConveyorState.STOP;
                     break;
 
                 default:
                 case IDLE:
-                    shooterState = ShooterState.IDLE;
                     conveyorState = ConveyorState.STOP;
                     break;
             }
@@ -175,7 +176,7 @@ public class SubsystemManager {
             }
 
             // Intake depletion has the lowest priority
-            if(intakeState == IntakeState.DEPLETE && conveyorState == ConveyorState.STOP) {
+            if(intakeState == IntakeState.DEPLETE && conveyorState == ConveyorState.INTAKE_HELP) {
                 conveyorState = ConveyorState.DEPLETE;
             }
 
