@@ -355,7 +355,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
       double omegaRadiansPerSecond = R.calculate(robotAngle);
 
-      swerveDrive.drive(translation, omegaRadiansPerSecond, true, false);
+      swerveDrive.drive(translation, -omegaRadiansPerSecond, true, false);
     });
   }
 
@@ -510,6 +510,17 @@ public class SwerveSubsystem extends SubsystemBase {
   public void lock()
   {
     swerveDrive.lockPose();
+  }
+
+  public double CalculateDistanceFromHub() {
+    Translation2d hubTranslation;
+    if(RobotContainer.teamColorIsBlue() == 1) {
+      hubTranslation = new Translation2d(Constants.Field.HUB_X_BLUE, Constants.Field.HUB_Y_BLUE);
+    } else {
+      hubTranslation = new Translation2d(Constants.Field.HUB_X_RED, Constants.Field.HUB_Y_RED);
+    }
+
+    return getPose().getTranslation().getDistance(hubTranslation);
   }
 
   public boolean isVxVelocityBelowThreshold() {

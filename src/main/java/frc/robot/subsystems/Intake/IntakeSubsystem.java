@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Volts;
 
 import org.littletonrobotics.junction.Logger;
+import edu.wpi.first.wpilibj.Timer;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -24,6 +25,9 @@ import frc.robot.subsystems.IO.IntakeIO.IntakeIOInputs;
 public class IntakeSubsystem implements Subsystem {
     private IntakeIO io;
     private IntakeIOInputs inputs = new IntakeIOInputs();
+    // HELP_SHOOT toggle state
+    private boolean helpShootOpen = false;
+    private double lastHelpToggleTime = 0.0;
 
     public IntakeSubsystem(IntakeIO _io) {        
         io = _io;
@@ -46,6 +50,8 @@ public class IntakeSubsystem implements Subsystem {
                 Logger.processInputs("Intake", inputs);
             }, null, this));
     }
+
+    
 
     public void operate(IntakeState state, StorageState storageState) {
         io.updateInputs(inputs);
@@ -77,23 +83,45 @@ public class IntakeSubsystem implements Subsystem {
                 Position = IntakeConstants.CONTROL_POS_IN;
                 Control_Power = IntakeConstants.CONTROL_POWER_CLOSE;
                 break;
+                
+        case HELP_SHOOT:
+            // Toggle open/close on a fixed time interval. Position is ignored.
+            double now = Timer.getFPGATimestamp();
+            if (now - lastHelpToggleTime > IntakeConstants.HELP_TOGGLE_PERIOD) {
+                helpShootOpen = !helpShootOpen;
+                lastHelpToggleTime = now;
+            }
+
+            if (helpShootOpen) {
+                Control_Power = IntakeConstants.CONTROL_POWER_OPEN;
+            } else {
+                Control_Power = -IntakeConstants.CONTROL_POWER_OPEN;
+            }
+            break;
 
             default:
             case OUT:
                 Position = IntakeConstants.CONTROL_POS_OUT;
                 Control_Power = IntakeConstants.CONTROL_POWER_OPEN;
                 break;
+
         }
 
-        if(Math.abs(inputs.Control_Position - Position) > IntakeConstants.CONTROL_POS_TOLERANCE) {
-            io.setControlRequest(new DutyCycleOut(Control_Power));
-        } else if(storageState == StorageState.IN) {
-            io.setControlRequest(new DutyCycleOut(IntakeConstants.CONTROL_POWER_STOP));
+        if(storageState != StorageState.HELP_SHOOT) {
+            if(Math.abs(inputs.Control_Position - Position) > IntakeConstants.CONTROL_POS_TOLERANCE) {
+                io.setControlRequest(new DutyCycleOut(Control_Power));
+            } else if(storageState == StorageState.IN) {
+                io.setControlRequest(new DutyCycleOut(IntakeConstants.CONTROL_POWER_STOP));
+            } else {
+                io.setControlRequest(new CoastOut());
+            }
         } else {
-            io.setControlRequest(new CoastOut());
+            io.setControlRequest(new DutyCycleOut(Control_Power));
         }
 
         io.setIntakeRequest(new DutyCycleOut(Intake_Power));
+
+        
     }
 
     private void setIntakeMotorConfigs() {
@@ -140,4 +168,5 @@ public class IntakeSubsystem implements Subsystem {
     public Command Control_SysIdDynamic(SysIdRoutine.Direction direction) {
         return Control_SysIdRoutine.dynamic(direction);
     }
+
 }

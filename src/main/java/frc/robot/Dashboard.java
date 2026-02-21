@@ -15,6 +15,9 @@ public class Dashboard {
     private static NetworkTableEntry acceptAngleChanges;
     private static NetworkTableEntry setAngleValue;
 
+    private static NetworkTableEntry acceptVelocityChanges;
+    private static NetworkTableEntry setVelocityValue;
+
     @SuppressWarnings("unused")
     private static HttpCamera limelightCamera;
 
@@ -40,6 +43,12 @@ public class Dashboard {
 
         SmartDashboard.putNumber("Set Angle Value", 0);
         setAngleValue = SmartDashboard.getEntry("Set Angle Value");
+
+        SmartDashboard.putBoolean("Accept Velocity Changes", false);
+        acceptVelocityChanges = SmartDashboard.getEntry("Accept Velocity Changes");
+
+        SmartDashboard.putNumber("Set Velocity Value", 0);
+        setVelocityValue = SmartDashboard.getEntry("Set Velocity Value");
 
         update();
     }
@@ -267,5 +276,13 @@ public class Dashboard {
 
     public static double getAngleValue() {
         return setAngleValue.getDouble(0);
+    }
+
+    public static Boolean getAcceptVelocityChanges() {
+        return acceptVelocityChanges.getBoolean(false);
+    }
+
+    public static double getVelocityValue() {
+        return setVelocityValue.getDouble(0);
     }
 }

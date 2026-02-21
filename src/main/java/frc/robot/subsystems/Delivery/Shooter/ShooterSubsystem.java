@@ -17,13 +17,14 @@ import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import frc.robot.Constants;
 import frc.robot.Dashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.TuningMode;
+import frc.robot.subsystems.SubsystemManager;
 import frc.robot.subsystems.IO.ShooterIO;
 import frc.robot.subsystems.IO.ShooterIO.ShooterIOInputs;
 
@@ -31,16 +32,19 @@ public class ShooterSubsystem implements Subsystem {
     private final ShooterIO io;
     private final ShooterIOInputs inputs;
 
+    private final InterpolatingDoubleTreeMap angleInterpolatingMap = new InterpolatingDoubleTreeMap();
+    private final InterpolatingDoubleTreeMap shooterInterpolatingMap = new InterpolatingDoubleTreeMap();
+
 
     public ShooterSubsystem(ShooterIO _io) {
         io = _io;
         inputs = new ShooterIOInputs();
 
         setMotorConfigs();
-        io.setAngleMotorPosition(0);
-
-        io.updateInputs(inputs);
         Logger.processInputs("Shooter", inputs);
+
+        setupAngleInterpolatingMap();
+        setupShooterInterpolatingMap();
 
         Angle_SysIdRoutine = new SysIdRoutine(
             new SysIdRoutine.Config(
@@ -63,7 +67,7 @@ public class ShooterSubsystem implements Subsystem {
         if(Constants.GetTuningMode() == TuningMode.ACTIVE) setMotorConfigs();
 
         double Entry_Power = ShooterConstants.ENTRY_POWER_STOP;
-        double Angle_Position = calculateShooterPosition();
+        double Angle_Position = calculateShooterAngle();
         double Shoot_Velocity = ShooterTuning.Shoot_Velocity_Idle_get();
         
         switch (state) {
@@ -78,11 +82,11 @@ public class ShooterSubsystem implements Subsystem {
                 Angle_Position = ShooterTuning.Angle_Intake_Help_Pos_get();
                 break;
             case SPEED_UP:
-                Shoot_Velocity = ShooterTuning.Shoot_Velocity_Fire_get();
+                Shoot_Velocity = calculateShooterVelocity();
                 break;
             case SHOOT:
                 Entry_Power = ShooterTuning.Entry_Power_Roll_get();
-                Shoot_Velocity = ShooterTuning.Shoot_Velocity_Fire_get();
+                Shoot_Velocity = calculateShooterVelocity();
                 break;
             default:
             case IDLE:
@@ -97,10 +101,33 @@ public class ShooterSubsystem implements Subsystem {
     public ShooterIOInputs getInputs() {
         return inputs;
     }
+    
+    private void setupAngleInterpolatingMap() {
+        angleInterpolatingMap.put(0.0, ShooterConstants.ANGLE_SHOOT_HUB);
+        angleInterpolatingMap.put(ShooterConstants.HUB_SHOOT_DISTANCE, ShooterConstants.ANGLE_SHOOT_HUB);
+        angleInterpolatingMap.put(ShooterConstants.CLIMB_SHOOT_DISTANCE, ShooterConstants.ANGLE_SHOOT_CLIMB);
 
-    private double calculateShooterPosition() {
+        angleInterpolatingMap.put(20.0, ShooterConstants.ANGLE_SHOOT_MAX);
+    }
+
+    private void setupShooterInterpolatingMap() {
+        shooterInterpolatingMap.put(0.0, ShooterConstants.RPS_SHOOT_HUB);
+        shooterInterpolatingMap.put(ShooterConstants.HUB_SHOOT_DISTANCE, ShooterConstants.RPS_SHOOT_HUB);
+        shooterInterpolatingMap.put(ShooterConstants.CLIMB_SHOOT_DISTANCE, ShooterConstants.RPS_SHOOT_CLIMB);
+        
+        shooterInterpolatingMap.put(20.0, ShooterConstants.RPS_SHOOT_MAX);
+    }
+
+    private double calculateShooterAngle() {
         if(Dashboard.getAcceptAngleChanges()) return Dashboard.getAngleValue();
-        return 0;
+        double distanceFromHub = SubsystemManager.getDrivebase().CalculateDistanceFromHub();
+        return angleInterpolatingMap.get(distanceFromHub);
+    }
+
+    private double calculateShooterVelocity() {
+        if(Dashboard.getAcceptVelocityChanges()) return Dashboard.getVelocityValue();
+        double distanceFromHub = SubsystemManager.getDrivebase().CalculateDistanceFromHub();
+        return shooterInterpolatingMap.get(distanceFromHub);
     }
 
     private void setEntryMotorConfigs() {

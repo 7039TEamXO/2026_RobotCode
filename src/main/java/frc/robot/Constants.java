@@ -126,7 +126,7 @@ public final class Constants
     public static final double DEPOT_X_BLUE = 0.55;
     public static final double DEPOT_Y_BLUE = 6.0;
 
-    public static final double RAMP_ZONE_WIDTH = 1.75; // really, it is half-width (distance to center)
+    public static final double RAMP_ZONE_WIDTH = 1; // really, it is half-width (distance to center)
     public static final double RAMP_ZONE_HEIGHT_START = 1.0; // and these are too
     public static final double RAMP_ZONE_HEIGHT_END = 2.5;
   }

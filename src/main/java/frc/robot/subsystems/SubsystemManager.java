@@ -4,7 +4,7 @@ import java.io.File;
 
 // import edu.wpi.first.math.geometry.Pose2d;
 // import edu.wpi.first.math.geometry.Rotation2d;
-// import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -47,7 +47,6 @@ public class SubsystemManager {
     private static Command autoDrive;
     private static boolean isInAutoDrive;
 
-    /*
     private static void scheduleAutoDrive() {
         // TO-DO: Check if in ramp zone
         if(psControllerHID.getPOV() == 180) { // Outpost
@@ -78,7 +77,6 @@ public class SubsystemManager {
         }
         isInAutoDrive = autoDrive != null;
     }
-    */
 
     private static void calculateButtonStates() {
         /* INTAKE */
@@ -86,13 +84,14 @@ public class SubsystemManager {
         if (psControllerHID.getSquareButton()) {
             intakeState = IntakeState.INACTIVE;
             storageState = StorageState.IN;
-            if(shooterState == ShooterState.INTAKE_HELP || shooterState == ShooterState.DEPLETE) shooterState = ShooterState.IDLE;
+            shooterState = ShooterState.IDLE;
+            // if(shooterState == ShooterState.INTAKE_HELP || shooterState == ShooterState.DEPLETE) shooterState = ShooterState.IDLE;
         } 
         // 2. Main Intake Routine (Cross)
         else if (psControllerHID.getCrossButton()) {
             intakeState = IntakeState.ACTIVE;
             storageState = StorageState.OUT;
-            shooterState = ShooterState.INTAKE_HELP;
+            shooterState = ShooterState.IDLE;
         } 
         // 3. Deplete Routine (Circle)
         else if (psControllerHID.getCircleButton()) {
@@ -104,8 +103,13 @@ public class SubsystemManager {
         else if (psControllerHID.getTriangleButton()) {
             intakeState = IntakeState.INACTIVE;
             storageState = StorageState.OUT;
-            if(shooterState == ShooterState.INTAKE_HELP || shooterState == ShooterState.DEPLETE) shooterState = ShooterState.IDLE;
+            shooterState = ShooterState.IDLE;
         }
+
+        else if (psControllerHID.getL2Button()) {
+            storageState = StorageState.HELP_SHOOT;
+        }
+
 
         /* SHOOTER */
         shooterState = psControllerHID.getL2Button() ? ShooterState.SHOOT :
@@ -130,12 +134,12 @@ public class SubsystemManager {
         if(Constants.CurrentMode != Mode.REAL) simulationPeriodic();
         if(Constants.CurrentSysIdMode == SysIdMode.INACTIVE) {
             if (!onAuto) {
-                // scheduleAutoDrive();
+                scheduleAutoDrive();
                 calculateButtonStates();
             }
 
             RobotContainer.Intake.operate(intakeState, storageState);
-
+            System.out.println(drivebase.CalculateDistanceFromHub());
             Boolean atShootSpeed = Math.abs(RobotContainer.Shooter.getInputs().ShootMaster_Velocity - ShooterTuning.Shoot_Velocity_Fire_get()) < ShooterTuning.Shoot_Velocity_Tolerance_get();
             Boolean atShootAngle = drivebase.isCloseEnoughToAngle(drivebase.determineHubAngle(), SwerveDriveTuning.PRECISE_ANGLE_ERROR_CAP_get());
             atShootAngle = true;

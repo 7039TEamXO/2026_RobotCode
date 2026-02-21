@@ -21,9 +21,11 @@ public class IntakeConstants {
     public static final double Control_SupplyCurrentLimit = 50;
 
     public static final double CONTROL_POS_IN = -0.1;
+    public static final double CONTROL_POS_HELP_SHOOT = 4;
     public static final double CONTROL_POS_OUT = 5.4;
 
     public static final double CONTROL_POS_TOLERANCE = 0.3;
+    public static final double HELP_TOGGLE_PERIOD = 0.5; // seconds
 
     // OTHER //
     public static final double SimulationMotorGearRatio = 12.8;
