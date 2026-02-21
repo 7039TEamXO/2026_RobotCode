@@ -109,9 +109,9 @@ public class CameraReal implements CameraIO {
         Main_DoRejectUpdate = false;
 
         double suppliedAngle = SubsystemManager.getDrivebase().getHeading().getDegrees();
+        boolean isDriveBelowThreshold = SubsystemManager.getDrivebase().isRobotVelocityBelowThreshold();
 
-        // Temporary replacement due to Pigeon's unpredictability
-        if(LimelightHelpers.getTA("limelight") > Limelight.TAForMT1) { 
+        if(LimelightHelpers.getTA("limelight") > Limelight.TAForMT1 && isDriveBelowThreshold) { 
             Double[] inputArray = limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new Double[]{});
             if(inputArray.length > 5) {
                 Main_AngleFromMT1 = limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new Double[]{})[5];

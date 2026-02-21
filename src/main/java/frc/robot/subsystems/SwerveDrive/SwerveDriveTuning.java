@@ -20,7 +20,11 @@ public class SwerveDriveTuning {
     private static final LoggedNetworkNumber TEST_DRIVE_X = new LoggedNetworkNumber("/Tuning/Swerve/(Test L3) X", 0);
     private static final LoggedNetworkNumber TEST_DRIVE_Y = new LoggedNetworkNumber("/Tuning/Swerve/(Test L3) Y", 0);
     private static final LoggedNetworkNumber TEST_DRIVE_ANGLE = new LoggedNetworkNumber("/Tuning/Swerve/(Test L3) Angle", 0);
+    private static final LoggedNetworkNumber VX_VELOCITY_THRESHOLD = new LoggedNetworkNumber("/Tuning/Swerve/VX Velocity Threshold", 0.17);
+    private static final LoggedNetworkNumber VY_VELOCITY_THRESHOLD = new LoggedNetworkNumber("/Tuning/Swerve/VY Velocity Threshold", 0.17);
+    private static final LoggedNetworkNumber OMEGA_VELOCITY_THRESHOLD = new LoggedNetworkNumber("/Tuning/Swerve/OMEGA Velocity Threshold", 1.5);
 
+    
     public static final double MIN_SPEED_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? MIN_SPEED.get() : SwerveDriveConstants.MIN_SPEED;
     }
@@ -51,6 +55,18 @@ public class SwerveDriveTuning {
 
     public static final double PRECISE_ANGLE_ERROR_CAP_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? PRECISE_ANGLE_ERROR_CAP.get() : SwerveDriveConstants.PRECISE_ANGLE_ERROR_CAP;
+    }
+
+    public static final double VX_VELOCITY_THRESHOLD_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? VX_VELOCITY_THRESHOLD.get() : SwerveDriveConstants.VX_VELOCITY_THRESHOLD;
+    }
+
+    public static final double VY_VELOCITY_THRESHOLD_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? VY_VELOCITY_THRESHOLD.get() : SwerveDriveConstants.VY_VELOCITY_THRESHOLD;
+    }
+
+    public static final double OMEGA_VELOCITY_THRESHOLD_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? OMEGA_VELOCITY_THRESHOLD.get() : SwerveDriveConstants.OMEGA_VELOCITY_THRESHOLD;
     }
 
     // Activates on an R1 press

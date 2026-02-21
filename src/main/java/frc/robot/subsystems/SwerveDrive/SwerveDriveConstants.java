@@ -49,4 +49,8 @@ public class SwerveDriveConstants {
     // ERROR TOLERANCE
     public static final double MAXIMUM_DISTANCE_ERROR = 0.5;
     // public static final double MAXIMUM_ANGLE_ERROR = 10;
+
+    public static final double VX_VELOCITY_THRESHOLD = 0.45;
+    public static final double VY_VELOCITY_THRESHOLD = 0.45;
+    public static final double OMEGA_VELOCITY_THRESHOLD = 1.5;
 }

@@ -512,6 +512,21 @@ public class SwerveSubsystem extends SubsystemBase {
     swerveDrive.lockPose();
   }
 
+  public boolean isVxVelocityBelowThreshold() {
+    return Math.abs(swerveDrive.getRobotVelocity().vxMetersPerSecond) < SwerveDriveTuning.VX_VELOCITY_THRESHOLD_get();
+  }
+
+  public boolean isVyVelocityBelowThreshold() {
+    return Math.abs(swerveDrive.getRobotVelocity().vyMetersPerSecond) < SwerveDriveTuning.VY_VELOCITY_THRESHOLD_get();
+  }
+
+  public boolean isOmegaVelocityBelowThreshold() {
+    return Math.abs(swerveDrive.getRobotVelocity().omegaRadiansPerSecond) < SwerveDriveTuning.OMEGA_VELOCITY_THRESHOLD_get();
+  }
+
+  public boolean isRobotVelocityBelowThreshold() {
+    return isVxVelocityBelowThreshold() && isVyVelocityBelowThreshold() && isOmegaVelocityBelowThreshold();
+  }
   /* SYSID ROUTINES */
 
   private SysIdRoutine driveSysIdRoutine;    
@@ -532,4 +547,6 @@ public class SwerveSubsystem extends SubsystemBase {
   public Command turnSysIdDynamic(SysIdRoutine.Direction direction) {
     return turnSysIdRoutine.dynamic(direction);
   }
+
+
 }
