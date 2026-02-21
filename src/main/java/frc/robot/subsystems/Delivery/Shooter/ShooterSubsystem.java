@@ -12,6 +12,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
@@ -63,7 +64,6 @@ public class ShooterSubsystem implements Subsystem {
 
         double Entry_Power = ShooterConstants.ENTRY_POWER_STOP;
         double Angle_Position = calculateShooterPosition();
-        double Shoot_Power = ShooterTuning.Shoot_Voltage_Idle_get();
         
         switch(state) {
              case INTAKE_HELP:
@@ -75,21 +75,29 @@ public class ShooterSubsystem implements Subsystem {
             case SPEED_UP:
                 Shoot_Power = ShooterTuning.Shoot_Voltage_Fire_get();
                 break;
+        double shootVelocityRotPerSec = ShooterTuning.Shoot_Velocity_Idle_get();
 
+        switch (state) {
+            case INTAKE_HELP:
+                Entry_Power = ShooterTuning.Entry_Power_Roll_get();
+                shootVelocityRotPerSec = ShooterTuning.Shoot_Velocity_Help_get();
+                Angle_Position = ShooterTuning.Angle_Intake_Help_Pos_get();
+                break;
+            case SPEED_UP:
+                shootVelocityRotPerSec = ShooterTuning.Shoot_Velocity_Fire_get();
+                break;
             case SHOOT:
                 Entry_Power = ShooterTuning.Entry_Power_Roll_get();
-                Shoot_Power = ShooterTuning.Shoot_Voltage_Fire_get();
+                shootVelocityRotPerSec = ShooterTuning.Shoot_Velocity_Fire_get();
                 break;
-
             default:
             case IDLE:
-                // Do nothing
                 break;
         }
 
         io.setEntryRequest(new DutyCycleOut(Entry_Power));
         io.setAngleRequest(new MotionMagicVoltage(Angle_Position));
-        io.setMasterRequest(new VoltageOut(Shoot_Power));
+        io.setMasterRequest(new VelocityVoltage(shootVelocityRotPerSec));
     }
 
     public ShooterIOInputs getInputs() {

@@ -21,8 +21,14 @@ public class ShooterTuning {
 
     private static final LoggedNetworkNumber Entry_Power_Roll = new LoggedNetworkNumber("/Tuning/Shooter/(Entry) Power Roll", ShooterConstants.ENTRY_POWER_ROLL);
 
+    private static final LoggedNetworkNumber Shoot_Velocity_Idle = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Velocity Idle rot_s", ShooterConstants.SHOOT_VELOCITY_IDLE);
+    private static final LoggedNetworkNumber Shoot_Velocity_Fire = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Velocity Fire rot_s", ShooterConstants.SHOOT_VELOCITY_FIRE);
+    private static final LoggedNetworkNumber Shoot_Velocity_Tolerance = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Velocity Tolerance rot_s", ShooterConstants.SHOOT_VELOCITY_TOLERANCE);
+    private static final LoggedNetworkNumber Shoot_Velocity_Help = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Velocity Help rot_s", ShooterConstants.SHOOT_VELOCITY_HELP);
+
     private static final LoggedNetworkNumber Shoot_Voltage_Idle = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Voltage Idle", ShooterConstants.SHOOT_VOLTAGE_IDLE);
-    private static final LoggedNetworkNumber Shoot_Voltage_Fire = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Voltage Fire", ShooterConstants.SHOOT_VOLTAGE_FIRE); 
+    private static final LoggedNetworkNumber Shoot_Voltage_Fire = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Voltage Fire", ShooterConstants.SHOOT_VOLTAGE_FIRE);
+    private static final LoggedNetworkNumber Shoot_Voltage_Tolerance = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Voltage Tolerance", ShooterConstants.SHOOT_VOLTAGE_TOLERANCE);
     private static final LoggedNetworkNumber Shoot_Voltage_Intake = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Voltage Help", ShooterConstants.SHOOT_VOLTAGE_INTAKE);
 
     private static final LoggedNetworkNumber Shoot_RPM_Fire = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) RPM Fire", ShooterConstants.SHOOT_RPM_FIRE);
@@ -70,6 +76,22 @@ public class ShooterTuning {
 
     public static final double Entry_Power_Roll_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? Entry_Power_Roll.get() : ShooterConstants.ENTRY_POWER_ROLL;
+    }
+
+    public static final double Shoot_Velocity_Idle_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? Shoot_Velocity_Idle.get() : ShooterConstants.SHOOT_VELOCITY_IDLE;
+    }
+
+    public static final double Shoot_Velocity_Fire_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? Shoot_Velocity_Fire.get() : ShooterConstants.SHOOT_VELOCITY_FIRE;
+    }
+
+    public static final double Shoot_Velocity_Tolerance_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? Shoot_Velocity_Tolerance.get() : ShooterConstants.SHOOT_VELOCITY_TOLERANCE;
+    }
+
+    public static final double Shoot_Velocity_Help_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? Shoot_Velocity_Help.get() : ShooterConstants.SHOOT_VELOCITY_HELP;
     }
 
     public static final double Shoot_Voltage_Fire_get() {

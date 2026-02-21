@@ -44,13 +44,28 @@ public class ShooterConstants {
 
     public static final double ANGLE_INTAKE_HELP_POS = 2; // Rotations
 
-    // SHOOT MOTOR //
+    // SHOOT MOTOR (flywheel velocity control) //
+    // Units: Talon FX / Phoenix 6 use ROTATIONS PER SECOND (rot/s), not RPM.
+    //   Conversion: rot/s = RPM / 60;  RPM = rot/s * 60.
+    // Kraken X60 free speed ~7530 RPM = 125.5 rot/s. So 45 rot/s = 2700 RPM is realistic (~36% of free speed).
+    // Calibration: 1) Run SysId, apply gains to Slot0. 2) Set SHOOT_VELOCITY_FIRE from steady-state velocity (rot/s). 3) Tune kP/kI.
 
     public static final double Shoot_StatorCurrentLimit = 120;
     public static final double Shoot_SupplyCurrentLimit = 70;
 
+    /** Target flywheel velocity in rot/s when idle (5 rot/s = 300 RPM). */
+    public static final double SHOOT_VELOCITY_IDLE = 5;
+    /** Target flywheel velocity in rot/s for shooting (45 rot/s = 2700 RPM; Kraken free ~125.5 rot/s). */
+    public static final double SHOOT_VELOCITY_FIRE = 45;
+    /** Velocity tolerance in rot/s to consider "at speed" (2 rot/s = 120 RPM). */
+    public static final double SHOOT_VELOCITY_TOLERANCE = 2;
+    /** Target flywheel velocity in rot/s when helping intake (15 rot/s = 900 RPM). */
+    public static final double SHOOT_VELOCITY_HELP = 15;
+
+    /** @deprecated Use velocity setpoints; kept for SysId / reference. */
     public static final double SHOOT_VOLTAGE_IDLE = 0.2;
     public static final double SHOOT_VOLTAGE_FIRE = 6;
+    public static final double SHOOT_VOLTAGE_TOLERANCE = 0.1;
     public static final double SHOOT_VOLTAGE_INTAKE = 1.5;
 
     public static final double SHOOT_RPM_FIRE = 0;

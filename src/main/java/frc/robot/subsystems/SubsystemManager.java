@@ -93,9 +93,7 @@ public class SubsystemManager {
             intakeState = IntakeState.ACTIVE;
             storageState = StorageState.OUT;
             shooterState = ShooterState.INTAKE_HELP;
-        } 
-        // 3. Reverse / Deplete (Circle)
-        else if (psControllerHID.getCircleButton()) {
+        } else if (psControllerHID.getCircleButton()) {
             intakeState = IntakeState.DEPLETE;
             storageState = StorageState.OUT;
             shooterState = ShooterState.IDLE;
@@ -106,7 +104,7 @@ public class SubsystemManager {
             storageState = StorageState.OUT;
             if(shooterState == ShooterState.INTAKE_HELP) shooterState = ShooterState.IDLE;
         }
-            
+
         /* SHOOTER */
         shooterState = psControllerHID.getL2Button() ? ShooterState.SHOOT :
                         psControllerHID.getL1Button() ? ShooterState.SPEED_UP :
@@ -114,15 +112,13 @@ public class SubsystemManager {
                         shooterState; 
 
         conveyorUnjam = psControllerHID.getPOV() == 0;
-        if(psControllerHID.getPOV() == 90) {
+        if (psControllerHID.getPOV() == 90) {
             hubAlignment = true;
-        } 
-        else if(psControllerHID.getPOV() == 270) {
+        } else if (psControllerHID.getPOV() == 270) {
             hubAlignment = false;
         }
-
-        if(shooterState == ShooterState.SHOOT) {
-            hubAlignment = true; 
+        if (shooterState == ShooterState.SHOOT) {
+            hubAlignment = true;
         }
     }
 
@@ -137,8 +133,8 @@ public class SubsystemManager {
             }
 
             RobotContainer.Intake.operate(intakeState, storageState);
-            
-            Boolean atShootSpeed = Math.abs(RobotContainer.Shooter.getInputs().ShootMaster_Velocity - ShooterTuning.Shoot_RPM_Fire_get()) < ShooterTuning.Shoot_RPM_Tolerance_get();
+
+            Boolean atShootSpeed = Math.abs(RobotContainer.Shooter.getInputs().ShootMaster_Velocity - ShooterTuning.Shoot_Velocity_Fire_get()) < ShooterTuning.Shoot_Velocity_Tolerance_get();
             Boolean atShootAngle = drivebase.isCloseEnoughToAngle(drivebase.determineHubAngle(), SwerveDriveTuning.PRECISE_ANGLE_ERROR_CAP_get());
             atShootAngle = true;
 
