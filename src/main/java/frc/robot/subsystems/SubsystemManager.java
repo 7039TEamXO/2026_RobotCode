@@ -86,23 +86,25 @@ public class SubsystemManager {
         if (psControllerHID.getSquareButton()) {
             intakeState = IntakeState.INACTIVE;
             storageState = StorageState.IN;
-            if(shooterState == ShooterState.INTAKE_HELP) shooterState = ShooterState.IDLE;
+            if(shooterState == ShooterState.INTAKE_HELP || shooterState == ShooterState.DEPLETE) shooterState = ShooterState.IDLE;
         } 
         // 2. Main Intake Routine (Cross)
         else if (psControllerHID.getCrossButton()) {
             intakeState = IntakeState.ACTIVE;
             storageState = StorageState.OUT;
             shooterState = ShooterState.INTAKE_HELP;
-        } else if (psControllerHID.getCircleButton()) {
+        } 
+        // 3. Deplete Routine (Circle)
+        else if (psControllerHID.getCircleButton()) {
             intakeState = IntakeState.DEPLETE;
             storageState = StorageState.OUT;
-            shooterState = ShooterState.IDLE;
+            shooterState = ShooterState.DEPLETE;
         } 
         // 4. Manual Stop (Triangle)
         else if (psControllerHID.getTriangleButton()) {
             intakeState = IntakeState.INACTIVE;
             storageState = StorageState.OUT;
-            if(shooterState == ShooterState.INTAKE_HELP) shooterState = ShooterState.IDLE;
+            if(shooterState == ShooterState.INTAKE_HELP || shooterState == ShooterState.DEPLETE) shooterState = ShooterState.IDLE;
         }
 
         /* SHOOTER */
@@ -155,6 +157,10 @@ public class SubsystemManager {
                     conveyorState = ConveyorState.INTAKE_HELP;
                     break;
 
+                case DEPLETE:
+                    conveyorState = ConveyorState.DEPLETE;
+                    break;
+
                 case SPEED_UP:
                     conveyorState = ConveyorState.STOP;
                     break;
@@ -169,11 +175,6 @@ public class SubsystemManager {
             if(conveyorUnjam) {
                 conveyorState = ConveyorState.UNJAM;
                 if(shooterState == ShooterState.SHOOT) shooterState = ShooterState.SPEED_UP;
-            }
-
-            // Intake depletion has the lowest priority
-            if(intakeState == IntakeState.DEPLETE && conveyorState == ConveyorState.INTAKE_HELP) {
-                conveyorState = ConveyorState.DEPLETE;
             }
 
             RobotContainer.Conveyor.operate(conveyorState);

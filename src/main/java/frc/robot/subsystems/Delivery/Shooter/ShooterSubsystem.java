@@ -64,31 +64,25 @@ public class ShooterSubsystem implements Subsystem {
 
         double Entry_Power = ShooterConstants.ENTRY_POWER_STOP;
         double Angle_Position = calculateShooterPosition();
-        double Shoot_RPS = ShooterTuning.Shoot_Velocity_Idle_get();
+        double Shoot_Velocity = ShooterTuning.Shoot_Velocity_Idle_get();
         
-        switch(state) {
-             case INTAKE_HELP:
-                Entry_Power = ShooterTuning.Entry_Power_Roll_get();
-                Shoot_Power = ShooterTuning.Shoot_Voltage_Help_get();
-                Angle_Position = ShooterTuning.Angle_Intake_Help_Pos_get();
-                break;
-                
-            case SPEED_UP:
-                Shoot_Power = ShooterTuning.Shoot_Voltage_Fire_get();
-                break;
-
         switch (state) {
             case INTAKE_HELP:
                 Entry_Power = ShooterTuning.Entry_Power_Roll_get();
-                Shoot_RPS = ShooterTuning.Shoot_Velocity_Help_get();
+                Shoot_Velocity = ShooterTuning.Shoot_Velocity_Help_get();
+                Angle_Position = ShooterTuning.Angle_Intake_Help_Pos_get();
+                break;
+            case DEPLETE:
+                Entry_Power = ShooterTuning.Entry_Power_Reverse_get();
+                Shoot_Velocity = ShooterTuning.Shoot_Velocity_Idle_get();
                 Angle_Position = ShooterTuning.Angle_Intake_Help_Pos_get();
                 break;
             case SPEED_UP:
-                Shoot_RPS = ShooterTuning.Shoot_Velocity_Fire_get();
+                Shoot_Velocity = ShooterTuning.Shoot_Velocity_Fire_get();
                 break;
             case SHOOT:
                 Entry_Power = ShooterTuning.Entry_Power_Roll_get();
-                Shoot_RPS = ShooterTuning.Shoot_Velocity_Fire_get();
+                Shoot_Velocity = ShooterTuning.Shoot_Velocity_Fire_get();
                 break;
             default:
             case IDLE:
@@ -97,7 +91,7 @@ public class ShooterSubsystem implements Subsystem {
 
         io.setEntryRequest(new DutyCycleOut(Entry_Power));
         io.setAngleRequest(new MotionMagicVoltage(Angle_Position));
-        io.setMasterRequest(new VelocityVoltage(Shoot_RPS));
+        io.setMasterRequest(new VelocityVoltage(Shoot_Velocity));
     }
 
     public ShooterIOInputs getInputs() {
@@ -105,6 +99,7 @@ public class ShooterSubsystem implements Subsystem {
     }
 
     private double calculateShooterPosition() {
+        if(Dashboard.getAcceptAngleChanges()) return Dashboard.getAngleValue();
         return 0;
     }
 
@@ -149,6 +144,13 @@ public class ShooterSubsystem implements Subsystem {
         io.setSlaveRequest(new Follower(ShooterConstants.ShooterMasterMotorID, MotorAlignmentValue.Opposed));
 
         TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
+        Slot0Configs slot0Configs = talonFXConfigs.Slot0;
+        slot0Configs.kS = ShooterTuning.Shoot_kS_get();
+        slot0Configs.kV = ShooterTuning.Shoot_kV_get();
+        slot0Configs.kA = ShooterTuning.Shoot_kA_get();
+        slot0Configs.kP = ShooterTuning.Shoot_kP_get();
+        slot0Configs.kI = ShooterTuning.Shoot_kI_get();
+        slot0Configs.kD = ShooterTuning.Shoot_kD_get();
 
         talonFXConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         talonFXConfigs.CurrentLimits.StatorCurrentLimit = ShooterConstants.Shoot_StatorCurrentLimit;
