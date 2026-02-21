@@ -64,6 +64,7 @@ public class ShooterSubsystem implements Subsystem {
 
         double Entry_Power = ShooterConstants.ENTRY_POWER_STOP;
         double Angle_Position = calculateShooterPosition();
+        double Shoot_RPS = ShooterTuning.Shoot_Velocity_Idle_get();
         
         switch(state) {
              case INTAKE_HELP:
@@ -75,20 +76,19 @@ public class ShooterSubsystem implements Subsystem {
             case SPEED_UP:
                 Shoot_Power = ShooterTuning.Shoot_Voltage_Fire_get();
                 break;
-        double shootVelocityRotPerSec = ShooterTuning.Shoot_Velocity_Idle_get();
 
         switch (state) {
             case INTAKE_HELP:
                 Entry_Power = ShooterTuning.Entry_Power_Roll_get();
-                shootVelocityRotPerSec = ShooterTuning.Shoot_Velocity_Help_get();
+                Shoot_RPS = ShooterTuning.Shoot_Velocity_Help_get();
                 Angle_Position = ShooterTuning.Angle_Intake_Help_Pos_get();
                 break;
             case SPEED_UP:
-                shootVelocityRotPerSec = ShooterTuning.Shoot_Velocity_Fire_get();
+                Shoot_RPS = ShooterTuning.Shoot_Velocity_Fire_get();
                 break;
             case SHOOT:
                 Entry_Power = ShooterTuning.Entry_Power_Roll_get();
-                shootVelocityRotPerSec = ShooterTuning.Shoot_Velocity_Fire_get();
+                Shoot_RPS = ShooterTuning.Shoot_Velocity_Fire_get();
                 break;
             default:
             case IDLE:
@@ -97,7 +97,7 @@ public class ShooterSubsystem implements Subsystem {
 
         io.setEntryRequest(new DutyCycleOut(Entry_Power));
         io.setAngleRequest(new MotionMagicVoltage(Angle_Position));
-        io.setMasterRequest(new VelocityVoltage(shootVelocityRotPerSec));
+        io.setMasterRequest(new VelocityVoltage(Shoot_RPS));
     }
 
     public ShooterIOInputs getInputs() {

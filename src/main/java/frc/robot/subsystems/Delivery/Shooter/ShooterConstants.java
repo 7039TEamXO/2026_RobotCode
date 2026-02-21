@@ -62,14 +62,10 @@ public class ShooterConstants {
     /** Target flywheel velocity in rot/s when helping intake (15 rot/s = 900 RPM). */
     public static final double SHOOT_VELOCITY_HELP = 15;
 
-    /** @deprecated Use velocity setpoints; kept for SysId / reference. */
-    public static final double SHOOT_VOLTAGE_IDLE = 0.2;
-    public static final double SHOOT_VOLTAGE_FIRE = 6;
-    public static final double SHOOT_VOLTAGE_TOLERANCE = 0.1;
-    public static final double SHOOT_VOLTAGE_INTAKE = 1.5;
-
-    public static final double SHOOT_RPM_FIRE = 0;
-    public static final double SHOOT_RPM_TOLERANCE = 10;
+    // public static final double SHOOT_VOLTAGE_IDLE = 0.2;
+    // public static final double SHOOT_VOLTAGE_FIRE = 6;
+    // public static final double SHOOT_VOLTAGE_TOLERANCE = 0.1;
+    // public static final double SHOOT_VOLTAGE_INTAKE = 1.5;
 
     // OTHER //
 
