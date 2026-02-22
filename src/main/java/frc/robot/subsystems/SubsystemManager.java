@@ -91,7 +91,7 @@ public class SubsystemManager {
         else if (psControllerHID.getCrossButton()) {
             intakeState = IntakeState.ACTIVE;
             storageState = StorageState.OUT;
-            shooterState = ShooterState.IDLE;
+            shooterState = ShooterState.INTAKE_HELP;
         } 
         // 3. Deplete Routine (Circle)
         else if (psControllerHID.getCircleButton()) {

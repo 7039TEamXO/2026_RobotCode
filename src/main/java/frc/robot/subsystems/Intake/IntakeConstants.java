@@ -9,8 +9,8 @@ public class IntakeConstants {
     public static final double Intake_SupplyCurrentLimit = 30;
 
     public static final double INTAKE_POWER_STOP = 0;
-    public static final double INTAKE_POWER_INTAKE = -0.4;
-    public static final double INTAKE_POWER_DEPLETE = 0.4;
+    public static final double INTAKE_POWER_INTAKE = -0.8;
+    public static final double INTAKE_POWER_DEPLETE = 0.6;
 
     // CONTROL MOTOR //
     public static final double CONTROL_POWER_STOP = 0;
