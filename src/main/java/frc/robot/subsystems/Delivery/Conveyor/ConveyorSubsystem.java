@@ -35,24 +35,24 @@ public class ConveyorSubsystem implements Subsystem {
 
         switch(state) {
             case GUIDE:
-                Power = ConveyorTuning.Power_Guide_get();
+                Power = ConveyorTuning.POWER_GUIDE_get();
                 break;
 
             case DEPLETE:
-                Power = ConveyorTuning.Power_Deplete_get();
+                Power = ConveyorTuning.POWER_DEPLETE_get();
                 break;
 
             case UNJAM:
-                double modulo = (1000 * Timer.getFPGATimestamp()) % (2 * ConveyorTuning.Unjam_Half_Cycle_Length_get());
-                if(modulo > ConveyorTuning.Unjam_Half_Cycle_Length_get()) {
-                    Power = ConveyorTuning.Power_Guide_get();
+                double modulo = (1000 * Timer.getFPGATimestamp()) % (2 * ConveyorTuning.UNJAM_HALF_CYCLE_LENGTH_get());
+                if(modulo > ConveyorTuning.UNJAM_HALF_CYCLE_LENGTH_get()) {
+                    Power = ConveyorTuning.POWER_GUIDE_get();
                 } else {
-                    Power = ConveyorTuning.Power_Deplete_get();
+                    Power = ConveyorTuning.POWER_DEPLETE_get();
                 }
                 break;
 
             case INTAKE_HELP:
-                Power = ConveyorTuning.Power_Intake_Help_get();
+                Power = ConveyorTuning.POWER_INTAKE_HELP_get();
                 break;
 
             default:

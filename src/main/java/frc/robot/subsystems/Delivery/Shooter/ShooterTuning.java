@@ -18,6 +18,7 @@ public class ShooterTuning {
     private static final LoggedNetworkNumber Angle_Jerk = new LoggedNetworkNumber("/Tuning/Shooter/(Angle) Motion Magic Jerk", ShooterConstants.Angle_Jerk);
 
     private static final LoggedNetworkNumber Angle_Intake_Help_Pos = new LoggedNetworkNumber("/Tuning/Shooter/(Angle) Intake Help Position", ShooterConstants.ANGLE_INTAKE_HELP_POS);
+    private static final LoggedNetworkNumber Angle_Neutral_Zone_Pos = new LoggedNetworkNumber("/Tuning/Shooter/(Angle) Neutral Zone Position", ShooterConstants.ANGLE_NEUTRAL_ZONE_POS);
 
     private static final LoggedNetworkNumber Shoot_kS = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) kS", ShooterConstants.Shoot_kS);
     private static final LoggedNetworkNumber Shoot_kV = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) kV", ShooterConstants.Shoot_kV);
@@ -29,10 +30,10 @@ public class ShooterTuning {
     private static final LoggedNetworkNumber Entry_Power_Roll = new LoggedNetworkNumber("/Tuning/Shooter/(Entry) Power Roll", ShooterConstants.ENTRY_POWER_ROLL);
     private static final LoggedNetworkNumber Entry_Power_Reverse = new LoggedNetworkNumber("/Tuning/Shooter/(Entry) Power Reverse", ShooterConstants.ENTRY_POWER_REVERSE);
 
-    private static final LoggedNetworkNumber Shoot_Velocity_Idle = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Velocity Idle rot_s", ShooterConstants.SHOOT_VELOCITY_IDLE);
-    private static final LoggedNetworkNumber Shoot_Velocity_Fire = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Velocity Fire rot_s", ShooterConstants.SHOOT_VELOCITY_FIRE);
+    private static final LoggedNetworkNumber Shoot_Velocity_Idle = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Velocity Idle", ShooterConstants.SHOOT_VELOCITY_IDLE);
+    private static final LoggedNetworkNumber Shoot_Velocity_Help = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Velocity Help", ShooterConstants.SHOOT_VELOCITY_HELP);
+    private static final LoggedNetworkNumber Shoot_Velocity_Neutral_Zone = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Velocity Neutral Zone", ShooterConstants.SHOOT_VELOCITY_NEUTRAL_ZONE);
     private static final LoggedNetworkNumber Shoot_Velocity_Tolerance = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Velocity Tolerance rot_s", ShooterConstants.SHOOT_VELOCITY_TOLERANCE);
-    private static final LoggedNetworkNumber Shoot_Velocity_Help = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Velocity Help rot_s", ShooterConstants.SHOOT_VELOCITY_HELP);
 
     public static final double Angle_kS_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? Angle_kS.get() : ShooterConstants.Angle_kS;
@@ -70,8 +71,12 @@ public class ShooterTuning {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? Angle_Jerk.get() : ShooterConstants.Angle_Jerk;
     }
 
-    public static final double Angle_Intake_Help_Pos_get() {
+    public static final double ANGLE_INTAKE_HELP_POS_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? Angle_Intake_Help_Pos.get() : ShooterConstants.ANGLE_INTAKE_HELP_POS;
+    }
+
+    public static final double ANGLE_NEUTRAL_ZONE_POS_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? Angle_Neutral_Zone_Pos.get() : ShooterConstants.ANGLE_NEUTRAL_ZONE_POS;
     }
 
     public static final double Shoot_kS_get() {
@@ -98,27 +103,27 @@ public class ShooterTuning {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? Shoot_kD.get() : ShooterConstants.Shoot_kD;
     }
 
-    public static final double Entry_Power_Roll_get() {
+    public static final double ENTRY_POWER_ROLL_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? Entry_Power_Roll.get() : ShooterConstants.ENTRY_POWER_ROLL;
     }
 
-    public static final double Entry_Power_Reverse_get() {
+    public static final double ENTRY_POWER_REVERSE_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? Entry_Power_Reverse.get() : ShooterConstants.ENTRY_POWER_REVERSE;
     }
 
-    public static final double Shoot_Velocity_Idle_get() {
+    public static final double SHOOT_VELOCITY_IDLE_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? Shoot_Velocity_Idle.get() : ShooterConstants.SHOOT_VELOCITY_IDLE;
     }
 
-    public static final double Shoot_Velocity_Fire_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? Shoot_Velocity_Fire.get() : ShooterConstants.SHOOT_VELOCITY_FIRE;
-    }
-
-    public static final double Shoot_Velocity_Tolerance_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? Shoot_Velocity_Tolerance.get() : ShooterConstants.SHOOT_VELOCITY_TOLERANCE;
-    }
-
-    public static final double Shoot_Velocity_Help_get() {
+    public static final double SHOOT_VELOCITY_HELP_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? Shoot_Velocity_Help.get() : ShooterConstants.SHOOT_VELOCITY_HELP;
+    }
+
+    public static final double SHOOT_VELOCITY_NEUTRAL_ZONE_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? Shoot_Velocity_Neutral_Zone.get() : ShooterConstants.SHOOT_VELOCITY_NEUTRAL_ZONE;
+    }
+
+    public static final double SHOOT_VELOCITY_TOLERANCE_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? Shoot_Velocity_Tolerance.get() : ShooterConstants.SHOOT_VELOCITY_TOLERANCE;
     }
 }

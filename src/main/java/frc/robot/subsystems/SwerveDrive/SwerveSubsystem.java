@@ -24,6 +24,7 @@ import frc.robot.Constants.LimelightSimMode;
 import frc.robot.Constants.TuningMode;
 import frc.robot.commands.TestAuto;
 import frc.robot.subsystems.SubsystemManager;
+import frc.robot.subsystems.Delivery.Shooter.ShooterState;
 
 import static edu.wpi.first.units.Units.Meter;
 import static edu.wpi.first.units.Units.MetersPerSecond;
@@ -150,9 +151,26 @@ public class SwerveSubsystem extends SubsystemBase {
     return isCloseEnoughToPose(pose, SwerveDriveTuning.CLOSE_DISTANCE_ERROR_CAP_get(), SwerveDriveTuning.CLOSE_ANGLE_ERROR_CAP_get());
   }
 
+  public boolean isVxVelocityBelowThreshold() {
+    return Math.abs(swerveDrive.getRobotVelocity().vxMetersPerSecond) < SwerveDriveTuning.VX_VELOCITY_THRESHOLD_get();
+  }
+
+  public boolean isVyVelocityBelowThreshold() {
+    return Math.abs(swerveDrive.getRobotVelocity().vyMetersPerSecond) < SwerveDriveTuning.VY_VELOCITY_THRESHOLD_get();
+  }
+
+  public boolean isOmegaVelocityBelowThreshold() {
+    return Math.abs(swerveDrive.getRobotVelocity().omegaRadiansPerSecond) < SwerveDriveTuning.OMEGA_VELOCITY_THRESHOLD_get();
+  }
+
+  public boolean isRobotVelocityBelowThreshold() {
+    return isVxVelocityBelowThreshold() && isVyVelocityBelowThreshold() && isOmegaVelocityBelowThreshold();
+  }
+
   /* DRIVE TO POSE COMMANDS (+ a lot of overloading) */
 
   private PIDController rotationPID = new PIDController(SwerveDriveConstants.KP_ANGULAR, 0, SwerveDriveConstants.KD_ANGULAR);
+  private PIDController slickRotationPID = new PIDController(SwerveDriveConstants.KP_ANGULAR_SLICK, 0, SwerveDriveConstants.KD_ANGULAR_SLICK);
 
   public Command driveToPose(Pose2d pose, Boolean autoFinish) {
     return run(() -> {
@@ -337,12 +355,17 @@ public class SwerveSubsystem extends SubsystemBase {
         vx *= -1; vy *= -1; // Blue alliance joystick inversion
       }
 
+      double slowdownFactor = SwerveDriveTuning.JOYSTICK_SLOWDOWN_FACTOR_get();
+
+      if(SubsystemManager.getShooterState() == ShooterState.SHOOT || SubsystemManager.getShooterState() == ShooterState.SPEED_UP) {
+        slowdownFactor = SwerveDriveTuning.JOYSTICK_SLOWDOWN_FACTOR_SHOOT_get();
+      }
+
       Translation2d translation = SwerveMath.scaleTranslation(new Translation2d(
         vx * swerveDrive.getMaximumChassisVelocity(),
-        vy * swerveDrive.getMaximumChassisVelocity()), 0.8);
-
+        vy * swerveDrive.getMaximumChassisVelocity()), slowdownFactor);
       // Rotation compute
-      PIDController R = rotationPID;
+      PIDController R = slickRotationPID;
 
       // Ensuring that the error is in the -180 ... +180 degree range
       double robotAngle = getPose().getRotation().getRadians();
@@ -369,16 +392,20 @@ public class SwerveSubsystem extends SubsystemBase {
     }
   }
 
-  public Boolean isInRampZone() {
-    double x = getPose().getX();
-    double y = getPose().getY();
+  public double calculateDistanceToHub() {
+    Translation2d hubTranslation;
+    if(RobotContainer.teamColorIsBlue() == 1) {
+      hubTranslation = new Translation2d(Constants.Field.HUB_X_BLUE, Constants.Field.HUB_Y_BLUE);
+    } else {
+      hubTranslation = new Translation2d(Constants.Field.HUB_X_RED, Constants.Field.HUB_Y_RED);
+    }
 
-    return ((Math.abs(x - Constants.Field.HUB_X_BLUE) < Constants.Field.RAMP_ZONE_WIDTH) &&
-          (Math.abs(y - Constants.Field.HUB_Y_BLUE) > Constants.Field.RAMP_ZONE_HEIGHT_START) &&
-          (Math.abs(y - Constants.Field.HUB_Y_BLUE) < Constants.Field.RAMP_ZONE_HEIGHT_END)) ||
-          ((Math.abs(x - Constants.Field.HUB_X_RED) < Constants.Field.RAMP_ZONE_WIDTH) &&
-          (Math.abs(y - Constants.Field.HUB_Y_RED) > Constants.Field.RAMP_ZONE_HEIGHT_START) &&
-          (Math.abs(y - Constants.Field.HUB_Y_RED) < Constants.Field.RAMP_ZONE_HEIGHT_END));
+    return getPose().getTranslation().getDistance(hubTranslation);
+  }
+
+  public Boolean isInNeutralZone() {
+    double x = getPose().getX();
+    return (x > Constants.Field.HUB_X_BLUE) && (x < Constants.Field.HUB_X_RED);
   }
 
   public Rotation2d calculateOptimalDiagonalRotation() {
@@ -427,7 +454,7 @@ public class SwerveSubsystem extends SubsystemBase {
     return run(() -> {
       Translation2d translation = SwerveMath.scaleTranslation(new Translation2d(
         translationX.getAsDouble() * swerveDrive.getMaximumChassisVelocity(),
-        translationY.getAsDouble() * swerveDrive.getMaximumChassisVelocity()), 0.8);
+        translationY.getAsDouble() * swerveDrive.getMaximumChassisVelocity()), SwerveDriveTuning.JOYSTICK_SLOWDOWN_FACTOR_get());
       double omegaRadiansPerSecond = Math.pow(angularRotationX.getAsDouble(), 3) * swerveDrive.getMaximumChassisAngularVelocity();
       
       // Make the robot move
@@ -512,32 +539,6 @@ public class SwerveSubsystem extends SubsystemBase {
     swerveDrive.lockPose();
   }
 
-  public double CalculateDistanceFromHub() {
-    Translation2d hubTranslation;
-    if(RobotContainer.teamColorIsBlue() == 1) {
-      hubTranslation = new Translation2d(Constants.Field.HUB_X_BLUE, Constants.Field.HUB_Y_BLUE);
-    } else {
-      hubTranslation = new Translation2d(Constants.Field.HUB_X_RED, Constants.Field.HUB_Y_RED);
-    }
-
-    return getPose().getTranslation().getDistance(hubTranslation);
-  }
-
-  public boolean isVxVelocityBelowThreshold() {
-    return Math.abs(swerveDrive.getRobotVelocity().vxMetersPerSecond) < SwerveDriveTuning.VX_VELOCITY_THRESHOLD_get();
-  }
-
-  public boolean isVyVelocityBelowThreshold() {
-    return Math.abs(swerveDrive.getRobotVelocity().vyMetersPerSecond) < SwerveDriveTuning.VY_VELOCITY_THRESHOLD_get();
-  }
-
-  public boolean isOmegaVelocityBelowThreshold() {
-    return Math.abs(swerveDrive.getRobotVelocity().omegaRadiansPerSecond) < SwerveDriveTuning.OMEGA_VELOCITY_THRESHOLD_get();
-  }
-
-  public boolean isRobotVelocityBelowThreshold() {
-    return isVxVelocityBelowThreshold() && isVyVelocityBelowThreshold() && isOmegaVelocityBelowThreshold();
-  }
   /* SYSID ROUTINES */
 
   private SysIdRoutine driveSysIdRoutine;    

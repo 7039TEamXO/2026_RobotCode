@@ -100,6 +100,88 @@
               "period": 0.06,
               "sort_options": false
             }
+          },
+          {
+            "title": "Accept Angle Changes",
+            "x": 768.0,
+            "y": 0.0,
+            "width": 192.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/Accept Angle Changes",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "Set Angle Value",
+            "x": 960.0,
+            "y": 0.0,
+            "width": 224.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Set Angle Value",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": true
+            }
+          },
+          {
+            "title": "Shoot Master Velocity",
+            "x": 768.0,
+            "y": 256.0,
+            "width": 192.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/AdvantageKit/Shooter/Shoot Master Velocity",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Accept Velocity Changes",
+            "x": 768.0,
+            "y": 128.0,
+            "width": 192.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/Accept Velocity Changes",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "Set Velocity Value",
+            "x": 960.0,
+            "y": 128.0,
+            "width": 224.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Set Velocity Value",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": true
+            }
+          },
+          {
+            "title": "Angle Motor Position",
+            "x": 960.0,
+            "y": 256.0,
+            "width": 224.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/AdvantageKit/Shooter/Angle Motor Position",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
           }
         ]
       }

@@ -6,18 +6,13 @@ import static edu.wpi.first.units.Units.Degrees;
 import com.therekrab.autopilot.APConstraints;
 import com.therekrab.autopilot.APProfile;
 import com.therekrab.autopilot.Autopilot;
-
-import edu.wpi.first.math.util.Units;
                
 public class SwerveDriveConstants {
     // SPEED LIMITATIONS
     public static final double MAX_SPEED = 4.5; // NOT TUNEABLE [!]
-    public static final double MAX_ACCEL = 2.5;
 
-    public static final double MIN_SPEED  = Units.feetToMeters(4); // Non-restrictive
-    public static final double CLIMB_SPEED = Units.feetToMeters(7);
-
-    public static final double MAX_ROTATION_V = 4;
+    public static final double JOYSTICK_SLOW_DOWN_FACTOR = 0.8;
+    public static final double JOYSTICK_SLOW_DOWN_FACTOR_SHOOT = 0.2;
 
     // SysId
     public static final double DriveSysIdQuasistatic = 1;
@@ -28,6 +23,9 @@ public class SwerveDriveConstants {
     // Angular motion PIDs
     public static final double KP_ANGULAR = 3;
     public static final double KD_ANGULAR = 0;
+
+    public static final double KP_ANGULAR_SLICK = 5;
+    public static final double KD_ANGULAR_SLICK = 0;
 
     // Autopilot
     private static final APConstraints kConstraints = new APConstraints()
@@ -45,10 +43,6 @@ public class SwerveDriveConstants {
     public static final double CLOSE_DISTANCE_ERROR_CAP = 0.05;
     public static final double CLOSE_ANGLE_ERROR_CAP = 10;
     public static final double PRECISE_ANGLE_ERROR_CAP = 3;
-
-    // ERROR TOLERANCE
-    public static final double MAXIMUM_DISTANCE_ERROR = 0.5;
-    // public static final double MAXIMUM_ANGLE_ERROR = 10;
 
     public static final double VX_VELOCITY_THRESHOLD = 0.45;
     public static final double VY_VELOCITY_THRESHOLD = 0.45;

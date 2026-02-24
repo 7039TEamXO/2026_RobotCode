@@ -35,7 +35,6 @@ public class ShooterSubsystem implements Subsystem {
     private final InterpolatingDoubleTreeMap angleInterpolatingMap = new InterpolatingDoubleTreeMap();
     private final InterpolatingDoubleTreeMap shooterInterpolatingMap = new InterpolatingDoubleTreeMap();
 
-
     public ShooterSubsystem(ShooterIO _io) {
         io = _io;
         inputs = new ShooterIOInputs();
@@ -68,24 +67,24 @@ public class ShooterSubsystem implements Subsystem {
 
         double Entry_Power = ShooterConstants.ENTRY_POWER_STOP;
         double Angle_Position = calculateShooterAngle();
-        double Shoot_Velocity = ShooterTuning.Shoot_Velocity_Idle_get();
+        double Shoot_Velocity = ShooterTuning.SHOOT_VELOCITY_IDLE_get();
         
         switch (state) {
             case INTAKE_HELP:
-                Entry_Power = ShooterTuning.Entry_Power_Roll_get();
-                Shoot_Velocity = ShooterTuning.Shoot_Velocity_Help_get();
-                Angle_Position = ShooterTuning.Angle_Intake_Help_Pos_get();
+                Entry_Power = ShooterTuning.ENTRY_POWER_ROLL_get();
+                Shoot_Velocity = ShooterTuning.SHOOT_VELOCITY_HELP_get();
+                Angle_Position = ShooterTuning.ANGLE_INTAKE_HELP_POS_get();
                 break;
             case DEPLETE:
-                Entry_Power = ShooterTuning.Entry_Power_Reverse_get();
-                Shoot_Velocity = ShooterTuning.Shoot_Velocity_Idle_get();
-                Angle_Position = ShooterTuning.Angle_Intake_Help_Pos_get();
+                Entry_Power = ShooterTuning.ENTRY_POWER_REVERSE_get();
+                Shoot_Velocity = ShooterTuning.SHOOT_VELOCITY_IDLE_get();
+                Angle_Position = ShooterTuning.ANGLE_INTAKE_HELP_POS_get();
                 break;
             case SPEED_UP:
                 Shoot_Velocity = calculateShooterVelocity();
                 break;
             case SHOOT:
-                Entry_Power = ShooterTuning.Entry_Power_Roll_get();
+                Entry_Power = ShooterTuning.ENTRY_POWER_ROLL_get();
                 Shoot_Velocity = calculateShooterVelocity();
                 break;
             default:
@@ -103,30 +102,44 @@ public class ShooterSubsystem implements Subsystem {
     }
     
     private void setupAngleInterpolatingMap() {
-        angleInterpolatingMap.put(0.0, ShooterConstants.ANGLE_SHOOT_HUB);
-        angleInterpolatingMap.put(ShooterConstants.HUB_SHOOT_DISTANCE, ShooterConstants.ANGLE_SHOOT_HUB);
-        angleInterpolatingMap.put(ShooterConstants.CLIMB_SHOOT_DISTANCE, ShooterConstants.ANGLE_SHOOT_CLIMB);
+        angleInterpolatingMap.put(0.0, 1.0);
+        angleInterpolatingMap.put(1.5, 1.5);
+        angleInterpolatingMap.put(2.0, 2.0);
+        angleInterpolatingMap.put(2.5, 2.0);
+        angleInterpolatingMap.put(3.0, 2.5);
+        angleInterpolatingMap.put(4.0, 3.0);
+        angleInterpolatingMap.put(4.5, 3.5);
+        angleInterpolatingMap.put(4.5, 3.5);
 
-        angleInterpolatingMap.put(20.0, ShooterConstants.ANGLE_SHOOT_MAX);
+        // Consistency
+        angleInterpolatingMap.put(10.0, ShooterConstants.ANGLE_SHOOT_MAX);
     }
 
     private void setupShooterInterpolatingMap() {
-        shooterInterpolatingMap.put(0.0, ShooterConstants.RPS_SHOOT_HUB);
-        shooterInterpolatingMap.put(ShooterConstants.HUB_SHOOT_DISTANCE, ShooterConstants.RPS_SHOOT_HUB);
-        shooterInterpolatingMap.put(ShooterConstants.CLIMB_SHOOT_DISTANCE, ShooterConstants.RPS_SHOOT_CLIMB);
+        shooterInterpolatingMap.put(0.0, 45.0);
+        shooterInterpolatingMap.put(1.5, 45.0);
+        shooterInterpolatingMap.put(2.0, 48.0);
+        shooterInterpolatingMap.put(2.5, 50.0);
+        shooterInterpolatingMap.put(3.0, 52.0);
+        shooterInterpolatingMap.put(4.0, 58.0);
+        shooterInterpolatingMap.put(4.5, 60.0);
+        shooterInterpolatingMap.put(5.0, 63.0);
         
-        shooterInterpolatingMap.put(20.0, ShooterConstants.RPS_SHOOT_MAX);
+        // Consistency
+        shooterInterpolatingMap.put(10.0, ShooterConstants.RPS_SHOOT_MAX);
     }
 
-    private double calculateShooterAngle() {
+    public double calculateShooterAngle() {
         if(Dashboard.getAcceptAngleChanges()) return Dashboard.getAngleValue();
-        double distanceFromHub = SubsystemManager.getDrivebase().CalculateDistanceFromHub();
+        if(SubsystemManager.getDrivebase().isInNeutralZone()) return ShooterTuning.ANGLE_NEUTRAL_ZONE_POS_get();
+        double distanceFromHub = SubsystemManager.getDrivebase().calculateDistanceToHub();
         return angleInterpolatingMap.get(distanceFromHub);
     }
 
-    private double calculateShooterVelocity() {
+    public double calculateShooterVelocity() {
         if(Dashboard.getAcceptVelocityChanges()) return Dashboard.getVelocityValue();
-        double distanceFromHub = SubsystemManager.getDrivebase().CalculateDistanceFromHub();
+        if(SubsystemManager.getDrivebase().isInNeutralZone()) return ShooterTuning.SHOOT_VELOCITY_NEUTRAL_ZONE_get();
+        double distanceFromHub = SubsystemManager.getDrivebase().calculateDistanceToHub();
         return shooterInterpolatingMap.get(distanceFromHub);
     }
 

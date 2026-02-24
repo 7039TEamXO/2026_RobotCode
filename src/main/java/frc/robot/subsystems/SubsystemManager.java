@@ -57,13 +57,13 @@ public class SubsystemManager {
             hubAlignment = false;
             autoDrive = drivebase.driveToPose(SwerveSubsystem.getTowerPose(), false);
             CommandScheduler.getInstance().schedule(autoDrive);
-        } else if(psControllerHID.getL3Button()) { // Depot / Test
+        } else if(psControllerHID.getR3Button()) { // Depot / Test
             hubAlignment = false; 
             // autoDrive = drivebase.driveToPose(new Pose2d(SwerveDriveTuning.TEST_DRIVE_X_get(), SwerveDriveTuning.TEST_DRIVE_Y_get(),
             //     new Rotation2d(Math.toRadians(SwerveDriveTuning.TEST_DRIVE_ANGLE_get()))));
             autoDrive = drivebase.driveToPose(SwerveSubsystem.getDepotPose(), false);
             CommandScheduler.getInstance().schedule(autoDrive);
-        } else if(drivebase.isInRampZone()) { // Ramp Alignment (Lower priority)
+        } else if(psControllerHID.getL3Button()) { // Ramp Alignment (Lower priority)
             autoDrive = drivebase.driveCommandWithAngle(drivebase.calculateOptimalDiagonalRotation());
             CommandScheduler.getInstance().schedule(autoDrive);
         } else if(hubAlignment) { // Hub Alignment (Lowest priority)
@@ -105,17 +105,24 @@ public class SubsystemManager {
             storageState = StorageState.OUT;
             shooterState = ShooterState.IDLE;
         }
-
+        // 5. Help Shoot (L2)
         else if (psControllerHID.getL2Button()) {
             storageState = StorageState.HELP_SHOOT;
+            intakeState = IntakeState.HELP_SHOOT;
         }
-
 
         /* SHOOTER */
         shooterState = psControllerHID.getL2Button() ? ShooterState.SHOOT :
                         psControllerHID.getL1Button() ? ShooterState.SPEED_UP :
                         psControllerHID.getR1Button() ? ShooterState.IDLE : 
                         shooterState; 
+
+        // Cancel Help Shoot once it's no longer needed
+        if(shooterState != ShooterState.SHOOT) {
+            if(storageState == StorageState.HELP_SHOOT) storageState = StorageState.OUT;
+            if(intakeState == IntakeState.HELP_SHOOT) intakeState = IntakeState.INACTIVE;
+        }
+
 
         conveyorUnjam = psControllerHID.getPOV() == 0;
         if (psControllerHID.getPOV() == 90) {
@@ -139,8 +146,9 @@ public class SubsystemManager {
             }
 
             RobotContainer.Intake.operate(intakeState, storageState);
-            System.out.println(drivebase.CalculateDistanceFromHub());
-            Boolean atShootSpeed = Math.abs(RobotContainer.Shooter.getInputs().ShootMaster_Velocity - ShooterTuning.Shoot_Velocity_Fire_get()) < ShooterTuning.Shoot_Velocity_Tolerance_get();
+
+            System.out.println(drivebase.calculateDistanceToHub());
+            Boolean atShootSpeed = Math.abs(RobotContainer.Shooter.getInputs().ShootMaster_Velocity - RobotContainer.Shooter.calculateShooterVelocity()) < ShooterTuning.SHOOT_VELOCITY_TOLERANCE_get();
             Boolean atShootAngle = drivebase.isCloseEnoughToAngle(drivebase.determineHubAngle(), SwerveDriveTuning.PRECISE_ANGLE_ERROR_CAP_get());
             atShootAngle = true;
 

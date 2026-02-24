@@ -65,11 +65,15 @@ public class IntakeSubsystem implements Subsystem {
 
         switch (state) {
             case ACTIVE:
-                Intake_Power = IntakeTuning.Power_Intake_get();
+                Intake_Power = IntakeTuning.POWER_INTAKE_get();
+                break;
+
+            case HELP_SHOOT:
+                Intake_Power = IntakeTuning.POWER_HELP_SHOOT_get();
                 break;
 
             case DEPLETE:
-                Intake_Power = IntakeTuning.Power_Deplete_get();
+                Intake_Power = IntakeTuning.POWER_DEPLETE_get();
                 break;
 
             default:
@@ -81,28 +85,28 @@ public class IntakeSubsystem implements Subsystem {
         switch(storageState) {
             case IN:
                 Position = IntakeConstants.CONTROL_POS_IN;
-                Control_Power = IntakeConstants.CONTROL_POWER_CLOSE;
+                Control_Power = IntakeTuning.CONTROL_POWER_CLOSE_get();
                 break;
                 
-        case HELP_SHOOT:
-            // Toggle open/close on a fixed time interval. Position is ignored.
-            double now = Timer.getFPGATimestamp();
-            if (now - lastHelpToggleTime > IntakeConstants.HELP_TOGGLE_PERIOD) {
-                helpShootOpen = !helpShootOpen;
-                lastHelpToggleTime = now;
-            }
+            case HELP_SHOOT:
+                // Toggle open/close on a fixed time interval. Position is ignored.
+                double now = Timer.getFPGATimestamp();
+                if (now - lastHelpToggleTime > IntakeConstants.HELP_TOGGLE_PERIOD) {
+                    helpShootOpen = !helpShootOpen;
+                    lastHelpToggleTime = now;
+                }
 
-            if (helpShootOpen) {
-                Control_Power = IntakeConstants.CONTROL_POWER_OPEN;
-            } else {
-                Control_Power = -IntakeConstants.CONTROL_POWER_OPEN;
-            }
-            break;
+                if (helpShootOpen) {
+                    Control_Power = IntakeTuning.CONTROL_POWER_OPEN_get();
+                } else {
+                    Control_Power = IntakeTuning.CONTROL_POWER_CLOSE_get();
+                }
+                break;
 
             default:
             case OUT:
                 Position = IntakeConstants.CONTROL_POS_OUT;
-                Control_Power = IntakeConstants.CONTROL_POWER_OPEN;
+                Control_Power = IntakeTuning.CONTROL_POWER_OPEN_get();
                 break;
 
         }

@@ -45,7 +45,7 @@ public class CameraReal implements CameraIO {
 
     public void init() {
         setLimelightConfiguration();
-        setBackLimelightConfiguration();
+        // setBackLimelightConfiguration();
     }
 
     private void setLimelightConfiguration() {
@@ -62,11 +62,12 @@ public class CameraReal implements CameraIO {
         );
     }
 
+    /*
     private void setBackLimelightConfiguration() {
-        LimelightHelpers.SetFiducialIDFiltersOverride("limelight", allValidIDs);
+        LimelightHelpers.SetFiducialIDFiltersOverride("limelight_back", allValidIDs);
         // Process at half resolution for improved framerate and reduced range
-        LimelightHelpers.SetFiducialDownscalingOverride("limelight", 2.0f); 
-        LimelightHelpers.setCameraPose_RobotSpace("limelight", 
+        LimelightHelpers.SetFiducialDownscalingOverride("limelight_back", 2.0f); 
+        LimelightHelpers.setCameraPose_RobotSpace("limelight_back", 
             Constants.Limelight.Back_RobotToCamera.getX(),                   // Forward offset (meters)
             Constants.Limelight.Back_RobotToCamera.getY(),                   // Side offset (meters)
             Constants.Limelight.Back_RobotToCamera.getZ(),                   // Height offset (meters)
@@ -75,6 +76,7 @@ public class CameraReal implements CameraIO {
             Constants.Limelight.Back_RobotToCamera.getRotation().getZ()      // Yaw (degrees)
         );
     }
+    */
 
     public void updateInputs(CameraIOInputs inputs) {
         inputs.Main_DoRejectUpdate = Main_DoRejectUpdate;

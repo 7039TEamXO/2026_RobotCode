@@ -12,8 +12,8 @@ public class ShooterConstants {
     public static final double EncoderOffset = 0.0;
 
     // ENTRY MOTOR //
-    public static final double Entry_StatorCurrentLimit = 50;
-    public static final double Entry_SupplyCurrentLimit = 40;
+    public static final double Entry_StatorCurrentLimit = 70;
+    public static final double Entry_SupplyCurrentLimit = 50;
 
     public static final double ENTRY_POWER_STOP = 0;
     public static final double ENTRY_POWER_ROLL = 1;
@@ -35,7 +35,8 @@ public class ShooterConstants {
     public static final double Angle_StatorCurrentLimit = 60;
     public static final double Angle_SupplyCurrentLimit = 40;
 
-    public static final double ANGLE_INTAKE_HELP_POS = 2; // Rotations
+    public static final double ANGLE_INTAKE_HELP_POS = 3; // Rotations
+    public static final double ANGLE_NEUTRAL_ZONE_POS = 3.5; // Rotations
 
     public static final double Shoot_StatorCurrentLimit = 120;
     public static final double Shoot_SupplyCurrentLimit = 70;
@@ -48,35 +49,32 @@ public class ShooterConstants {
     public static final double Shoot_kD = 0;
 
     public static final double SHOOT_VELOCITY_IDLE = 5;
-    public static final double SHOOT_VELOCITY_FIRE = 55;
+    public static final double SHOOT_VELOCITY_HELP = 9;
+    public static final double SHOOT_VELOCITY_NEUTRAL_ZONE = 60;
     public static final double SHOOT_VELOCITY_TOLERANCE = 4;
-    public static final double SHOOT_VELOCITY_HELP = 15;
 
     // OTHER //
 
     public static final double SimulationMotorGearRatio = 12.8;
 
     // SysId //
+
     public static final double Angle_SysIdQuasistatic = 0.75;
     public static final double Angle_SysIdDynamic = 1.5;
     
+    // Shooter mapping //
     
-    // Shooter mapping
     public static final double HUB_SHOOT_DISTANCE = 1.0;
     public static final double CLIMB_SHOOT_DISTANCE = 3.0;
-    public static final double CORNER_SHOOT_DISTANCE = 5;
+    public static final double CORNER_SHOOT_DISTANCE = 5.0;
 
     public static final double ANGLE_SHOOT_HUB = 0.5;
     public static final double ANGLE_SHOOT_CLIMB = 2.5;
     public static final double ANGLE_SHOOT_CORNER = 4.0;
     public static final double ANGLE_SHOOT_MAX = 4.3;
     
-    
     public static final double RPS_SHOOT_HUB = 45;
     public static final double RPS_SHOOT_CLIMB = 52;
     public static final double RPS_SHOOT_CORNER = 57;
     public static final double RPS_SHOOT_MAX = 100;
-    
-
-    
 }

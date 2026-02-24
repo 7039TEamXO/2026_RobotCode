@@ -6,12 +6,13 @@ import frc.robot.Constants;
 import frc.robot.Constants.TuningMode;
 
 public class SwerveDriveTuning {
-    private static final LoggedNetworkNumber MIN_SPEED = new LoggedNetworkNumber("/Tuning/Swerve/Minimum Speed", SwerveDriveConstants.MIN_SPEED);
-    private static final LoggedNetworkNumber CLIMB_SPEED = new LoggedNetworkNumber("/Tuning/Swerve/Climb Speed", SwerveDriveConstants.CLIMB_SPEED);
-    private static final LoggedNetworkNumber MAX_ROTATION_V = new LoggedNetworkNumber("/Tuning/Swerve/Maximum Rotation Velocity", SwerveDriveConstants.MAX_ROTATION_V);
+    private static final LoggedNetworkNumber JOYSTICK_SLOWDOWN_FACTOR = new LoggedNetworkNumber("/Tuning/Swerve/Joystick Slowdown Factor", SwerveDriveConstants.JOYSTICK_SLOW_DOWN_FACTOR);
+    private static final LoggedNetworkNumber JOYSTICK_SLOWDOWN_FACTOR_SHOOT = new LoggedNetworkNumber("/Tuning/Swerve/Joystick Slowdown Factor Shoot", SwerveDriveConstants.JOYSTICK_SLOW_DOWN_FACTOR_SHOOT);
 
     private static final LoggedNetworkNumber KP_ANGULAR = new LoggedNetworkNumber("/Tuning/Swerve/(DTP) Angle kP", SwerveDriveConstants.KP_ANGULAR);
     private static final LoggedNetworkNumber KD_ANGULAR = new LoggedNetworkNumber("/Tuning/Swerve/(DTP) Angle kD", SwerveDriveConstants.KD_ANGULAR);
+    private static final LoggedNetworkNumber KP_ANGULAR_SLICK = new LoggedNetworkNumber("/Tuning/Swerve/(DTP) Angle kP Slick", SwerveDriveConstants.KP_ANGULAR_SLICK);
+    private static final LoggedNetworkNumber KD_ANGULAR_SLICK = new LoggedNetworkNumber("/Tuning/Swerve/(DTP) Angle kD Slick", SwerveDriveConstants.KD_ANGULAR_SLICK);
 
     private static final LoggedNetworkNumber CLOSE_DISTANCE_ERROR_CAP = new LoggedNetworkNumber("/Tuning/Swerve/Close Distance Error Cap", SwerveDriveConstants.CLOSE_DISTANCE_ERROR_CAP);
     private static final LoggedNetworkNumber CLOSE_ANGLE_ERROR_CAP = new LoggedNetworkNumber("/Tuning/Swerve/Close Angle Error Cap", SwerveDriveConstants.CLOSE_ANGLE_ERROR_CAP);
@@ -24,17 +25,12 @@ public class SwerveDriveTuning {
     private static final LoggedNetworkNumber VY_VELOCITY_THRESHOLD = new LoggedNetworkNumber("/Tuning/Swerve/VY Velocity Threshold", 0.17);
     private static final LoggedNetworkNumber OMEGA_VELOCITY_THRESHOLD = new LoggedNetworkNumber("/Tuning/Swerve/OMEGA Velocity Threshold", 1.5);
 
-    
-    public static final double MIN_SPEED_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? MIN_SPEED.get() : SwerveDriveConstants.MIN_SPEED;
+    public static final double JOYSTICK_SLOWDOWN_FACTOR_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? JOYSTICK_SLOWDOWN_FACTOR.get() : SwerveDriveConstants.JOYSTICK_SLOW_DOWN_FACTOR;
     }
 
-    public static final double CLIMB_SPEED_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? CLIMB_SPEED.get() : SwerveDriveConstants.CLIMB_SPEED;
-    }
-
-    public static final double MAX_ROTATION_V_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? MAX_ROTATION_V.get() : SwerveDriveConstants.MAX_ROTATION_V;
+    public static final double JOYSTICK_SLOWDOWN_FACTOR_SHOOT_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? JOYSTICK_SLOWDOWN_FACTOR_SHOOT.get() : SwerveDriveConstants.JOYSTICK_SLOW_DOWN_FACTOR_SHOOT;
     }
 
     public static final double KP_ANGULAR_get() {
@@ -43,6 +39,14 @@ public class SwerveDriveTuning {
 
     public static final double KD_ANGULAR_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? KD_ANGULAR.get() : SwerveDriveConstants.KD_ANGULAR;
+    }
+
+    public static final double KP_ANGULAR_SLICK_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? KP_ANGULAR_SLICK.get() : SwerveDriveConstants.KP_ANGULAR_SLICK;
+    }
+
+    public static final double KD_ANGULAR_SLICK_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? KD_ANGULAR_SLICK.get() : SwerveDriveConstants.KD_ANGULAR_SLICK;
     }
 
     public static final double CLOSE_DISTANCE_ERROR_CAP_get() {

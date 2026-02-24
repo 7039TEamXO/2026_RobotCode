@@ -1,5 +1,5 @@
 package frc.robot.subsystems.Intake;
 
 public enum IntakeState {
-    ACTIVE, INACTIVE, DEPLETE
+    ACTIVE, HELP_SHOOT, INACTIVE, DEPLETE
 }
