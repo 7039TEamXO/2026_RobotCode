@@ -97,9 +97,9 @@ public class IntakeSubsystem implements Subsystem {
                 }
 
                 if (helpShootOpen) {
-                    Control_Power = IntakeTuning.CONTROL_POWER_OPEN_get();
+                    Control_Power = IntakeTuning.CONTROL_POWER_SHAKE_get();
                 } else {
-                    Control_Power = IntakeTuning.CONTROL_POWER_CLOSE_get();
+                    Control_Power = -IntakeTuning.CONTROL_POWER_SHAKE_get();
                 }
                 break;
 

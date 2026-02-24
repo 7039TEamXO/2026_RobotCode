@@ -68,13 +68,13 @@ public class ShooterConstants {
     public static final double CLIMB_SHOOT_DISTANCE = 3.0;
     public static final double CORNER_SHOOT_DISTANCE = 5.0;
 
-    public static final double ANGLE_SHOOT_HUB = 0.5;
-    public static final double ANGLE_SHOOT_CLIMB = 2.5;
-    public static final double ANGLE_SHOOT_CORNER = 4.0;
-    public static final double ANGLE_SHOOT_MAX = 4.3;
+    // public static final double ANGLE_SHOOT_HUB = 0.5;
+    // public static final double ANGLE_SHOOT_CLIMB = 2.5;
+    // public static final double ANGLE_SHOOT_CORNER = 4.0;
+    public static final double ANGLE_SHOOT_MAX = 4.0;
     
-    public static final double RPS_SHOOT_HUB = 45;
-    public static final double RPS_SHOOT_CLIMB = 52;
-    public static final double RPS_SHOOT_CORNER = 57;
+    // public static final double RPS_SHOOT_HUB = 45;
+    // public static final double RPS_SHOOT_CLIMB = 52;
+    // public static final double RPS_SHOOT_CORNER = 57;
     public static final double RPS_SHOOT_MAX = 100;
 }

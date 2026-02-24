@@ -12,6 +12,7 @@ public class IntakeTuning {
     
     private static final LoggedNetworkNumber Control_Power_Open = new LoggedNetworkNumber("/Tuning/Intake/Control Power Open", IntakeConstants.CONTROL_POWER_OPEN);
     private static final LoggedNetworkNumber Control_Power_Close = new LoggedNetworkNumber("/Tuning/Intake/Control Power Close", IntakeConstants.CONTROL_POWER_CLOSE);
+    private static final LoggedNetworkNumber Control_Power_Shake = new LoggedNetworkNumber("/Tuning/Intake/Control Power Shake", IntakeConstants.CONTROL_POWER_SHAKE);
 
     public static final double POWER_INTAKE_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? Power_Intake.get() : IntakeConstants.INTAKE_POWER_INTAKE;
@@ -31,5 +32,9 @@ public class IntakeTuning {
 
     public static final double CONTROL_POWER_CLOSE_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? Control_Power_Close.get() : IntakeConstants.CONTROL_POWER_CLOSE;
+    }
+
+    public static final double CONTROL_POWER_SHAKE_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? Control_Power_Shake.get() : IntakeConstants.CONTROL_POWER_SHAKE;
     }
 }

@@ -39,6 +39,8 @@ public class ShooterSubsystem implements Subsystem {
         io = _io;
         inputs = new ShooterIOInputs();
 
+        io.setAngleMotorPosition(0);
+
         setMotorConfigs();
         Logger.processInputs("Shooter", inputs);
 
