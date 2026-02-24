@@ -12,8 +12,8 @@ public class ShooterConstants {
     public static final double EncoderOffset = 0.0;
 
     // ENTRY MOTOR //
-    public static final double Entry_StatorCurrentLimit = 70;
-    public static final double Entry_SupplyCurrentLimit = 50;
+    public static final double Entry_StatorCurrentLimit = 90;
+    public static final double Entry_SupplyCurrentLimit = 70;
 
     public static final double ENTRY_POWER_STOP = 0;
     public static final double ENTRY_POWER_ROLL = 1;

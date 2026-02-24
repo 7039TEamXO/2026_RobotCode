@@ -79,7 +79,6 @@ public class ShooterSubsystem implements Subsystem {
                 break;
             case DEPLETE:
                 Entry_Power = ShooterTuning.ENTRY_POWER_REVERSE_get();
-                Shoot_Velocity = ShooterTuning.SHOOT_VELOCITY_IDLE_get();
                 Angle_Position = ShooterTuning.ANGLE_INTAKE_HELP_POS_get();
                 break;
             case SPEED_UP:
@@ -111,7 +110,6 @@ public class ShooterSubsystem implements Subsystem {
         angleInterpolatingMap.put(3.0, 2.5);
         angleInterpolatingMap.put(4.0, 3.0);
         angleInterpolatingMap.put(4.5, 3.5);
-        angleInterpolatingMap.put(4.5, 3.5);
 
         // Consistency
         angleInterpolatingMap.put(10.0, ShooterConstants.ANGLE_SHOOT_MAX);
@@ -121,10 +119,10 @@ public class ShooterSubsystem implements Subsystem {
         shooterInterpolatingMap.put(0.0, 45.0);
         shooterInterpolatingMap.put(1.5, 45.0);
         shooterInterpolatingMap.put(2.0, 48.0);
-        shooterInterpolatingMap.put(2.5, 50.0);
-        shooterInterpolatingMap.put(3.0, 52.0);
-        shooterInterpolatingMap.put(4.0, 58.0);
-        shooterInterpolatingMap.put(4.5, 60.0);
+        shooterInterpolatingMap.put(2.5, 52.0);
+        shooterInterpolatingMap.put(3.0, 55.0);
+        shooterInterpolatingMap.put(4.0, 60.0);
+        shooterInterpolatingMap.put(4.5, 61.0);
         shooterInterpolatingMap.put(5.0, 63.0);
         
         // Consistency
