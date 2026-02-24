@@ -74,6 +74,8 @@ public class Dashboard {
         SmartDashboard.postListenerTask(() -> SmartDashboard.putString("Shift Name", getGameStateName()));
         SmartDashboard.postListenerTask(() -> SmartDashboard.putString("Flash Bar", getFlashbarColor().toHexString()));
 
+        SmartDashboard.postListenerTask(() -> SmartDashboard.putNumber("Distance To Hub", SubsystemManager.getDrivebase().calculateDistanceToHub()));
+
         SmartDashboard.updateValues();
     }
 

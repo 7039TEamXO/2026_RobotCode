@@ -27,7 +27,7 @@ public class IntakeConstants {
     public static final double CONTROL_POS_OUT = 4.3; //was 5.4
 
     public static final double CONTROL_POS_TOLERANCE = 0.2;
-    public static final double HELP_TOGGLE_PERIOD = 0.45; // seconds
+    public static final double HELP_TOGGLE_PERIOD = 0.4; // seconds
 
     // OTHER //
     public static final double SimulationMotorGearRatio = 12.8;
@@ -36,8 +36,8 @@ public class IntakeConstants {
     public static final double Control_SysIdQuasistatic = 0.5;
     public static final double Control_SysIdDynamic = 1.5;
 
-    public static final double Control_kP = 1.5;
-    public static final double Control_kV = 0.15;
+    public static final double Control_kP = 1.7;
+    public static final double Control_kV = 0.22;
 
     // Motion Magic defaults for control (units follow Talon/encoder native units used
     // elsewhere in the project - tuned values can be changed via IntakeTuning)

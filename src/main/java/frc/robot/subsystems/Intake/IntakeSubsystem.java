@@ -59,7 +59,6 @@ public class IntakeSubsystem implements Subsystem {
     public void operate(IntakeState state, StorageState storageState) {
         io.updateInputs(inputs);
         Logger.processInputs("Intake", inputs);
-        System.out.println("intake position: " + inputs.Control_Position);
 
         if(Constants.GetTuningMode() == TuningMode.ACTIVE) setMotorConfigs();
 

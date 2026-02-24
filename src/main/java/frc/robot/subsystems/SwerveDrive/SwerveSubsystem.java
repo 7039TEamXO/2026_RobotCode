@@ -414,7 +414,7 @@ public class SwerveSubsystem extends SubsystemBase {
     APTarget hubTarget = new APTarget(getHubTargetPose()).withVelocity(0);
     APResult output = SwerveDriveConstants.kAutopilot.calculate(getPose(), robotRelativeSpeeds, hubTarget);
     double blend = SwerveDriveTuning.HUB_VELOCITY_AWARE_BLEND_get();
-    return baseAngle.interpolate(output.targetAngle(), Math.clamp(blend, 0, 1));
+    return baseAngle.interpolate(output.targetAngle(), Math.max(0.0, Math.min(blend, 1.0)));
   }
 
   public double calculateDistanceToHub() {

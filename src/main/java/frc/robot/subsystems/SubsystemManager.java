@@ -33,7 +33,6 @@ public class SubsystemManager {
     private static ShooterState shooterState;
     private static ConveyorState conveyorState;
     private static Boolean conveyorUnjam;
-    private static Boolean hubAlignment;
 
     public static void init() {
         intakeState = IntakeState.INACTIVE;
@@ -41,7 +40,6 @@ public class SubsystemManager {
         shooterState = ShooterState.IDLE;
         conveyorState = ConveyorState.STOP;
         conveyorUnjam = false;
-        hubAlignment = false;
     }
 
     private static Command autoDrive;
@@ -50,15 +48,12 @@ public class SubsystemManager {
     private static void scheduleAutoDrive() {
         // TO-DO: Check if in ramp zone
         if(psControllerHID.getPOV() == 180) { // Outpost
-            hubAlignment = false;
             autoDrive = drivebase.driveToPose(SwerveSubsystem.getOutpostPose(), false);
             CommandScheduler.getInstance().schedule(autoDrive);
         } else if(psControllerHID.getR2Button()) { // Tower
-            hubAlignment = false;
             autoDrive = drivebase.driveToPose(SwerveSubsystem.getTowerPose(), false);
             CommandScheduler.getInstance().schedule(autoDrive);
         } else if(psControllerHID.getR3Button()) { // Depot / Test
-            hubAlignment = false; 
             // autoDrive = drivebase.driveToPose(new Pose2d(SwerveDriveTuning.TEST_DRIVE_X_get(), SwerveDriveTuning.TEST_DRIVE_Y_get(),
             //     new Rotation2d(Math.toRadians(SwerveDriveTuning.TEST_DRIVE_ANGLE_get()))));
             autoDrive = drivebase.driveToPose(SwerveSubsystem.getDepotPose(), false);
@@ -66,7 +61,7 @@ public class SubsystemManager {
         } else if(psControllerHID.getL3Button()) { // Ramp Alignment (Lower priority)
             autoDrive = drivebase.driveCommandWithAngle(drivebase.calculateOptimalDiagonalRotation());
             CommandScheduler.getInstance().schedule(autoDrive);
-        } else if(hubAlignment) { // Hub Alignment (Lowest priority)
+        } else if(psControllerHID.getR2Button()) { // Hub Alignment (Lowest priority)
             autoDrive = drivebase.driveCommandWithAngle(drivebase.determineHubAngleVelocityAware());
             CommandScheduler.getInstance().schedule(autoDrive);
         } else {
@@ -120,17 +115,6 @@ public class SubsystemManager {
         if(shooterState != ShooterState.SHOOT) {
             if(storageState == StorageState.HELP_SHOOT) storageState = StorageState.OUT;
             if(intakeState == IntakeState.HELP_SHOOT) intakeState = IntakeState.INACTIVE;
-        }
-
-
-        conveyorUnjam = psControllerHID.getPOV() == 0;
-        if (psControllerHID.getPOV() == 90) {
-            hubAlignment = true;
-        } else if (psControllerHID.getPOV() == 270) {
-            hubAlignment = false;
-        }
-        if (shooterState == ShooterState.SHOOT) {
-            hubAlignment = true;
         }
     }
 
