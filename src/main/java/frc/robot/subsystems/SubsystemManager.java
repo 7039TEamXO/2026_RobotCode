@@ -146,7 +146,6 @@ public class SubsystemManager {
 
             RobotContainer.Intake.operate(intakeState, storageState);
 
-            System.out.println(drivebase.calculateDistanceToHub());
             Boolean atShootSpeed = Math.abs(RobotContainer.Shooter.getInputs().ShootMaster_Velocity - RobotContainer.Shooter.calculateShooterVelocity()) < ShooterTuning.SHOOT_VELOCITY_TOLERANCE_get();
             Boolean atShootAngle = drivebase.isCloseEnoughToAngle(drivebase.determineHubAngle(), SwerveDriveTuning.PRECISE_ANGLE_ERROR_CAP_get());
             atShootAngle = true;

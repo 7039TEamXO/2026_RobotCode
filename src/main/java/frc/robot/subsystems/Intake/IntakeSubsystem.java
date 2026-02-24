@@ -8,8 +8,11 @@ import edu.wpi.first.wpilibj.Timer;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -56,6 +59,7 @@ public class IntakeSubsystem implements Subsystem {
     public void operate(IntakeState state, StorageState storageState) {
         io.updateInputs(inputs);
         Logger.processInputs("Intake", inputs);
+        System.out.println("intake position: " + inputs.Control_Position);
 
         if(Constants.GetTuningMode() == TuningMode.ACTIVE) setMotorConfigs();
 
@@ -111,15 +115,23 @@ public class IntakeSubsystem implements Subsystem {
 
         }
 
+        // Use Motion Magic to move the control motor to the requested position when not
+        // in HELP_SHOOT. Keep the existing HELP_SHOOT shake behavior, and keep coast
+        // when the control is open (OUT).
         if(storageState != StorageState.HELP_SHOOT) {
             if(Math.abs(inputs.Control_Position - Position) > IntakeConstants.CONTROL_POS_TOLERANCE) {
-                io.setControlRequest(new DutyCycleOut(Control_Power));
-            } else if(storageState == StorageState.IN) {
-                io.setControlRequest(new DutyCycleOut(IntakeConstants.CONTROL_POWER_STOP));
-            } else {
+                // Command the target position using Motion Magic (closed-loop motion profiling)
+                io.setControlRequest(new MotionMagicVoltage(Position));
+            // } else if(storageState == StorageState.IN) {
+            //     // Hold/stopped when fully in
+            //     io.setControlRequest(new DutyCycleOut(IntakeConstants.CONTROL_POWER_STOP));
+            } 
+            else {
+                // When open/out, let the mechanism coast
                 io.setControlRequest(new CoastOut());
             }
         } else {
+            // HELP_SHOOT keeps the existing shake duty-cycle behaviour
             io.setControlRequest(new DutyCycleOut(Control_Power));
         }
 
@@ -148,6 +160,16 @@ public class IntakeSubsystem implements Subsystem {
         talonFXConfigs.CurrentLimits.StatorCurrentLimit = IntakeConstants.Control_StatorCurrentLimit;
         talonFXConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
         talonFXConfigs.CurrentLimits.SupplyCurrentLimit = IntakeConstants.Control_SupplyCurrentLimit;
+
+    MotionMagicConfigs motionMagicConfigs = talonFXConfigs.MotionMagic;
+    motionMagicConfigs.MotionMagicCruiseVelocity = IntakeTuning.CONTROL_CruiseVelocity_get();
+    motionMagicConfigs.MotionMagicAcceleration = IntakeTuning.CONTROL_Acceleration_get();
+    motionMagicConfigs.MotionMagicJerk = IntakeTuning.CONTROL_Jerk_get();
+
+    // Slot0 PID (kP) for closed-loop position control used by Motion Magic
+    Slot0Configs slot0Configs = talonFXConfigs.Slot0;
+    slot0Configs.kP = IntakeTuning.CONTROL_kP_get();
+    slot0Configs.kV = IntakeTuning.CONTROL_kV_get();
 
         io.applyControlConfiguration(talonFXConfigs);
     }
