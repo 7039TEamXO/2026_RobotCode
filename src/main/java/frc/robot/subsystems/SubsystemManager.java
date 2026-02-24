@@ -67,7 +67,7 @@ public class SubsystemManager {
             autoDrive = drivebase.driveCommandWithAngle(drivebase.calculateOptimalDiagonalRotation());
             CommandScheduler.getInstance().schedule(autoDrive);
         } else if(hubAlignment) { // Hub Alignment (Lowest priority)
-            autoDrive = drivebase.driveCommandWithAngle(drivebase.determineHubAngle());
+            autoDrive = drivebase.driveCommandWithAngle(drivebase.determineHubAngleVelocityAware());
             CommandScheduler.getInstance().schedule(autoDrive);
         } else {
             if(autoDrive != null) {

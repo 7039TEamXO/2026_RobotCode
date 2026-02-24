@@ -24,6 +24,7 @@ public class SwerveDriveTuning {
     private static final LoggedNetworkNumber VX_VELOCITY_THRESHOLD = new LoggedNetworkNumber("/Tuning/Swerve/VX Velocity Threshold", 0.17);
     private static final LoggedNetworkNumber VY_VELOCITY_THRESHOLD = new LoggedNetworkNumber("/Tuning/Swerve/VY Velocity Threshold", 0.17);
     private static final LoggedNetworkNumber OMEGA_VELOCITY_THRESHOLD = new LoggedNetworkNumber("/Tuning/Swerve/OMEGA Velocity Threshold", 1.5);
+    private static final LoggedNetworkNumber HUB_VELOCITY_AWARE_BLEND = new LoggedNetworkNumber("/Tuning/Swerve/Hub Velocity Aware Blend", SwerveDriveConstants.HUB_VELOCITY_AWARE_BLEND);
 
     public static final double JOYSTICK_SLOWDOWN_FACTOR_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? JOYSTICK_SLOWDOWN_FACTOR.get() : SwerveDriveConstants.JOYSTICK_SLOW_DOWN_FACTOR;
@@ -71,6 +72,11 @@ public class SwerveDriveTuning {
 
     public static final double OMEGA_VELOCITY_THRESHOLD_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? OMEGA_VELOCITY_THRESHOLD.get() : SwerveDriveConstants.OMEGA_VELOCITY_THRESHOLD;
+    }
+
+    /** 0 = position-only hub angle, 1 = full velocity-aware hub angle. */
+    public static final double HUB_VELOCITY_AWARE_BLEND_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? HUB_VELOCITY_AWARE_BLEND.get() : SwerveDriveConstants.HUB_VELOCITY_AWARE_BLEND;
     }
 
     // Activates on an R1 press

@@ -392,6 +392,31 @@ public class SwerveSubsystem extends SubsystemBase {
     }
   }
 
+  /**
+   * Returns a pose at the hub center with rotation set to face the hub from current position.
+   * Used by the autopilot to compute a velocity-aware aim angle.
+   */
+  public Pose2d getHubTargetPose() {
+    Translation2d hubTranslation = RobotContainer.teamColorIsBlue() == 1
+        ? new Translation2d(Constants.Field.HUB_X_BLUE, Constants.Field.HUB_Y_BLUE)
+        : new Translation2d(Constants.Field.HUB_X_RED, Constants.Field.HUB_Y_RED);
+    return new Pose2d(hubTranslation, determineHubAngle());
+  }
+
+  /**
+   * Hub aim angle that accounts for robot velocity (translation and rotation).
+   * Use this when shooting while moving so "shoot more to one side" is reflected in the rotation setpoint.
+   * Blend is tunable via SwerveDriveTuning.HUB_VELOCITY_AWARE_BLEND_get() (0 = position-only, 1 = full).
+   */
+  public Rotation2d determineHubAngleVelocityAware() {
+    Rotation2d baseAngle = determineHubAngle();
+    ChassisSpeeds robotRelativeSpeeds = getRobotVelocity();
+    APTarget hubTarget = new APTarget(getHubTargetPose()).withVelocity(0);
+    APResult output = SwerveDriveConstants.kAutopilot.calculate(getPose(), robotRelativeSpeeds, hubTarget);
+    double blend = SwerveDriveTuning.HUB_VELOCITY_AWARE_BLEND_get();
+    return baseAngle.interpolate(output.targetAngle(), Math.clamp(blend, 0, 1));
+  }
+
   public double calculateDistanceToHub() {
     Translation2d hubTranslation;
     if(RobotContainer.teamColorIsBlue() == 1) {
