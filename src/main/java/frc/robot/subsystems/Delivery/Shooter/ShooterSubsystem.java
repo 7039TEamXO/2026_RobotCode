@@ -116,8 +116,8 @@ public class ShooterSubsystem implements Subsystem {
     }
 
     private void setupShooterInterpolatingMap() {
-        shooterInterpolatingMap.put(0.0, 45.0);
-        shooterInterpolatingMap.put(1.5, 47.0);
+        shooterInterpolatingMap.put(0.0, 47.0);
+        shooterInterpolatingMap.put(1.5, 48.0);
         shooterInterpolatingMap.put(2.0, 50.0);
         shooterInterpolatingMap.put(2.5, 54.0);
         shooterInterpolatingMap.put(3.0, 57.0);

@@ -24,7 +24,7 @@ import frc.robot.subsystems.SwerveDrive.SwerveSubsystem;
 
 import java.util.Optional;
 
-import com.ctre.phoenix6.SignalLogger;
+// import com.ctre.phoenix6.SignalLogger;
 
 // import org.littletonrobotics.junction.Logger;
 
@@ -71,8 +71,8 @@ public class RobotContainer {
       // to use in case the rotation is messed up
 
     if(Constants.CurrentSysIdMode == SysIdMode.ACTIVE) {
-      SubsystemManager.getPSJoystick().L1().onTrue(Commands.runOnce(() -> SignalLogger.start()));
-      SubsystemManager.getPSJoystick().R1().onTrue(Commands.runOnce(() -> SignalLogger.stop()));
+      // SubsystemManager.getPSJoystick().L1().onTrue(Commands.runOnce(() -> SignalLogger.start()));
+      // SubsystemManager.getPSJoystick().R1().onTrue(Commands.runOnce(() -> SignalLogger.stop()));
 
       // Shooter Angle SysId
 

@@ -50,10 +50,10 @@ public class SubsystemManager {
         if(psControllerHID.getPOV() == 180) { // Outpost
             autoDrive = drivebase.driveToPose(SwerveSubsystem.getOutpostPose(), false);
             CommandScheduler.getInstance().schedule(autoDrive);
-        } else if(psControllerHID.getR2Button()) { // Tower
+        } else if(psControllerHID.getPOV() == 270) { // Tower
             autoDrive = drivebase.driveToPose(SwerveSubsystem.getTowerPose(), false);
             CommandScheduler.getInstance().schedule(autoDrive);
-        } else if(psControllerHID.getR3Button()) { // Depot / Test
+        } else if(psControllerHID.getPOV() == 90) { // Depot / Test
             // autoDrive = drivebase.driveToPose(new Pose2d(SwerveDriveTuning.TEST_DRIVE_X_get(), SwerveDriveTuning.TEST_DRIVE_Y_get(),
             //     new Rotation2d(Math.toRadians(SwerveDriveTuning.TEST_DRIVE_ANGLE_get()))));
             autoDrive = drivebase.driveToPose(SwerveSubsystem.getDepotPose(), false);
