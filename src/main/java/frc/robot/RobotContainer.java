@@ -96,13 +96,13 @@ public class RobotContainer {
       driveFieldOrientedAngularVelocity = SubsystemManager.getDrivebase().driveCommand(
         () -> (modifyAxis(SubsystemManager.getPSJoystick().getLeftY(), Constants.Operator.LEFT_Y_DEADBAND)),
         () -> (modifyAxis(SubsystemManager.getPSJoystick().getLeftX(), Constants.Operator.LEFT_X_DEADBAND)),
-        () -> modifyAxis(SubsystemManager.getPSJoystick().getRightX(), Constants.Operator.RIGHT_X_DEADBAND));
+        () -> modifyAxis(Constants.Operator.ROTATION_SLOWDOWN_FACTOR * SubsystemManager.getPSJoystick().getRightX(), Constants.Operator.RIGHT_X_DEADBAND));
     } 
     else if(teamColorIsBlue() == 1) {
       driveFieldOrientedAngularVelocity = SubsystemManager.getDrivebase().driveCommand(
         () -> (modifyAxis(-SubsystemManager.getPSJoystick().getLeftY(), Constants.Operator.LEFT_Y_DEADBAND)),
         () -> (modifyAxis(-SubsystemManager.getPSJoystick().getLeftX(), Constants.Operator.LEFT_X_DEADBAND)),
-        () -> -modifyAxis(SubsystemManager.getPSJoystick().getRightX(), Constants.Operator.RIGHT_X_DEADBAND));
+        () -> -modifyAxis(Constants.Operator.ROTATION_SLOWDOWN_FACTOR * SubsystemManager.getPSJoystick().getRightX(), Constants.Operator.RIGHT_X_DEADBAND));
     }
     
     SubsystemManager.setDefaultCommand(driveFieldOrientedAngularVelocity);

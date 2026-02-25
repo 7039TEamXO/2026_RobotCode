@@ -103,7 +103,10 @@ public class SwerveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     if(Constants.GetTuningMode() == TuningMode.ACTIVE) {
+      driveXPID.setPID(SwerveDriveTuning.KP_get(), 0, SwerveDriveTuning.KD_get());
+      driveYPID.setPID(SwerveDriveTuning.KP_get(), 0, SwerveDriveTuning.KD_get());
       rotationPID.setPID(SwerveDriveTuning.KP_ANGULAR_get(), 0, SwerveDriveTuning.KD_ANGULAR_get());
+      slickRotationPID.setPID(SwerveDriveTuning.KP_ANGULAR_SLICK_get(), 0, SwerveDriveTuning.KD_ANGULAR_SLICK_get());
     }
 
     // if(isAuto) filter by isRobotVBelowOne too
@@ -169,6 +172,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /* DRIVE TO POSE COMMANDS (+ a lot of overloading) */
 
+  private PIDController driveXPID = new PIDController(SwerveDriveConstants.KP, 0, SwerveDriveConstants.KD);
+  private PIDController driveYPID = new PIDController(SwerveDriveConstants.KP, 0, SwerveDriveConstants.KD);
   private PIDController rotationPID = new PIDController(SwerveDriveConstants.KP_ANGULAR, 0, SwerveDriveConstants.KD_ANGULAR);
   private PIDController slickRotationPID = new PIDController(SwerveDriveConstants.KP_ANGULAR_SLICK, 0, SwerveDriveConstants.KD_ANGULAR_SLICK);
 
@@ -194,9 +199,20 @@ public class SwerveSubsystem extends SubsystemBase {
       if(angleError < -Math.PI) robotAngle += 2 * Math.PI;
 
       Translation2d fieldRelative = new Translation2d(output.vx().in(MetersPerSecond), output.vy().in(MetersPerSecond));
+
       double omegaRadiansPerSecond = R.calculate(robotAngle);
 
-      swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
+      if(isCloseEnoughToPose(pose)) {
+        PIDController X = driveXPID;
+        PIDController Y = driveYPID;
+
+        X.setSetpoint(pose.getX());
+        Y.setSetpoint(pose.getY());
+
+        fieldRelative = new Translation2d(X.calculate(getPose().getX()), Y.calculate(getPose().getY()));
+      }
+
+      swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
     }).until(() -> {
       if(autoFinish) return isCloseEnoughToPose(pose);
       else return false;
@@ -226,7 +242,17 @@ public class SwerveSubsystem extends SubsystemBase {
       Translation2d fieldRelative = new Translation2d(output.vx().in(MetersPerSecond), output.vy().in(MetersPerSecond));
       double omegaRadiansPerSecond = R.calculate(robotAngle);
 
-      swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
+      if(isCloseEnoughToPose(target.getReference())) {
+        PIDController X = driveXPID;
+        PIDController Y = driveYPID;
+
+        X.setSetpoint(target.getReference().getX());
+        Y.setSetpoint(target.getReference().getY());
+
+        fieldRelative = new Translation2d(X.calculate(getPose().getX()), Y.calculate(getPose().getY()));
+      }
+
+      swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
     }).until(() -> {
       if(autoFinish) return isCloseEnoughToPose(target.getReference());
       else return false;
@@ -256,7 +282,7 @@ public class SwerveSubsystem extends SubsystemBase {
       Translation2d fieldRelative = new Translation2d(output.vx().in(MetersPerSecond), output.vy().in(MetersPerSecond));
       double omegaRadiansPerSecond = R.calculate(robotAngle);
 
-      swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
+      swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
     }).until(() -> {
       return isCloseEnoughToPose(target.getReference(), distance, angle);
     });
@@ -264,7 +290,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   private Integer waypointNumber = 0;
 
-  public Command waypointToPose(APTarget[] targets, double switchDistance) {
+  public Command waypointToPose(APTarget[] targets, double switchDistance, Boolean autoFinish) {
     return run(() -> {
       Logger.recordOutput("Odometry/RequestedPose", targets[waypointNumber].getReference());
 
@@ -293,11 +319,24 @@ public class SwerveSubsystem extends SubsystemBase {
         if(waypointNumber < targets.length - 1) waypointNumber++; 
       }
 
-      swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
+      // Switch to PID at the endpoint
+      if(isCloseEnoughToPose(targets[targets.length - 1].getReference())) {
+        PIDController X = driveXPID;
+        PIDController Y = driveYPID;
+
+        X.setSetpoint(targets[targets.length - 1].getReference().getX());
+        Y.setSetpoint(targets[targets.length - 1].getReference().getY());
+
+        fieldRelative = new Translation2d(X.calculate(getPose().getX()), Y.calculate(getPose().getY()));
+      }
+
+      swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
     }).until(() -> {
-      Boolean condition = isCloseEnoughToPose(targets[targets.length - 1].getReference());
-      if(condition) SubsystemManager.getDrivebase().resetWaypointToPose();
-      return condition;
+      if(autoFinish) {
+        Boolean condition = isCloseEnoughToPose(targets[targets.length - 1].getReference());
+        if(condition) SubsystemManager.getDrivebase().resetWaypointToPose();
+        return condition;
+      } else return false;
     });
   }
 
@@ -330,9 +369,9 @@ public class SwerveSubsystem extends SubsystemBase {
         if(waypointNumber < targets.length - 1) waypointNumber++; 
       }
 
-      swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
+      swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
     }).until(() -> {
-      Boolean condition = isCloseEnoughToPose(targets[targets.length - 1].getReference());
+      Boolean condition = isCloseEnoughToPose(targets[targets.length - 1].getReference(), endDistance, endAngle);
       if(condition) SubsystemManager.getDrivebase().resetWaypointToPose();
       return condition;
     });

@@ -132,12 +132,12 @@ public class TestAuto extends SequentialCommandGroup {
             SubsystemManager.getDrivebase().waypointToPose(new APTarget[]{
                 new APTarget(RAMP_ENTRANCE).withVelocity(1).withEntryAngle(RAMP_ENTRANCE_EA),
                 new APTarget(RAMP_EXIT).withVelocity(2)
-            }, 0.3),
+            }, 0.3, true),
             SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),
             SubsystemManager.getDrivebase().waypointToPose(new APTarget[]{
                 new APTarget(STEAL_START).withVelocity(0).withEntryAngle(STEAL_START_EA),
                 new APTarget(SHOOT_FIRST_ENTRANCE).withVelocity(0)
-            }, 0.2),
+            }, 0.2, true),
             SubsystemManager.operateAuto(ShooterState.SPEED_UP, IntakeState.ACTIVE, StorageState.OUT),
             SubsystemManager.getDrivebase().driveToPose(new APTarget(SHOOT_FIRST).withVelocity(0), 0.1, 1),
             SubsystemManager.operateAuto(ShooterState.SHOOT, IntakeState.INACTIVE, StorageState.OUT),
@@ -151,7 +151,7 @@ public class TestAuto extends SequentialCommandGroup {
                 new APTarget(RAMP_NEXT_ENTRANCE).withVelocity(2),
                 new APTarget(RAMP_NEXT_EXIT).withVelocity(2),
                 new APTarget(FINAL).withVelocity(0)
-            }, 0.2)
+            }, 0.2, false)
         );
     }
 }
