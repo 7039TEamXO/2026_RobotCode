@@ -36,7 +36,7 @@ public class ShooterConstants {
     public static final double Angle_SupplyCurrentLimit = 40;
 
     public static final double ANGLE_INTAKE_HELP_POS = 3; // Rotations
-    public static final double ANGLE_NEUTRAL_ZONE_POS = 4; // Rotations
+    public static final double ANGLE_NEUTRAL_ZONE_POS = 5; // Rotations
 
     public static final double Shoot_StatorCurrentLimit = 120;
     public static final double Shoot_SupplyCurrentLimit = 70;
@@ -68,7 +68,7 @@ public class ShooterConstants {
     public static final double CLIMB_SHOOT_DISTANCE = 3.0;
     public static final double CORNER_SHOOT_DISTANCE = 5.0;
 
-    public static final double ANGLE_SHOOT_MAX = 4.0;
+    public static final double ANGLE_SHOOT_MAX = 5.0;
     
     public static final double RPS_SHOOT_MAX = 100;
 }

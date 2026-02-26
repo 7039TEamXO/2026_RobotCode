@@ -377,7 +377,7 @@ public class SwerveSubsystem extends SubsystemBase {
     });
   }
 
-  private void resetWaypointToPose() {
+  public void resetWaypointToPose() {
     waypointNumber = 0;
     rotationPID = new PIDController(SwerveDriveTuning.KP_ANGULAR_get(), 0, SwerveDriveTuning.KD_ANGULAR_get());
   }
@@ -442,20 +442,6 @@ public class SwerveSubsystem extends SubsystemBase {
     return new Pose2d(hubTranslation, determineHubAngle());
   }
 
-  /**
-   * Hub aim angle that accounts for robot velocity (translation and rotation).
-   * Use this when shooting while moving so "shoot more to one side" is reflected in the rotation setpoint.
-   * Blend is tunable via SwerveDriveTuning.HUB_VELOCITY_AWARE_BLEND_get() (0 = position-only, 1 = full).
-   */
-  public Rotation2d determineHubAngleVelocityAware() {
-    Rotation2d baseAngle = determineHubAngle();
-    ChassisSpeeds robotRelativeSpeeds = getRobotVelocity();
-    APTarget hubTarget = new APTarget(getHubTargetPose()).withVelocity(0);
-    APResult output = SwerveDriveConstants.kAutopilot.calculate(getPose(), robotRelativeSpeeds, hubTarget);
-    double blend = SwerveDriveTuning.HUB_VELOCITY_AWARE_BLEND_get();
-    return baseAngle.interpolate(output.targetAngle(), Math.max(0.0, Math.min(blend, 1.0)));
-  }
-
   public double calculateDistanceToHub() {
     Translation2d hubTranslation;
     if(RobotContainer.teamColorIsBlue() == 1) {
@@ -489,25 +475,25 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public static Pose2d getOutpostPose() {
     if(RobotContainer.teamColorIsBlue() == 1) {
-      return new Pose2d(Constants.Field.OUTPOST_X_BLUE, Constants.Field.OUTPOST_Y_BLUE, Rotation2d.kZero);
+      return new Pose2d(Constants.Field.OUTPOST_X_BLUE, Constants.Field.OUTPOST_Y_BLUE, Rotation2d.k180deg);
     } else {
-      return new Pose2d(Constants.Field.OUTPOST_X_RED, Constants.Field.OUTPOST_Y_RED, Rotation2d.k180deg);
+      return new Pose2d(Constants.Field.OUTPOST_X_RED, Constants.Field.OUTPOST_Y_RED, Rotation2d.kZero);
     }
   }
 
   public static Pose2d getTowerPose() {
     if(RobotContainer.teamColorIsBlue() == 1) {
-      return new Pose2d(Constants.Field.TOWER_X_BLUE, Constants.Field.TOWER_Y_BLUE, Rotation2d.k180deg);
+      return new Pose2d(Constants.Field.TOWER_X_BLUE, Constants.Field.TOWER_Y_BLUE, Rotation2d.kZero);
     } else {
-      return new Pose2d(Constants.Field.TOWER_X_RED, Constants.Field.TOWER_Y_RED, Rotation2d.kZero);
+      return new Pose2d(Constants.Field.TOWER_X_RED, Constants.Field.TOWER_Y_RED, Rotation2d.k180deg);
     }
   }
 
   public static Pose2d getDepotPose() {
     if(RobotContainer.teamColorIsBlue() == 1) {
-      return new Pose2d(Constants.Field.DEPOT_X_BLUE, Constants.Field.DEPOT_Y_BLUE, Rotation2d.kZero);
+      return new Pose2d(Constants.Field.DEPOT_X_BLUE, Constants.Field.DEPOT_Y_BLUE, Rotation2d.k180deg);
     } else {
-      return new Pose2d(Constants.Field.DEPOT_X_RED, Constants.Field.DEPOT_Y_RED, Rotation2d.k180deg);
+      return new Pose2d(Constants.Field.DEPOT_X_RED, Constants.Field.DEPOT_Y_RED, Rotation2d.kZero);
     }
   }
 
@@ -623,6 +609,4 @@ public class SwerveSubsystem extends SubsystemBase {
   public Command turnSysIdDynamic(SysIdRoutine.Direction direction) {
     return turnSysIdRoutine.dynamic(direction);
   }
-
-
 }

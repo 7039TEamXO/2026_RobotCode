@@ -44,12 +44,12 @@ public class SwerveDriveConstants {
     public static final Autopilot kAutopilot = new Autopilot(kProfile);
 
     // PROXIMITY TOLERANCE
-    public static final double CLOSE_DISTANCE_ERROR_CAP = 0.05;
-    public static final double CLOSE_ANGLE_ERROR_CAP = 5;
-    public static final double PRECISE_ANGLE_ERROR_CAP = 2;
+    public static final double CLOSE_DISTANCE_ERROR_CAP = 0.1;
+    public static final double CLOSE_ANGLE_ERROR_CAP = 10;
+    public static final double PRECISE_ANGLE_ERROR_CAP = 3;
 
-    public static final double VX_VELOCITY_THRESHOLD = 0.45;
-    public static final double VY_VELOCITY_THRESHOLD = 0.45;
+    public static final double VX_VELOCITY_THRESHOLD = 1; // 0.45
+    public static final double VY_VELOCITY_THRESHOLD = 1; // 0.45
     public static final double OMEGA_VELOCITY_THRESHOLD = 1.5;
 
     /** Blend for hub aim: 0 = position-only angle, 1 = full velocity-aware angle. */
