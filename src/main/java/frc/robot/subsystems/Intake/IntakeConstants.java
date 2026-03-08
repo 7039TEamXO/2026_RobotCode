@@ -1,8 +1,8 @@
 package frc.robot.subsystems.Intake;
 
 public class IntakeConstants {
-    public static final int IntakeMotorID = 19;
-    public static final int ControlMotorID = 16;
+    public static final int IntakeMotorID = 14;
+    public static final int ControlMotorID = 12;
     
     // INTAKE MOTOR //
     public static final double Intake_StatorCurrentLimit = 60;
@@ -24,7 +24,7 @@ public class IntakeConstants {
 
     public static final double CONTROL_POS_IN = 0; // was -0.1
     public static final double CONTROL_POS_HELP_SHOOT = 3.5;
-    public static final double CONTROL_POS_OUT = 4.3; //was 5.4
+    public static final double CONTROL_POS_OUT = 5; //was 5.4
 
     public static final double CONTROL_POS_TOLERANCE = 0.2;
     public static final double HELP_TOGGLE_PERIOD = 0.4; // seconds
@@ -36,12 +36,12 @@ public class IntakeConstants {
     public static final double Control_SysIdQuasistatic = 0.5;
     public static final double Control_SysIdDynamic = 1.5;
 
-    public static final double Control_kP = 1.7;
-    public static final double Control_kV = 0.22;
-
     // Motion Magic defaults for control (units follow Talon/encoder native units used
     // elsewhere in the project - tuned values can be changed via IntakeTuning)
-    public static final double Control_CruiseVelocity = 70.0;
+    public static final double Control_kP = 0.7;
+    public static final double Control_kV = 0.1;
+
+    public static final double Control_CruiseVelocity = 40.0;
     public static final double Control_Acceleration = 40.0;
-    public static final double Control_Jerk = 600.0;
+    public static final double Control_Jerk = 400.0;
 }

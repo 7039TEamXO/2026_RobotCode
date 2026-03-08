@@ -155,7 +155,6 @@ public class IntakeSubsystem implements Subsystem {
         TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
 
         talonFXConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        talonFXConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // Inverted
         talonFXConfigs.CurrentLimits.StatorCurrentLimit = IntakeConstants.Control_StatorCurrentLimit;
         talonFXConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
         talonFXConfigs.CurrentLimits.SupplyCurrentLimit = IntakeConstants.Control_SupplyCurrentLimit;

@@ -1,10 +1,10 @@
 package frc.robot.subsystems.Delivery.Shooter;
 
 public class ShooterConstants {
-    public static final int ShooterEntryMotorID = 14;
-    public static final int ShooterAngleMotorID = 13;
-    public static final int ShooterMasterMotorID = 15;
-    public static final int ShooterSlaveMotorID = 17;
+    public static final int ShooterEntryMotorID = 16;
+    public static final int ShooterAngleMotorID = 11;
+    public static final int ShooterMasterMotorID = 19;
+    public static final int ShooterSlaveMotorID = 5;
 
     public static final int AbsoluteEncoderID = 0;
 

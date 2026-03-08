@@ -1,7 +1,7 @@
 package frc.robot.subsystems.Delivery.Conveyor;
 
 public class ConveyorConstants {
-    public static final int ConveyorMotorID = 18;
+    public static final int ConveyorMotorID = 13;
 
     public static final double StatorCurrentLimit = 50;
     public static final double SupplyCurrentLimit = 40;
