@@ -74,8 +74,8 @@ public final class Constants
   public static final double LOOP_TIME  = 0.13; // 100ms due to SPARK MAX velocity lag + 20ms loop time + 10ms for safety
 
   public static class Limelight
-  { // -0.2675, -0.1475, 0.71
-    public static final Transform3d Main_RobotToCamera = new Transform3d(new Translation3d(-0.2675, -0.1475, 0.71), new Rotation3d(0, Math.toRadians(0), Math.toRadians(0)));
+  {
+    public static final Transform3d Main_RobotToCamera = new Transform3d(new Translation3d(-0.18, 0.225, 0.73), new Rotation3d(0, 0, 0));
     public static final Transform3d Back_RobotToCamera = new Transform3d(new Translation3d(-0.3, 0.0, 0.2), new Rotation3d(0, Math.toRadians(-20), Math.toRadians(180))); // Temporary
     public static class CameraProperties {
       public static final int resWidth = 1280;

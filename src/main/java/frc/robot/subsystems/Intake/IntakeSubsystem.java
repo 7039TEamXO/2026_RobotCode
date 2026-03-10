@@ -64,7 +64,7 @@ public class IntakeSubsystem implements Subsystem {
 
         double Intake_Power = IntakeConstants.INTAKE_POWER_STOP;
         double Position = IntakeConstants.CONTROL_POS_OUT;
-        // double Control_Power = IntakeConstants.CONTROL_POWER_STOP;
+        double Control_Power = IntakeConstants.CONTROL_POWER_STOP;
 
         switch (state) {
             case ACTIVE:
@@ -98,13 +98,12 @@ public class IntakeSubsystem implements Subsystem {
                     lastHelpToggleTime = now;
                 }
 
-                /*
                 if (helpShootOpen) {
                     Control_Power = IntakeTuning.CONTROL_POWER_SHAKE_get();
                 } else {
                     Control_Power = -IntakeTuning.CONTROL_POWER_SHAKE_get();
                 }
-                */
+                
                 // Temporarily disabled
                 Position = IntakeConstants.CONTROL_POS_OUT; // Temporary
                 break;
@@ -116,16 +115,16 @@ public class IntakeSubsystem implements Subsystem {
 
         }
 
-        // if(storageState != StorageState.HELP_SHOOT) {
+        if(storageState != StorageState.HELP_SHOOT) {
             if(Math.abs(inputs.Control_Position - Position) > IntakeConstants.CONTROL_POS_TOLERANCE) {
                 io.setControlRequest(new MotionMagicVoltage(Position));
             }
             else {
                 io.setControlRequest(new CoastOut());
             }
-        // } else {
-            // io.setControlRequest(new DutyCycleOut(Control_Power));
-        // }
+        } else {
+            io.setControlRequest(new DutyCycleOut(Control_Power));
+        }
 
         io.setIntakeRequest(new DutyCycleOut(Intake_Power));
 

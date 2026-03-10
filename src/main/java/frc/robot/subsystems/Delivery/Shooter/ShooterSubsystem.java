@@ -9,7 +9,6 @@ import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -47,6 +46,19 @@ public class ShooterSubsystem implements Subsystem {
         setupAngleInterpolatingMap();
         setupShooterInterpolatingMap();
 
+        Shoot_SysIdRoutine = new SysIdRoutine(
+            new SysIdRoutine.Config(
+                Volts.per(Second).of(ShooterConstants.Shoot_SysIdQuasistatic), 
+                Volts.of(ShooterConstants.Shoot_SysIdDynamic), null, state -> {
+                    SignalLogger.writeString("state", state.toString());
+            }),
+            new SysIdRoutine.Mechanism(v -> {
+                io.setMasterRequest(new VoltageOut(v));
+
+                io.updateInputs(inputs);
+                Logger.processInputs("Shooter", inputs);
+            }, null, this));
+
         Angle_SysIdRoutine = new SysIdRoutine(
             new SysIdRoutine.Config(
                 Volts.per(Second).of(ShooterConstants.Angle_SysIdQuasistatic), 
@@ -59,6 +71,19 @@ public class ShooterSubsystem implements Subsystem {
                 io.updateInputs(inputs);
                 Logger.processInputs("Shooter", inputs);
             }, null, this));
+
+        Entry_SysIdRoutine = new SysIdRoutine(
+            new SysIdRoutine.Config(
+                Volts.per(Second).of(ShooterConstants.Entry_SysIdQuasistatic), 
+                Volts.of(ShooterConstants.Entry_SysIdDynamic), null, state -> {
+                    SignalLogger.writeString("state", state.toString());
+            }),
+            new SysIdRoutine.Mechanism(v -> {
+                io.setEntryRequest(new VoltageOut(v));
+
+                io.updateInputs(inputs);
+                Logger.processInputs("Shooter", inputs);
+            }, null, this));
     }
 
     public void operate(ShooterState state) {
@@ -67,25 +92,25 @@ public class ShooterSubsystem implements Subsystem {
 
         if(Constants.GetTuningMode() == TuningMode.ACTIVE) setMotorConfigs();
 
-        double Entry_Power = ShooterConstants.ENTRY_POWER_STOP;
+        double Entry_Velocity = ShooterConstants.ENTRY_VELOCITY_STOP;
         double Angle_Position = calculateShooterAngle();
         double Shoot_Velocity = ShooterTuning.SHOOT_VELOCITY_IDLE_get();
         
         switch (state) {
             case INTAKE_HELP:
-                Entry_Power = ShooterTuning.ENTRY_POWER_ROLL_get();
+                Entry_Velocity = ShooterTuning.ENTRY_VELOCITY_ROLL_get();
                 Shoot_Velocity = ShooterTuning.SHOOT_VELOCITY_HELP_get();
                 Angle_Position = ShooterTuning.ANGLE_INTAKE_HELP_POS_get();
                 break;
             case DEPLETE:
-                Entry_Power = ShooterTuning.ENTRY_POWER_REVERSE_get();
+                Entry_Velocity = ShooterTuning.ENTRY_VELOCITY_REVERSE_get();
                 Angle_Position = ShooterTuning.ANGLE_INTAKE_HELP_POS_get();
                 break;
             case SPEED_UP:
                 Shoot_Velocity = calculateShooterVelocity();
                 break;
             case SHOOT:
-                Entry_Power = ShooterTuning.ENTRY_POWER_ROLL_get();
+                Entry_Velocity = ShooterTuning.ENTRY_VELOCITY_ROLL_get();
                 Shoot_Velocity = calculateShooterVelocity();
                 break;
             default:
@@ -93,7 +118,7 @@ public class ShooterSubsystem implements Subsystem {
                 break;
         }
 
-        io.setEntryRequest(new DutyCycleOut(Entry_Power));
+        io.setEntryRequest(new VelocityVoltage(Entry_Velocity));
         io.setAngleRequest(new MotionMagicVoltage(Angle_Position));
         io.setMasterRequest(new VelocityVoltage(Shoot_Velocity));
     }
@@ -145,6 +170,13 @@ public class ShooterSubsystem implements Subsystem {
 
     private void setEntryMotorConfigs() {
         TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
+        Slot0Configs slot0Configs = talonFXConfigs.Slot0;
+        slot0Configs.kS = ShooterTuning.Entry_kS_get();
+        slot0Configs.kV = ShooterTuning.Entry_kV_get();
+        slot0Configs.kA = ShooterTuning.Entry_kA_get();
+        slot0Configs.kP = ShooterTuning.Entry_kP_get();
+        slot0Configs.kI = ShooterTuning.Entry_kI_get();
+        slot0Configs.kD = ShooterTuning.Entry_kD_get();
 
         talonFXConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         talonFXConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // Inverted
@@ -214,7 +246,17 @@ public class ShooterSubsystem implements Subsystem {
 
     // SysId routines //
 
+    private SysIdRoutine Shoot_SysIdRoutine;
     private SysIdRoutine Angle_SysIdRoutine;
+    private SysIdRoutine Entry_SysIdRoutine;
+
+    public Command Shoot_SysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return Shoot_SysIdRoutine.quasistatic(direction);
+    }
+
+    public Command Shoot_SysIdDynamic(SysIdRoutine.Direction direction) {
+        return Shoot_SysIdRoutine.dynamic(direction);
+    }
 
     public Command Angle_SysIdQuasistatic(SysIdRoutine.Direction direction) {
         return Angle_SysIdRoutine.quasistatic(direction);
@@ -222,5 +264,13 @@ public class ShooterSubsystem implements Subsystem {
 
     public Command Angle_SysIdDynamic(SysIdRoutine.Direction direction) {
         return Angle_SysIdRoutine.dynamic(direction);
+    }
+
+    public Command Entry_SysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return Entry_SysIdRoutine.quasistatic(direction);
+    }
+
+    public Command Entry_SysIdDynamic(SysIdRoutine.Direction direction) {
+        return Entry_SysIdRoutine.dynamic(direction);
     }
 }

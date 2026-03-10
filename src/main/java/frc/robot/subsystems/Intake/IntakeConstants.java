@@ -10,7 +10,7 @@ public class IntakeConstants {
 
     public static final double INTAKE_POWER_STOP = 0;
     public static final double INTAKE_POWER_INTAKE = -0.8;
-    public static final double INTAKE_POWER_HELP_SHOOT = -0.6;
+    public static final double INTAKE_POWER_HELP_SHOOT = -0.3;
     public static final double INTAKE_POWER_DEPLETE = 0.8;
 
     // CONTROL MOTOR //
@@ -33,10 +33,10 @@ public class IntakeConstants {
 
     public static final double CONTROL_POS_IN = 0;
     public static final double CONTROL_POS_HELP_SHOOT = 3.5;
-    public static final double CONTROL_POS_OUT = 5.5;
+    public static final double CONTROL_POS_OUT = 5.3;
 
     public static final double CONTROL_POS_TOLERANCE = 0.2;
-    public static final double HELP_TOGGLE_PERIOD = 0.4; // seconds
+    public static final double HELP_TOGGLE_PERIOD = 0.5; // seconds
 
     // OTHER //
     public static final double SimulationMotorGearRatio = 12.8;

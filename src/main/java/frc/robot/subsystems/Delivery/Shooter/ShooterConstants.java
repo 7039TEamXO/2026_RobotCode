@@ -11,13 +11,38 @@ public class ShooterConstants {
     public static final double EncoderGearRatio = 1/6.0;
     public static final double EncoderOffset = 0.0;
 
+    // SHOOTER MOTOR(S) //
+
+    public static final double Shoot_StatorCurrentLimit = 120;
+    public static final double Shoot_SupplyCurrentLimit = 70;
+
+    public static final double Shoot_kS = 0.13673;
+    public static final double Shoot_kV = 0.11405;
+    public static final double Shoot_kA = 0.0047307;
+    public static final double Shoot_kP = 0.03815;
+    public static final double Shoot_kI = 0;
+    public static final double Shoot_kD = 0;
+
+    public static final double SHOOT_VELOCITY_IDLE = 5;
+    public static final double SHOOT_VELOCITY_HELP = 9;
+    public static final double SHOOT_VELOCITY_NEUTRAL_ZONE = 60;
+    public static final double SHOOT_VELOCITY_TOLERANCE = 4;
+
     // ENTRY MOTOR //
+
+    public static final double Entry_kS = 0.37413;
+    public static final double Entry_kV = 0.12912;
+    public static final double Entry_kA = 0.010361;
+    public static final double Entry_kP = 0.077853;
+    public static final double Entry_kI = 0;
+    public static final double Entry_kD = 0;
+
     public static final double Entry_StatorCurrentLimit = 90;
     public static final double Entry_SupplyCurrentLimit = 70;
 
-    public static final double ENTRY_POWER_STOP = 0;
-    public static final double ENTRY_POWER_ROLL = 1;
-    public static final double ENTRY_POWER_REVERSE = -0.5;
+    public static final double ENTRY_VELOCITY_STOP = 0;
+    public static final double ENTRY_VELOCITY_ROLL = 100;
+    public static final double ENTRY_VELOCITY_REVERSE = -50;
 
     // ANGLE MOTOR //
     
@@ -38,29 +63,20 @@ public class ShooterConstants {
     public static final double ANGLE_INTAKE_HELP_POS = 3; // Rotations
     public static final double ANGLE_NEUTRAL_ZONE_POS = 5; // Rotations
 
-    public static final double Shoot_StatorCurrentLimit = 120;
-    public static final double Shoot_SupplyCurrentLimit = 70;
-
-    public static final double Shoot_kS = 0.14302;
-    public static final double Shoot_kV = 0.12465;
-    public static final double Shoot_kA = 0.005227;
-    public static final double Shoot_kP = 0.067;
-    public static final double Shoot_kI = 0;
-    public static final double Shoot_kD = 0;
-
-    public static final double SHOOT_VELOCITY_IDLE = 5;
-    public static final double SHOOT_VELOCITY_HELP = 9;
-    public static final double SHOOT_VELOCITY_NEUTRAL_ZONE = 60;
-    public static final double SHOOT_VELOCITY_TOLERANCE = 4;
-
     // OTHER //
 
     public static final double SimulationMotorGearRatio = 12.8;
 
     // SysId //
 
+    public static final double Shoot_SysIdQuasistatic = 1;
+    public static final double Shoot_SysIdDynamic = 2;
+
     public static final double Angle_SysIdQuasistatic = 0.75;
     public static final double Angle_SysIdDynamic = 1.5;
+
+    public static final double Entry_SysIdQuasistatic = 1;
+    public static final double Entry_SysIdDynamic = 2;
     
     // Shooter mapping //
     

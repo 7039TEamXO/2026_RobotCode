@@ -6,6 +6,16 @@ import frc.robot.Constants;
 import frc.robot.Constants.TuningMode;
 
 public class ShooterTuning {
+    private static final LoggedNetworkNumber Entry_kS = new LoggedNetworkNumber("/Tuning/Shooter/(Entry) kS", ShooterConstants.Entry_kS);
+    private static final LoggedNetworkNumber Entry_kV = new LoggedNetworkNumber("/Tuning/Shooter/(Entry) kV", ShooterConstants.Entry_kV);
+    private static final LoggedNetworkNumber Entry_kA = new LoggedNetworkNumber("/Tuning/Shooter/(Entry) kA", ShooterConstants.Entry_kA);
+    private static final LoggedNetworkNumber Entry_kP = new LoggedNetworkNumber("/Tuning/Shooter/(Entry) kP", ShooterConstants.Entry_kP);
+    private static final LoggedNetworkNumber Entry_kI = new LoggedNetworkNumber("/Tuning/Shooter/(Entry) kI", ShooterConstants.Entry_kI);
+    private static final LoggedNetworkNumber Entry_kD = new LoggedNetworkNumber("/Tuning/Shooter/(Entry) kD", ShooterConstants.Entry_kD);
+
+    private static final LoggedNetworkNumber Entry_Velocity_Roll = new LoggedNetworkNumber("/Tuning/Shooter/(Entry) Velocity Roll", ShooterConstants.ENTRY_VELOCITY_ROLL);
+    private static final LoggedNetworkNumber Entry_Velocity_Reverse = new LoggedNetworkNumber("/Tuning/Shooter/(Entry) Velocity Reverse", ShooterConstants.ENTRY_VELOCITY_REVERSE);
+
     private static final LoggedNetworkNumber Angle_kS = new LoggedNetworkNumber("/Tuning/Shooter/(Angle) kS", ShooterConstants.Angle_kS);
     private static final LoggedNetworkNumber Angle_kV = new LoggedNetworkNumber("/Tuning/Shooter/(Angle) kV", ShooterConstants.Angle_kV);
     private static final LoggedNetworkNumber Angle_kA = new LoggedNetworkNumber("/Tuning/Shooter/(Angle) kA", ShooterConstants.Angle_kA);
@@ -27,13 +37,42 @@ public class ShooterTuning {
     private static final LoggedNetworkNumber Shoot_kI = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) kI", ShooterConstants.Shoot_kI);
     private static final LoggedNetworkNumber Shoot_kD = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) kD", ShooterConstants.Shoot_kD);
 
-    private static final LoggedNetworkNumber Entry_Power_Roll = new LoggedNetworkNumber("/Tuning/Shooter/(Entry) Power Roll", ShooterConstants.ENTRY_POWER_ROLL);
-    private static final LoggedNetworkNumber Entry_Power_Reverse = new LoggedNetworkNumber("/Tuning/Shooter/(Entry) Power Reverse", ShooterConstants.ENTRY_POWER_REVERSE);
-
     private static final LoggedNetworkNumber Shoot_Velocity_Idle = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Velocity Idle", ShooterConstants.SHOOT_VELOCITY_IDLE);
     private static final LoggedNetworkNumber Shoot_Velocity_Help = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Velocity Help", ShooterConstants.SHOOT_VELOCITY_HELP);
     private static final LoggedNetworkNumber Shoot_Velocity_Neutral_Zone = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Velocity Neutral Zone", ShooterConstants.SHOOT_VELOCITY_NEUTRAL_ZONE);
     private static final LoggedNetworkNumber Shoot_Velocity_Tolerance = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Velocity Tolerance rot_s", ShooterConstants.SHOOT_VELOCITY_TOLERANCE);
+
+    public static final double Entry_kS_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? Entry_kS.get() : ShooterConstants.Entry_kS;
+    }
+
+    public static final double Entry_kV_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? Entry_kV.get() : ShooterConstants.Entry_kV;
+    }
+
+    public static final double Entry_kA_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? Entry_kA.get() : ShooterConstants.Entry_kA;
+    }
+
+    public static final double Entry_kP_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? Entry_kP.get() : ShooterConstants.Entry_kP;
+    }
+
+    public static final double Entry_kI_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? Entry_kI.get() : ShooterConstants.Entry_kI;
+    }
+
+    public static final double Entry_kD_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? Entry_kD.get() : ShooterConstants.Entry_kD;
+    }
+
+    public static final double ENTRY_VELOCITY_ROLL_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? Entry_Velocity_Roll.get() : ShooterConstants.ENTRY_VELOCITY_ROLL;
+    }
+
+    public static final double ENTRY_VELOCITY_REVERSE_get() {
+        return Constants.GetTuningMode() != TuningMode.IGNORE ? Entry_Velocity_Reverse.get() : ShooterConstants.ENTRY_VELOCITY_REVERSE;
+    }
 
     public static final double Angle_kS_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? Angle_kS.get() : ShooterConstants.Angle_kS;
@@ -101,14 +140,6 @@ public class ShooterTuning {
 
     public static final double Shoot_kD_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? Shoot_kD.get() : ShooterConstants.Shoot_kD;
-    }
-
-    public static final double ENTRY_POWER_ROLL_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? Entry_Power_Roll.get() : ShooterConstants.ENTRY_POWER_ROLL;
-    }
-
-    public static final double ENTRY_POWER_REVERSE_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? Entry_Power_Reverse.get() : ShooterConstants.ENTRY_POWER_REVERSE;
     }
 
     public static final double SHOOT_VELOCITY_IDLE_get() {
