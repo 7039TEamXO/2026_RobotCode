@@ -10,7 +10,7 @@ public class IntakeConstants {
 
     public static final double INTAKE_POWER_STOP = 0;
     public static final double INTAKE_POWER_INTAKE = -0.8;
-    public static final double INTAKE_POWER_HELP_SHOOT = -0.3;
+    public static final double INTAKE_POWER_HELP_SHOOT = -0.4;
     public static final double INTAKE_POWER_DEPLETE = 0.8;
 
     // CONTROL MOTOR //

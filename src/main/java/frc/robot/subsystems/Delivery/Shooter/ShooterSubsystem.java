@@ -113,6 +113,8 @@ public class ShooterSubsystem implements Subsystem {
                 Entry_Velocity = ShooterTuning.ENTRY_VELOCITY_ROLL_get();
                 Shoot_Velocity = calculateShooterVelocity();
                 break;
+            case UNJAM_HELP:
+                Entry_Velocity = ShooterTuning.ENTRY_VELOCITY_REVERSE_get();
             default:
             case IDLE:
                 break;
@@ -128,27 +130,30 @@ public class ShooterSubsystem implements Subsystem {
     }
     
     private void setupAngleInterpolatingMap() {
-        angleInterpolatingMap.put(0.0, 1.0);
-        angleInterpolatingMap.put(1.5, 1.5);
-        angleInterpolatingMap.put(2.0, 2.0);
-        angleInterpolatingMap.put(2.5, 2.0);
-        angleInterpolatingMap.put(3.0, 2.5);
-        angleInterpolatingMap.put(4.0, 3.0);
-        angleInterpolatingMap.put(4.5, 3.5);
+        angleInterpolatingMap.put(0.0, 2.0);
+        angleInterpolatingMap.put(1.5, 2.5);
+        angleInterpolatingMap.put(2.0, 3.0);
+        angleInterpolatingMap.put(2.5, 3.5);
+        angleInterpolatingMap.put(3.0, 4.0);
+        angleInterpolatingMap.put(4.0, 4.5);
+        angleInterpolatingMap.put(4.5, 5.0);
+        angleInterpolatingMap.put(5.0, 5.0);
+        angleInterpolatingMap.put(5.5, 5.5);
 
         // Consistency
         angleInterpolatingMap.put(10.0, ShooterConstants.ANGLE_SHOOT_MAX);
     }
 
     private void setupShooterInterpolatingMap() {
-        shooterInterpolatingMap.put(0.0, 47.0);
-        shooterInterpolatingMap.put(1.5, 48.0);
-        shooterInterpolatingMap.put(2.0, 50.0);
-        shooterInterpolatingMap.put(2.5, 54.0);
-        shooterInterpolatingMap.put(3.0, 57.0);
-        shooterInterpolatingMap.put(4.0, 60.0);
-        shooterInterpolatingMap.put(4.5, 61.0);
-        shooterInterpolatingMap.put(5.0, 63.0);
+        shooterInterpolatingMap.put(0.0, 40.0);
+        shooterInterpolatingMap.put(1.5, 45.0);
+        shooterInterpolatingMap.put(2.0, 47.0);
+        shooterInterpolatingMap.put(2.5, 48.0);
+        shooterInterpolatingMap.put(3.0, 50.0);
+        shooterInterpolatingMap.put(4.0, 53.0);
+        shooterInterpolatingMap.put(4.5, 53.0);
+        shooterInterpolatingMap.put(5.0, 58.0);
+        shooterInterpolatingMap.put(5.5, 60.0);
         
         // Consistency
         shooterInterpolatingMap.put(10.0, ShooterConstants.RPS_SHOOT_MAX);

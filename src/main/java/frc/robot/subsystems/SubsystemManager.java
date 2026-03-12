@@ -173,7 +173,7 @@ public class SubsystemManager {
             // Unjamming has the highest priority
             if(conveyorUnjam) {
                 conveyorState = ConveyorState.UNJAM;
-                if(shooterState == ShooterState.SHOOT) shooterState = ShooterState.SPEED_UP;
+                shooterState = ShooterState.UNJAM_HELP;
             }
 
             RobotContainer.Conveyor.operate(conveyorState);

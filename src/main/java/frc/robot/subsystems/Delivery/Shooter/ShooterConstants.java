@@ -14,12 +14,12 @@ public class ShooterConstants {
     // SHOOTER MOTOR(S) //
 
     public static final double Shoot_StatorCurrentLimit = 120;
-    public static final double Shoot_SupplyCurrentLimit = 70;
+    public static final double Shoot_SupplyCurrentLimit = 100;
 
-    public static final double Shoot_kS = 0.13673;
-    public static final double Shoot_kV = 0.11405;
-    public static final double Shoot_kA = 0.0047307;
-    public static final double Shoot_kP = 0.03815;
+    public static final double Shoot_kS = 0.13515;
+    public static final double Shoot_kV = 0.1163;
+    public static final double Shoot_kA = 0.010804;
+    public static final double Shoot_kP = 0.069845;
     public static final double Shoot_kI = 0;
     public static final double Shoot_kD = 0;
 
@@ -41,8 +41,8 @@ public class ShooterConstants {
     public static final double Entry_SupplyCurrentLimit = 70;
 
     public static final double ENTRY_VELOCITY_STOP = 0;
-    public static final double ENTRY_VELOCITY_ROLL = 100;
-    public static final double ENTRY_VELOCITY_REVERSE = -50;
+    public static final double ENTRY_VELOCITY_ROLL = 120;
+    public static final double ENTRY_VELOCITY_REVERSE = -60;
 
     // ANGLE MOTOR //
     
@@ -79,12 +79,7 @@ public class ShooterConstants {
     public static final double Entry_SysIdDynamic = 2;
     
     // Shooter mapping //
-    
-    public static final double HUB_SHOOT_DISTANCE = 1.0;
-    public static final double CLIMB_SHOOT_DISTANCE = 3.0;
-    public static final double CORNER_SHOOT_DISTANCE = 5.0;
 
-    public static final double ANGLE_SHOOT_MAX = 5.0;
-    
-    public static final double RPS_SHOOT_MAX = 100;
+    public static final double ANGLE_SHOOT_MAX = 6.0;
+    public static final double RPS_SHOOT_MAX = 65;
 }

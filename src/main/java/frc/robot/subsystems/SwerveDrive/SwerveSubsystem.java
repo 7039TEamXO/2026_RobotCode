@@ -124,8 +124,6 @@ public class SwerveSubsystem extends SubsystemBase {
       Logger.recordOutput("Odometry/RequestedPose", new Pose2d(Double.MAX_VALUE, Double.MAX_VALUE, new Rotation2d()));
     }
     // Logger.recordOutput("Odometry/BasicPose", swerveDriveOdometry.getPose()); // Tuning
-
-    System.out.println(calculateDistanceToHub());
   }
 
   @Override

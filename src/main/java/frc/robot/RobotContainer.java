@@ -76,10 +76,10 @@ public class RobotContainer {
 
       // Shooter Main+Slave SysId
 
-      // SubsystemManager.getPSJoystick().circle().whileTrue(Shooter.Shoot_SysIdQuasistatic(SysIdRoutine.Direction.kForward));
-      // SubsystemManager.getPSJoystick().square().whileTrue(Shooter.Shoot_SysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-      // SubsystemManager.getPSJoystick().triangle().whileTrue(Shooter.Shoot_SysIdDynamic(SysIdRoutine.Direction.kForward));
-      // SubsystemManager.getPSJoystick().cross().whileTrue(Shooter.Shoot_SysIdDynamic(SysIdRoutine.Direction.kReverse));
+      SubsystemManager.getPSJoystick().circle().whileTrue(Shooter.Shoot_SysIdQuasistatic(SysIdRoutine.Direction.kForward));
+      SubsystemManager.getPSJoystick().square().whileTrue(Shooter.Shoot_SysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+      SubsystemManager.getPSJoystick().triangle().whileTrue(Shooter.Shoot_SysIdDynamic(SysIdRoutine.Direction.kForward));
+      SubsystemManager.getPSJoystick().cross().whileTrue(Shooter.Shoot_SysIdDynamic(SysIdRoutine.Direction.kReverse));
 
       // Shooter Angle SysId
 
@@ -90,10 +90,10 @@ public class RobotContainer {
 
       // Shooter Entry SysId
 
-      SubsystemManager.getPSJoystick().circle().whileTrue(Shooter.Entry_SysIdQuasistatic(SysIdRoutine.Direction.kForward));
-      SubsystemManager.getPSJoystick().square().whileTrue(Shooter.Entry_SysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-      SubsystemManager.getPSJoystick().triangle().whileTrue(Shooter.Entry_SysIdDynamic(SysIdRoutine.Direction.kForward));
-      SubsystemManager.getPSJoystick().cross().whileTrue(Shooter.Entry_SysIdDynamic(SysIdRoutine.Direction.kReverse));
+      // SubsystemManager.getPSJoystick().circle().whileTrue(Shooter.Entry_SysIdQuasistatic(SysIdRoutine.Direction.kForward));
+      // SubsystemManager.getPSJoystick().square().whileTrue(Shooter.Entry_SysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+      // SubsystemManager.getPSJoystick().triangle().whileTrue(Shooter.Entry_SysIdDynamic(SysIdRoutine.Direction.kForward));
+      // SubsystemManager.getPSJoystick().cross().whileTrue(Shooter.Entry_SysIdDynamic(SysIdRoutine.Direction.kReverse));
 
       // Intake Control SysId
 
