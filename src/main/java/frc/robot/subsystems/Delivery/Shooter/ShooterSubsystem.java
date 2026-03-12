@@ -33,6 +33,7 @@ public class ShooterSubsystem implements Subsystem {
 
     private final InterpolatingDoubleTreeMap angleInterpolatingMap = new InterpolatingDoubleTreeMap();
     private final InterpolatingDoubleTreeMap shooterInterpolatingMap = new InterpolatingDoubleTreeMap();
+    private final InterpolatingDoubleTreeMap timeInterpolatingMap = new InterpolatingDoubleTreeMap();
 
     public ShooterSubsystem(ShooterIO _io) {
         io = _io;
@@ -45,6 +46,7 @@ public class ShooterSubsystem implements Subsystem {
 
         setupAngleInterpolatingMap();
         setupShooterInterpolatingMap();
+        setupTimeInterpolatingMap();
 
         Shoot_SysIdRoutine = new SysIdRoutine(
             new SysIdRoutine.Config(
@@ -146,12 +148,12 @@ public class ShooterSubsystem implements Subsystem {
 
     private void setupShooterInterpolatingMap() {
         shooterInterpolatingMap.put(0.0, 40.0);
-        shooterInterpolatingMap.put(1.5, 45.0);
-        shooterInterpolatingMap.put(2.0, 47.0);
-        shooterInterpolatingMap.put(2.5, 48.0);
-        shooterInterpolatingMap.put(3.0, 50.0);
+        shooterInterpolatingMap.put(1.5, 43.0);
+        shooterInterpolatingMap.put(2.0, 45.0);
+        shooterInterpolatingMap.put(2.5, 47.0);
+        shooterInterpolatingMap.put(3.0, 48.0);
         shooterInterpolatingMap.put(4.0, 53.0);
-        shooterInterpolatingMap.put(4.5, 53.0);
+        shooterInterpolatingMap.put(4.5, 54.0);
         shooterInterpolatingMap.put(5.0, 58.0);
         shooterInterpolatingMap.put(5.5, 60.0);
         
@@ -159,18 +161,38 @@ public class ShooterSubsystem implements Subsystem {
         shooterInterpolatingMap.put(10.0, ShooterConstants.RPS_SHOOT_MAX);
     }
 
+    private void setupTimeInterpolatingMap() {
+        timeInterpolatingMap.put(0.0, 1.0);
+        timeInterpolatingMap.put(1.5, 1.5);
+        timeInterpolatingMap.put(2.0, 1.5);
+        timeInterpolatingMap.put(2.5, 1.5);
+        timeInterpolatingMap.put(3.0, 2.0);
+        timeInterpolatingMap.put(4.0, 2.0);
+        timeInterpolatingMap.put(4.5, 2.0);
+        timeInterpolatingMap.put(5.0, 2.5);
+        timeInterpolatingMap.put(5.5, 2.5);
+
+        // Consistency
+        timeInterpolatingMap.put(10.0, ShooterConstants.TIME_SHOOT_MAX);
+    }
+
     public double calculateShooterAngle() {
         if(Dashboard.getAcceptAngleChanges()) return Dashboard.getAngleValue();
         if(SubsystemManager.getDrivebase().isInNeutralZone()) return ShooterTuning.ANGLE_NEUTRAL_ZONE_POS_get();
-        double distanceFromHub = SubsystemManager.getDrivebase().calculateDistanceToHub();
+        double distanceFromHub = SubsystemManager.getDrivebase().calculateDistanceToHub(true);
         return angleInterpolatingMap.get(distanceFromHub);
     }
 
     public double calculateShooterVelocity() {
         if(Dashboard.getAcceptVelocityChanges()) return Dashboard.getVelocityValue();
         if(SubsystemManager.getDrivebase().isInNeutralZone()) return ShooterTuning.SHOOT_VELOCITY_NEUTRAL_ZONE_get();
-        double distanceFromHub = SubsystemManager.getDrivebase().calculateDistanceToHub();
+        double distanceFromHub = SubsystemManager.getDrivebase().calculateDistanceToHub(true);
         return shooterInterpolatingMap.get(distanceFromHub);
+    }
+
+    public double calculateFlightTime(double distance) {
+        // No Dashboard tuning required
+        return timeInterpolatingMap.get(distance);
     }
 
     private void setEntryMotorConfigs() {

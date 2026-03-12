@@ -82,4 +82,5 @@ public class ShooterConstants {
 
     public static final double ANGLE_SHOOT_MAX = 6.0;
     public static final double RPS_SHOOT_MAX = 65;
+    public static final double TIME_SHOOT_MAX = 3;
 }

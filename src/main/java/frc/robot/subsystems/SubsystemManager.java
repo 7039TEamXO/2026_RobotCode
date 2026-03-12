@@ -2,8 +2,8 @@ package frc.robot.subsystems;
 
 import java.io.File;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
+// import edu.wpi.first.math.geometry.Pose2d;
+// import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS4Controller;
@@ -15,13 +15,13 @@ import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.Mode;
 import frc.robot.Constants.SysIdMode;
-import frc.robot.commands.TestAuto;
+// import frc.robot.commands.TestAuto;
 import frc.robot.subsystems.Delivery.Conveyor.ConveyorState;
 import frc.robot.subsystems.Delivery.Shooter.ShooterState;
 import frc.robot.subsystems.Delivery.Shooter.ShooterTuning;
 import frc.robot.subsystems.Intake.IntakeState;
 import frc.robot.subsystems.Intake.StorageState;
-import frc.robot.subsystems.SwerveDrive.SwerveDriveConstants;
+// import frc.robot.subsystems.SwerveDrive.SwerveDriveConstants;
 import frc.robot.subsystems.SwerveDrive.SwerveDriveTuning;
 import frc.robot.subsystems.SwerveDrive.SwerveSubsystem;
 public class SubsystemManager {
@@ -56,16 +56,16 @@ public class SubsystemManager {
             autoDrive = drivebase.driveToPose(SwerveSubsystem.getTowerPose(), false);
             CommandScheduler.getInstance().schedule(autoDrive);
         } else if(psControllerHID.getPOV() == 90) { // Depot / Test
-            autoDrive = drivebase.driveToPose(new Pose2d(SwerveDriveConstants.TEST_DRIVE_X, SwerveDriveConstants.TEST_DRIVE_Y,
-                Rotation2d.fromDegrees(SwerveDriveConstants.TEST_DRIVE_ANGLE)), false);
-            // autoDrive = drivebase.driveToPose(SwerveSubsystem.getDepotPose(), false);
-            autoDrive = new TestAuto("red right");
+            // autoDrive = drivebase.driveToPose(new Pose2d(SwerveDriveConstants.TEST_DRIVE_X, SwerveDriveConstants.TEST_DRIVE_Y,
+            //     Rotation2d.fromDegrees(SwerveDriveConstants.TEST_DRIVE_ANGLE)), false);
+            autoDrive = drivebase.driveToPose(SwerveSubsystem.getDepotPose(), false);
+            // autoDrive = new TestAuto("red right");
             CommandScheduler.getInstance().schedule(autoDrive);
         } else if(psControllerHID.getL3Button()) { // Ramp Alignment (Lower priority)
             autoDrive = drivebase.driveCommandWithAngle(drivebase.calculateOptimalDiagonalRotation());
             CommandScheduler.getInstance().schedule(autoDrive);
         } else if(psControllerHID.getR2Button()) { // Hub Alignment (Lowest priority)
-            autoDrive = drivebase.driveCommandWithAngle(drivebase.determineHubAngle());
+            autoDrive = drivebase.driveCommandWithAngle(drivebase.determineHubAngle(true));
             CommandScheduler.getInstance().schedule(autoDrive);
         } else {
             if(autoDrive != null) {

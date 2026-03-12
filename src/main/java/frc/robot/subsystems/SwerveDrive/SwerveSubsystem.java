@@ -422,34 +422,65 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public Rotation2d determineHubAngle() {
+    Translation2d translation = getHubTargetPose().getTranslation();
     if(RobotContainer.teamColorIsBlue() == 1) { // Blue
-      return new Translation2d(Constants.Field.HUB_X_BLUE, Constants.Field.HUB_Y_BLUE)
-        .minus(getPose().getTranslation()).getAngle();
+      return translation.minus(getPose().getTranslation()).getAngle();
     } else { // Red
-      return new Translation2d(Constants.Field.HUB_X_RED, Constants.Field.HUB_Y_RED)
-        .minus(getPose().getTranslation()).getAngle();
+      return translation.minus(getPose().getTranslation()).getAngle();
     }
   }
 
-  /**
-   * Returns a pose at the hub center with rotation set to face the hub from current position.
-   * Used by the autopilot to compute a velocity-aware aim angle.
-   */
+  public Rotation2d determineHubAngle(boolean virtual) {
+    Translation2d translation = getHubTargetPose().getTranslation();
+    if(virtual) translation = getVirtualTargetPose().getTranslation();
+    if(RobotContainer.teamColorIsBlue() == 1) { // Blue
+      return translation.minus(getPose().getTranslation()).getAngle();
+    } else { // Red
+      return translation.minus(getPose().getTranslation()).getAngle();
+    }
+  }
+
   public Pose2d getHubTargetPose() {
     Translation2d hubTranslation = RobotContainer.teamColorIsBlue() == 1
         ? new Translation2d(Constants.Field.HUB_X_BLUE, Constants.Field.HUB_Y_BLUE)
         : new Translation2d(Constants.Field.HUB_X_RED, Constants.Field.HUB_Y_RED);
-    return new Pose2d(hubTranslation, determineHubAngle());
+    return new Pose2d(hubTranslation, hubTranslation.minus(getPose().getTranslation()).getAngle());
   }
 
-  public double calculateDistanceToHub() {
-    Translation2d hubTranslation;
-    if(RobotContainer.teamColorIsBlue() == 1) {
-      hubTranslation = new Translation2d(Constants.Field.HUB_X_BLUE, Constants.Field.HUB_Y_BLUE);
-    } else {
-      hubTranslation = new Translation2d(Constants.Field.HUB_X_RED, Constants.Field.HUB_Y_RED);
-    }
+  public Pose2d getVirtualTargetPose() {
+    Translation2d hubTranslation = getHubTargetPose().getTranslation();
+    
+    double distance = calculateDistanceToHub();
+    double flightTime = RobotContainer.Shooter.calculateFlightTime(distance);
+    
+    ChassisSpeeds fieldSpeeds = swerveDrive.getFieldVelocity(); 
+    Translation2d ballOffset = new Translation2d(
+        fieldSpeeds.vxMetersPerSecond * flightTime,
+        fieldSpeeds.vyMetersPerSecond * flightTime
+    );
 
+    Translation2d virtualTarget = hubTranslation.minus(ballOffset);
+
+    // Second round for higher accuracy
+    double virtualDistance = getPose().getTranslation().getDistance(virtualTarget);
+    double refinedFlightTime = RobotContainer.Shooter.calculateFlightTime(virtualDistance);
+
+    virtualTarget = hubTranslation.minus(new Translation2d(
+        fieldSpeeds.vxMetersPerSecond * refinedFlightTime,
+        fieldSpeeds.vyMetersPerSecond * refinedFlightTime
+    ));
+
+    return new Pose2d(virtualTarget, virtualTarget.minus(getPose().getTranslation()).getAngle());
+  }
+
+  public double calculateDistanceToHub() { 
+    Translation2d hubTranslation = getHubTargetPose().getTranslation();
+    return getPose().getTranslation().getDistance(hubTranslation);
+  }
+
+  public double calculateDistanceToHub(boolean virtual) {
+    Translation2d hubTranslation = getHubTargetPose().getTranslation();
+    if(virtual) hubTranslation = getVirtualTargetPose().getTranslation();
     return getPose().getTranslation().getDistance(hubTranslation);
   }
 
