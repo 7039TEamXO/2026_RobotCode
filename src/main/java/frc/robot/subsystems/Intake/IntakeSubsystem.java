@@ -31,6 +31,12 @@ public class IntakeSubsystem implements Subsystem {
     // HELP_SHOOT toggle state
     private boolean helpShootOpen = false;
     private double lastHelpToggleTime = 0.0;
+    private double initialTimeWithNoHelpSec = 1.5;
+    // track when we entered HELP_SHOOT so we can wait initialTimeWithNoHelpSec
+    private double helpShootEntryTime = 0.0;
+    // track previous storage state for entry detection
+    private StorageState lastStorageState = StorageState.OUT;
+
 
     public IntakeSubsystem(IntakeIO _io) {        
         io = _io;
@@ -91,21 +97,34 @@ public class IntakeSubsystem implements Subsystem {
                 break;
                 
             case HELP_SHOOT:
-                // Toggle open/close on a fixed time interval. Position is ignored.
+                // On entry into HELP_SHOOT, record the time so we can wait a fixed delay
                 double now = Timer.getFPGATimestamp();
-                if (now - lastHelpToggleTime > IntakeConstants.HELP_TOGGLE_PERIOD) {
-                    helpShootOpen = !helpShootOpen;
+                if (storageState != lastStorageState) {
+                    helpShootEntryTime = now;
                     lastHelpToggleTime = now;
+                    helpShootOpen = false;
                 }
 
-                if (helpShootOpen) {
-                    Control_Power = IntakeTuning.CONTROL_POWER_SHAKE_get();
+                // During the initial delay keep the control arm out and don't pump
+                if (now - helpShootEntryTime < initialTimeWithNoHelpSec) {
+                    Position = IntakeConstants.CONTROL_POS_OUT;
+                    Control_Power = 0.0;
                 } else {
-                    Control_Power = -IntakeTuning.CONTROL_POWER_SHAKE_get();
+                    // After delay, toggle open/close on configured period
+                    if (now - lastHelpToggleTime > IntakeConstants.HELP_TOGGLE_PERIOD) {
+                        helpShootOpen = !helpShootOpen;
+                        lastHelpToggleTime = now;
+                    }
+
+                    if (helpShootOpen) {
+                        Control_Power = IntakeTuning.CONTROL_POWER_SHAKE_get();
+                    } else {
+                        Control_Power = -IntakeTuning.CONTROL_POWER_SHAKE_get();
+                    }
+
+                    // Keep the mechanism out while helping
+                    Position = IntakeConstants.CONTROL_POS_OUT;
                 }
-                
-                // Temporarily disabled
-                Position = IntakeConstants.CONTROL_POS_OUT; // Temporary
                 break;
 
             default:
@@ -120,6 +139,7 @@ public class IntakeSubsystem implements Subsystem {
                 io.setControlRequest(new MotionMagicVoltage(Position));
             }
             else {
+
                 io.setControlRequest(new CoastOut());
             }
         } else {
@@ -127,7 +147,9 @@ public class IntakeSubsystem implements Subsystem {
         }
 
         io.setIntakeRequest(new DutyCycleOut(Intake_Power));
-
+        
+        // remember storage state for next cycle so we can detect entry into HELP_SHOOT
+        lastStorageState = storageState;
         
     }
 

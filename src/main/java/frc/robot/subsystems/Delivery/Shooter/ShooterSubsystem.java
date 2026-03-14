@@ -132,30 +132,31 @@ public class ShooterSubsystem implements Subsystem {
     }
     
     private void setupAngleInterpolatingMap() {
-        angleInterpolatingMap.put(0.0, 2.0);
-        angleInterpolatingMap.put(1.5, 2.5);
-        angleInterpolatingMap.put(2.0, 3.0);
-        angleInterpolatingMap.put(2.5, 3.5);
-        angleInterpolatingMap.put(3.0, 4.0);
-        angleInterpolatingMap.put(4.0, 4.5);
-        angleInterpolatingMap.put(4.5, 5.0);
-        angleInterpolatingMap.put(5.0, 5.0);
-        angleInterpolatingMap.put(5.5, 5.5);
+        final double angleCalibraionOffset = 0;
+        angleInterpolatingMap.put(0.0, 2.0 + angleCalibraionOffset);
+        angleInterpolatingMap.put(1.5, 2.5 + angleCalibraionOffset);
+        angleInterpolatingMap.put(2.0, 3.0 + angleCalibraionOffset);
+        angleInterpolatingMap.put(2.5, 3.5 + angleCalibraionOffset);
+        angleInterpolatingMap.put(3.0, 4.0 + angleCalibraionOffset);
+        angleInterpolatingMap.put(4.0, 4.5 + angleCalibraionOffset);
+        angleInterpolatingMap.put(4.5, 5.0 + angleCalibraionOffset);
+        angleInterpolatingMap.put(5.0, 5.0 + angleCalibraionOffset);
+        angleInterpolatingMap.put(5.5, 5.5 + angleCalibraionOffset);
 
         // Consistency
-        angleInterpolatingMap.put(10.0, ShooterConstants.ANGLE_SHOOT_MAX);
-    }
+        angleInterpolatingMap.put(10.0, ShooterConstants.ANGLE_SHOOT_MAX);    }
 
     private void setupShooterInterpolatingMap() {
-        shooterInterpolatingMap.put(0.0, 40.0);
-        shooterInterpolatingMap.put(1.5, 43.0);
-        shooterInterpolatingMap.put(2.0, 45.0);
-        shooterInterpolatingMap.put(2.5, 47.0);
-        shooterInterpolatingMap.put(3.0, 48.0);
-        shooterInterpolatingMap.put(4.0, 53.0);
-        shooterInterpolatingMap.put(4.5, 54.0);
-        shooterInterpolatingMap.put(5.0, 58.0);
-        shooterInterpolatingMap.put(5.5, 60.0);
+        final double shooterCalibraionOffset = 2.0;
+        shooterInterpolatingMap.put(0.0, 42.0 + shooterCalibraionOffset);
+        shooterInterpolatingMap.put(1.5, 45.0 + shooterCalibraionOffset);
+        shooterInterpolatingMap.put(2.0, 47.0 + shooterCalibraionOffset);
+        shooterInterpolatingMap.put(2.5, 49.0 + shooterCalibraionOffset);
+        shooterInterpolatingMap.put(3.0, 50.0 + shooterCalibraionOffset);
+        shooterInterpolatingMap.put(4.0, 55.0 + shooterCalibraionOffset);
+        shooterInterpolatingMap.put(4.5, 56.0 + shooterCalibraionOffset);
+        shooterInterpolatingMap.put(5.0, 60.0 + shooterCalibraionOffset);
+        shooterInterpolatingMap.put(5.5, 62.0 + shooterCalibraionOffset);
         
         // Consistency
         shooterInterpolatingMap.put(10.0, ShooterConstants.RPS_SHOOT_MAX);
