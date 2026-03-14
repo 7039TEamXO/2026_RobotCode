@@ -22,6 +22,7 @@ import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LimelightSimMode;
 import frc.robot.Constants.TuningMode;
+import frc.robot.commands.NeutralZoneAuto;
 import frc.robot.commands.TestAuto;
 import frc.robot.subsystems.SubsystemManager;
 import frc.robot.subsystems.Delivery.Shooter.ShooterState;
@@ -212,7 +213,7 @@ public class SwerveSubsystem extends SubsystemBase {
         fieldRelative = new Translation2d(X.calculate(getPose().getX()), Y.calculate(getPose().getY()));
       }
 
-      swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
+      swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
     }).until(() -> {
       if(autoFinish) return isCloseEnoughToPose(pose);
       else return false;
@@ -252,7 +253,7 @@ public class SwerveSubsystem extends SubsystemBase {
         fieldRelative = new Translation2d(X.calculate(getPose().getX()), Y.calculate(getPose().getY()));
       }
 
-      swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
+      swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
     }).until(() -> {
       if(autoFinish) return isCloseEnoughToPose(target.getReference());
       else return false;
@@ -282,7 +283,7 @@ public class SwerveSubsystem extends SubsystemBase {
       Translation2d fieldRelative = new Translation2d(output.vx().in(MetersPerSecond), output.vy().in(MetersPerSecond));
       double omegaRadiansPerSecond = R.calculate(robotAngle);
 
-      swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
+      swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
     }).until(() -> {
       return isCloseEnoughToPose(target.getReference(), distance, angle);
     });
@@ -330,7 +331,7 @@ public class SwerveSubsystem extends SubsystemBase {
         fieldRelative = new Translation2d(X.calculate(getPose().getX()), Y.calculate(getPose().getY()));
       }
 
-      swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
+      swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
     }).until(() -> {
       if(autoFinish) {
         Boolean condition = isCloseEnoughToPose(targets[targets.length - 1].getReference());
@@ -369,7 +370,7 @@ public class SwerveSubsystem extends SubsystemBase {
         if(waypointNumber < targets.length - 1) waypointNumber++; 
       }
 
-      swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
+      swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
     }).until(() -> {
       Boolean condition = isCloseEnoughToPose(targets[targets.length - 1].getReference(), endDistance, endAngle);
       if(condition) SubsystemManager.getDrivebase().resetWaypointToPose();
@@ -417,7 +418,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
       double omegaRadiansPerSecond = R.calculate(robotAngle);
 
-      swerveDrive.drive(translation, -omegaRadiansPerSecond, true, false);
+      swerveDrive.drive(translation, omegaRadiansPerSecond, true, false);
     });
   }
 
@@ -530,6 +531,18 @@ public class SwerveSubsystem extends SubsystemBase {
 
       case "Test Auto Blue Right":
         return new TestAuto("blue right");
+      
+
+      case "Neutral Zone Auto Red Left":        return new NeutralZoneAuto("red left");
+
+      case "Neutral Zone Auto Red Right":
+        return new NeutralZoneAuto("red right");
+
+      case "Neutral Zone Auto Blue Left":
+        return new NeutralZoneAuto("blue left");
+
+      case "Neutral Zone Auto Blue Right":
+        return new NeutralZoneAuto("blue right");
     }
   }
 
