@@ -15,7 +15,6 @@ import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.Mode;
 import frc.robot.Constants.SysIdMode;
-import frc.robot.commands.TestAuto;
 import frc.robot.subsystems.Delivery.Conveyor.ConveyorState;
 import frc.robot.subsystems.Delivery.Shooter.ShooterState;
 import frc.robot.subsystems.Delivery.Shooter.ShooterTuning;
@@ -58,8 +57,7 @@ public class SubsystemManager {
         } else if(psControllerHID.getPOV() == 90) { // Depot / Test
             autoDrive = drivebase.driveToPose(new Pose2d(SwerveDriveConstants.TEST_DRIVE_X, SwerveDriveConstants.TEST_DRIVE_Y,
                 Rotation2d.fromDegrees(SwerveDriveConstants.TEST_DRIVE_ANGLE)), false);
-            // autoDrive = drivebase.driveToPose(SwerveSubsystem.getDepotPose(), false);
-            autoDrive = new TestAuto("red right");
+            autoDrive = drivebase.driveToPose(SwerveSubsystem.getDepotPose(), false);
             CommandScheduler.getInstance().schedule(autoDrive);
         } else if(psControllerHID.getL3Button()) { // Ramp Alignment (Lower priority)
             autoDrive = drivebase.driveCommandWithAngle(drivebase.calculateOptimalDiagonalRotation());
