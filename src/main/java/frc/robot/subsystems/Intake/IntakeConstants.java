@@ -5,11 +5,11 @@ public class IntakeConstants {
     public static final int ControlMotorID = 16;
     
     // INTAKE MOTOR //
-    public static final double Intake_StatorCurrentLimit = 60;
+    public static final double Intake_StatorCurrentLimit = 80;
     public static final double Intake_SupplyCurrentLimit = 60;
 
     public static final double INTAKE_POWER_STOP = 0;
-    public static final double INTAKE_POWER_INTAKE = -0.8;
+    public static final double INTAKE_POWER_INTAKE = -1;
     public static final double INTAKE_POWER_HELP_SHOOT = -0.6;
     public static final double INTAKE_POWER_DEPLETE = 0.8;
 

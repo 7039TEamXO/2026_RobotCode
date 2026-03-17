@@ -213,7 +213,7 @@ public class SwerveSubsystem extends SubsystemBase {
         fieldRelative = new Translation2d(X.calculate(getPose().getX()), Y.calculate(getPose().getY()));
       }
 
-      swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
+      swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
     }).until(() -> {
       if(autoFinish) return isCloseEnoughToPose(pose);
       else return false;
@@ -253,7 +253,7 @@ public class SwerveSubsystem extends SubsystemBase {
         fieldRelative = new Translation2d(X.calculate(getPose().getX()), Y.calculate(getPose().getY()));
       }
 
-      swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
+      swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
     }).until(() -> {
       if(autoFinish) return isCloseEnoughToPose(target.getReference());
       else return false;
@@ -283,7 +283,7 @@ public class SwerveSubsystem extends SubsystemBase {
       Translation2d fieldRelative = new Translation2d(output.vx().in(MetersPerSecond), output.vy().in(MetersPerSecond));
       double omegaRadiansPerSecond = R.calculate(robotAngle);
 
-      swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
+      swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
     }).until(() -> {
       return isCloseEnoughToPose(target.getReference(), distance, angle);
     });
@@ -332,7 +332,7 @@ public class SwerveSubsystem extends SubsystemBase {
         fieldRelative = new Translation2d(X.calculate(getPose().getX()), Y.calculate(getPose().getY()));
       }
 
-      swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
+      swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
     }).until(() -> {
       if(autoFinish) {
         Boolean condition = isCloseEnoughToPose(targets[targets.length - 1].getReference()) &&
@@ -372,7 +372,7 @@ public class SwerveSubsystem extends SubsystemBase {
         if(waypointNumber < targets.length - 1) waypointNumber++; 
       }
       
-      swerveDrive.drive(fieldRelative, omegaRadiansPerSecond, true, false);
+      swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
     }).until(() -> {
       Boolean condition = isCloseEnoughToPose(targets[targets.length - 1].getReference(), endDistance, endAngle) &&
         waypointNumber == targets.length - 1;
@@ -421,7 +421,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
       double omegaRadiansPerSecond = R.calculate(robotAngle);
 
-      swerveDrive.drive(translation, omegaRadiansPerSecond, true, false);
+      swerveDrive.drive(translation, -omegaRadiansPerSecond, true, false);
     });
   }
 
