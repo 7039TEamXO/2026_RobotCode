@@ -1,10 +1,14 @@
 package frc.robot;
 
 public enum Autos {
-    TestAutoRedLeft("Test Auto Red Left"),
-    TestAutoRedRight("Test Auto Red Right"),
-    TestAutoBlueLeft("Test Auto Blue Left"),
-    TestAutoBlueRight("Test Auto Blue Right");
+    CollectRedLeft("Collect (Red Left)"),
+    CollectRedRight("Collect (Red Right)"),
+    CollectBlueLeft("Collect (Blue Left)"),
+    CollectBlueRight("Collect (Blue Right)"),
+    ShootRedLeft("Shoot (Red Left)"),
+    ShootRedRight("Shoot (Red Right)"),
+    ShootBlueLeft("Shoot (Blue Left)"),
+    ShootBlueRight("Shoot (Blue Right)");
     
     private final String autoName;
     

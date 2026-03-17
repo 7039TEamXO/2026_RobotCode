@@ -22,7 +22,8 @@ import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LimelightSimMode;
 import frc.robot.Constants.TuningMode;
-import frc.robot.commands.TestAuto;
+import frc.robot.commands.CollectAuto;
+import frc.robot.commands.ShootAuto;
 import frc.robot.subsystems.SubsystemManager;
 import frc.robot.subsystems.Delivery.Shooter.ShooterState;
 
@@ -315,12 +316,13 @@ public class SwerveSubsystem extends SubsystemBase {
       double omegaRadiansPerSecond = R.calculate(robotAngle);
 
       // Hopping onto the next waypoint
-      if(isCloseEnoughToPose(targets[waypointNumber].getReference(), switchDistance)) {
+      if(isCloseEnoughToPose(targets[waypointNumber].getReference(), switchDistance, 1e5)) {
         if(waypointNumber < targets.length - 1) waypointNumber++; 
       }
 
       // Switch to PID at the endpoint
-      if(isCloseEnoughToPose(targets[targets.length - 1].getReference())) {
+      if(isCloseEnoughToPose(targets[targets.length - 1].getReference()) &&
+          waypointNumber == targets.length - 1) {
         PIDController X = driveXPID;
         PIDController Y = driveYPID;
 
@@ -333,7 +335,8 @@ public class SwerveSubsystem extends SubsystemBase {
       swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
     }).until(() -> {
       if(autoFinish) {
-        Boolean condition = isCloseEnoughToPose(targets[targets.length - 1].getReference());
+        Boolean condition = isCloseEnoughToPose(targets[targets.length - 1].getReference()) &&
+          waypointNumber == targets.length - 1;
         if(condition) SubsystemManager.getDrivebase().resetWaypointToPose();
         return condition;
       } else return false;
@@ -365,13 +368,14 @@ public class SwerveSubsystem extends SubsystemBase {
       double omegaRadiansPerSecond = R.calculate(robotAngle);
 
       // Hopping onto the next waypoint
-      if(isCloseEnoughToPose(targets[waypointNumber].getReference(), switchDistance)) {
+      if(isCloseEnoughToPose(targets[waypointNumber].getReference(), switchDistance, 1e5)) {
         if(waypointNumber < targets.length - 1) waypointNumber++; 
       }
 
       swerveDrive.drive(fieldRelative, -omegaRadiansPerSecond, true, false);
     }).until(() -> {
-      Boolean condition = isCloseEnoughToPose(targets[targets.length - 1].getReference(), endDistance, endAngle);
+      Boolean condition = isCloseEnoughToPose(targets[targets.length - 1].getReference(), endDistance, endAngle) &&
+        waypointNumber == targets.length - 1;
       if(condition) SubsystemManager.getDrivebase().resetWaypointToPose();
       return condition;
     });
@@ -549,18 +553,30 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public static Command getAutonomousCommand(String pathName) {
     switch(pathName) {
-      default:
-      case "Test Auto Red Left":
-        return new TestAuto("red left");
+      case "Collect (Red Left)":
+        return new CollectAuto("red left");
       
-      case "Test Auto Red Right":
-        return new TestAuto("red right");
+      default:
+      case "Collect (Red Right)":
+        return new CollectAuto("red right");
 
-      case "Test Auto Blue Left":
-        return new TestAuto("blue left");
+      case "Collect (Blue Left)":
+        return new CollectAuto("blue left");
 
-      case "Test Auto Blue Right":
-        return new TestAuto("blue right");
+      case "Collect (Blue Right)":
+        return new CollectAuto("blue right");
+
+      case "Shoot (Red Left)":
+        return new ShootAuto("red left");
+
+      case "Shoot (Red Right)":
+        return new ShootAuto("red right");
+
+      case "Shoot (Blue Left)":
+        return new ShootAuto("blue left");
+
+      case "Shoot (Blue Right)":
+        return new ShootAuto("blue right");
     }
   }
 
