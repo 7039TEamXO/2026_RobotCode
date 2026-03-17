@@ -15,7 +15,7 @@ import frc.robot.utils.LimelightHelpers;
 
 public class CameraReal implements CameraIO {
     private final NetworkTable limelightTable;
-    // private final NetworkTable limelightTableBack;
+    private final NetworkTable limelightTableBack;
     private final int allValidIDs[];
 
     private double Main_AngleFromMT1;
@@ -24,15 +24,15 @@ public class CameraReal implements CameraIO {
     private double Main_TimestampSeconds;
     private Matrix<N3, N1> Main_StdDevs;
 
-    // private double Back_AngleFromMT1;
-    // private boolean Back_DoRejectUpdate;
-    // private Pose2d Back_EstimatedPose;
-    // private double Back_TimestampSeconds;
-    // private Matrix<N3, N1> Back_StdDevs;
+    private double Back_AngleFromMT1;
+    private boolean Back_DoRejectUpdate;
+    private Pose2d Back_EstimatedPose;
+    private double Back_TimestampSeconds;
+    private Matrix<N3, N1> Back_StdDevs;
 
     public CameraReal() {
         limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
-        // limelightTableBack = NetworkTableInstance.getDefault().getTable("limelight_back");
+        limelightTableBack = NetworkTableInstance.getDefault().getTable("limelight-back");
         allValidIDs = new int[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32};
 
         Main_AngleFromMT1 = 0;
@@ -41,11 +41,18 @@ public class CameraReal implements CameraIO {
         Main_EstimatedPose = new Pose2d();
         Main_TimestampSeconds = 0;
         Main_StdDevs = VecBuilder.fill(0.1, 0.1, 0.01);
+
+        Back_AngleFromMT1 = 0;
+
+        Back_DoRejectUpdate = true;
+        Back_EstimatedPose = new Pose2d();
+        Back_TimestampSeconds = 0;
+        Back_StdDevs = VecBuilder.fill(0.1, 0.1, 0.01);
     }
 
     public void init() {
         setLimelightConfiguration();
-        // setBackLimelightConfiguration();
+        setBackLimelightConfiguration();
     }
 
     private void setLimelightConfiguration() {
@@ -53,30 +60,28 @@ public class CameraReal implements CameraIO {
         // Process at half resolution for improved framerate and reduced range
         LimelightHelpers.SetFiducialDownscalingOverride("limelight", 2.0f); 
         LimelightHelpers.setCameraPose_RobotSpace("limelight", 
-            Constants.Limelight.Main_RobotToCamera.getX(),                   // Forward offset (meters)
-            Constants.Limelight.Main_RobotToCamera.getY(),                   // Side offset (meters)
-            Constants.Limelight.Main_RobotToCamera.getZ(),                   // Height offset (meters)
-            Constants.Limelight.Main_RobotToCamera.getRotation().getX(),     // Roll (degrees)
-            Constants.Limelight.Main_RobotToCamera.getRotation().getY(),     // Pitch (degrees)
-            Constants.Limelight.Main_RobotToCamera.getRotation().getZ()      // Yaw (degrees)
+            Constants.Limelight.Main_RobotToCamera.getX(),                                  // Forward offset (meters)
+            Constants.Limelight.Main_RobotToCamera.getY(),                                  // Side offset (meters)
+            Constants.Limelight.Main_RobotToCamera.getZ(),                                  // Height offset (meters)
+            Math.toDegrees(Constants.Limelight.Main_RobotToCamera.getRotation().getX()),    // Roll (degrees)
+            Math.toDegrees(Constants.Limelight.Main_RobotToCamera.getRotation().getY()),    // Pitch (degrees)
+            Math.toDegrees(Constants.Limelight.Main_RobotToCamera.getRotation().getZ())     // Yaw (degrees)
         );
     }
 
-    /*
     private void setBackLimelightConfiguration() {
-        LimelightHelpers.SetFiducialIDFiltersOverride("limelight_back", allValidIDs);
+        LimelightHelpers.SetFiducialIDFiltersOverride("limelight-back", allValidIDs);
         // Process at half resolution for improved framerate and reduced range
-        LimelightHelpers.SetFiducialDownscalingOverride("limelight_back", 2.0f); 
-        LimelightHelpers.setCameraPose_RobotSpace("limelight_back", 
-            Constants.Limelight.Back_RobotToCamera.getX(),                   // Forward offset (meters)
-            Constants.Limelight.Back_RobotToCamera.getY(),                   // Side offset (meters)
-            Constants.Limelight.Back_RobotToCamera.getZ(),                   // Height offset (meters)
-            Constants.Limelight.Back_RobotToCamera.getRotation().getX(),     // Roll (degrees)
-            Constants.Limelight.Back_RobotToCamera.getRotation().getY(),     // Pitch (degrees)
-            Constants.Limelight.Back_RobotToCamera.getRotation().getZ()      // Yaw (degrees)
+        LimelightHelpers.SetFiducialDownscalingOverride("limelight-back", 2.0f); 
+        LimelightHelpers.setCameraPose_RobotSpace("limelight-back", 
+            Constants.Limelight.Back_RobotToCamera.getX(),                                  // Forward offset (meters)
+            Constants.Limelight.Back_RobotToCamera.getY(),                                  // Side offset (meters)
+            Constants.Limelight.Back_RobotToCamera.getZ(),                                  // Height offset (meters)
+            Math.toDegrees(Constants.Limelight.Back_RobotToCamera.getRotation().getX()),    // Roll (degrees)
+            Math.toDegrees(Constants.Limelight.Back_RobotToCamera.getRotation().getY()),    // Pitch (degrees)
+            Math.toDegrees(Constants.Limelight.Back_RobotToCamera.getRotation().getZ())     // Yaw (degrees)
         );
     }
-    */
 
     public void updateInputs(CameraIOInputs inputs) {
         inputs.Main_DoRejectUpdate = Main_DoRejectUpdate;
@@ -89,7 +94,6 @@ public class CameraReal implements CameraIO {
         inputs.Main_TA = LimelightHelpers.getTA("limelight");
         inputs.Main_MT1 = Main_AngleFromMT1;
 
-        /*
         inputs.Back_DoRejectUpdate = Back_DoRejectUpdate;
         inputs.Back_EstimatedPose = Back_EstimatedPose;
         inputs.Back_TimestampSeconds = Back_TimestampSeconds;
@@ -97,14 +101,13 @@ public class CameraReal implements CameraIO {
 
         inputs.Back_HasTarget = Back_HasTarget();
         inputs.Back_MainAprilTagID = Back_GetMainAprilTagID();
-        inputs.Back_TA = LimelightHelpers.getTA("limelight");
+        inputs.Back_TA = LimelightHelpers.getTA("limelight-back");
         inputs.Back_MT1 = Back_AngleFromMT1;
-        */
     }
 
     public void periodic() {
         Main_Periodic();
-        // Back_Periodic();
+        Back_Periodic();
     }
 
     private void Main_Periodic() {
@@ -143,14 +146,13 @@ public class CameraReal implements CameraIO {
         } 
     }
 
-    /*
     private void Back_Periodic() {
         Back_DoRejectUpdate = false;
 
         double suppliedAngle = SubsystemManager.getDrivebase().getHeading().getDegrees();
 
         // Temporary replacement due to Pigeon's unpredictability
-        if(LimelightHelpers.getTA("limelight_back") > Limelight.TAForMT1) { 
+        if(LimelightHelpers.getTA("limelight-back") > Limelight.TAForMT1) { 
             Double[] inputArray = limelightTableBack.getEntry("botpose_wpiblue").getDoubleArray(new Double[]{});
             if(inputArray.length > 5) {
                 Back_AngleFromMT1 = limelightTableBack.getEntry("botpose_wpiblue").getDoubleArray(new Double[]{})[5];
@@ -158,8 +160,8 @@ public class CameraReal implements CameraIO {
             }
         }
         
-        LimelightHelpers.SetRobotOrientation("limelight_back", suppliedAngle, 0, 0, 0, 0, 0);
-        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight_back");
+        LimelightHelpers.SetRobotOrientation("limelight-back", suppliedAngle, 0, 0, 0, 0, 0);
+        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-back");
         double[] currentStdDevs = limelightTableBack.getEntry("stddevs").getDoubleArray(new double[12]);
       
         if (mt2 != null) { // if our angular velocity is greater than 360 degrees per second, ignore vision updates
@@ -179,7 +181,6 @@ public class CameraReal implements CameraIO {
             }
         } 
     }
-    */
 
     private boolean Main_HasTarget() {
         return LimelightHelpers.getTV("limelight");
@@ -189,15 +190,13 @@ public class CameraReal implements CameraIO {
         return (int)LimelightHelpers.getFiducialID("limelight");
     }
 
-    /*
     private boolean Back_HasTarget() {
-        return LimelightHelpers.getTV("limelight_back");
+        return LimelightHelpers.getTV("limelight-back");
     }
 
     private int Back_GetMainAprilTagID() {
-        return (int)LimelightHelpers.getFiducialID("limelight_back");
+        return (int)LimelightHelpers.getFiducialID("limelight-back");
     }
-    */
 
     @Override
     public void close() throws Exception {

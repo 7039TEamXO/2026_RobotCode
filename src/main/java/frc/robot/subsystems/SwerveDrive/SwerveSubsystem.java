@@ -178,7 +178,7 @@ public class SwerveSubsystem extends SubsystemBase {
   private PIDController rotationPID = new PIDController(SwerveDriveConstants.KP_ANGULAR, 0, SwerveDriveConstants.KD_ANGULAR);
   private PIDController slickRotationPID = new PIDController(SwerveDriveConstants.KP_ANGULAR_SLICK, 0, SwerveDriveConstants.KD_ANGULAR_SLICK);
 
-  public Command driveToPose(Pose2d pose, Boolean autoFinish) {
+  public Command driveToPose(Pose2d pose, Boolean autoFinish, Boolean gentle) {
     return run(() -> {
       Logger.recordOutput("Odometry/RequestedPose", pose);
 
@@ -186,6 +186,7 @@ public class SwerveSubsystem extends SubsystemBase {
       ChassisSpeeds robotRelativeSpeeds = getRobotVelocity();
       APTarget target = new APTarget(pose);
       APResult output = SwerveDriveConstants.kAutopilot.calculate(getPose(), robotRelativeSpeeds, target);
+      if(gentle) output = SwerveDriveConstants.kAutopilotGentle.calculate(getPose(), robotRelativeSpeeds, target);
 
       // Rotation compute
       PIDController R = rotationPID;
@@ -220,13 +221,14 @@ public class SwerveSubsystem extends SubsystemBase {
     });
   }
 
-  public Command driveToPose(APTarget target, Boolean autoFinish) {
+  public Command driveToPose(APTarget target, Boolean autoFinish, Boolean gentle) {
     return run(() -> {
       Logger.recordOutput("Odometry/RequestedPose", target.getReference());
 
       // Drive compute
       ChassisSpeeds robotRelativeSpeeds = getRobotVelocity();
       APResult output = SwerveDriveConstants.kAutopilot.calculate(getPose(), robotRelativeSpeeds, target);
+      if(gentle) output = SwerveDriveConstants.kAutopilotGentle.calculate(getPose(), robotRelativeSpeeds, target);
 
       // Rotation compute
       PIDController R = rotationPID;
@@ -260,13 +262,14 @@ public class SwerveSubsystem extends SubsystemBase {
     });
   }
 
-  public Command driveToPose(APTarget target, double distance, double angle) {
+  public Command driveToPose(APTarget target, double distance, double angle, Boolean gentle) {
     return run(() -> {
       Logger.recordOutput("Odometry/RequestedPose", target.getReference());
 
       // Drive compute
       ChassisSpeeds robotRelativeSpeeds = getRobotVelocity();
       APResult output = SwerveDriveConstants.kAutopilot.calculate(getPose(), robotRelativeSpeeds, target);
+      if(gentle) output = SwerveDriveConstants.kAutopilotGentle.calculate(getPose(), robotRelativeSpeeds, target);
 
       // Rotation compute
       PIDController R = rotationPID;

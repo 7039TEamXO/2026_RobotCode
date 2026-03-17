@@ -43,6 +43,19 @@ public class SwerveDriveConstants {
 
     public static final Autopilot kAutopilot = new Autopilot(kProfile);
 
+    public static final double MAX_GENTLE_VELOCITY = 2;
+    private static final APConstraints kConstraintsGentle = new APConstraints()
+        .withVelocity(MAX_GENTLE_VELOCITY)
+        .withAcceleration(7039.0)
+        .withJerk(2);
+
+    private static final APProfile kProfileGentle = new APProfile(kConstraintsGentle)
+        .withErrorXY(Centimeters.of(20))
+        .withErrorTheta(Degrees.of(1))
+        .withBeelineRadius(Centimeters.of(10));
+
+    public static final Autopilot kAutopilotGentle = new Autopilot(kProfileGentle);
+
     // PROXIMITY TOLERANCE
     public static final double CLOSE_DISTANCE_ERROR_CAP = 0.1;
     public static final double CLOSE_ANGLE_ERROR_CAP = 10;
@@ -52,7 +65,6 @@ public class SwerveDriveConstants {
     public static final double VY_VELOCITY_THRESHOLD = 1; // 0.45
     public static final double OMEGA_VELOCITY_THRESHOLD = 1.5;
 
-    /** Blend for hub aim: 0 = position-only angle, 1 = full velocity-aware angle. */
     public static final double HUB_VELOCITY_AWARE_BLEND = 1.0;
 
     // TEST DTP

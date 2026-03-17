@@ -61,7 +61,7 @@ public final class Constants
     ACTIVE, INACTIVE
   }
 
-  public static final LimelightSimMode CurrentLimelightSimMode = LimelightSimMode.PROPER;
+  public static final LimelightSimMode CurrentLimelightSimMode = LimelightSimMode.BASIC;
 
   public static enum LimelightSimMode {
     PROPER, BASIC
@@ -76,7 +76,7 @@ public final class Constants
   public static class Limelight
   {
     public static final Transform3d Main_RobotToCamera = new Transform3d(new Translation3d(-0.18, 0.225, 0.73), new Rotation3d(0, 0, 0));
-    public static final Transform3d Back_RobotToCamera = new Transform3d(new Translation3d(-0.3, 0.0, 0.2), new Rotation3d(0, Math.toRadians(-20), Math.toRadians(180))); // Temporary
+    public static final Transform3d Back_RobotToCamera = new Transform3d(new Translation3d(-0.31, -0.22, 0.515), new Rotation3d(0, 0, Math.toRadians(180))); // Temporary
     public static class CameraProperties {
       public static final int resWidth = 1280;
       public static final int resHeight = 960;

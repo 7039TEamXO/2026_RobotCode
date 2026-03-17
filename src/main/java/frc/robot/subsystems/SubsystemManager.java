@@ -49,15 +49,15 @@ public class SubsystemManager {
     private static void scheduleAutoDrive() {
         // TO-DO: Check if in ramp zone
         if(psControllerHID.getPOV() == 180) { // Outpost
-            autoDrive = drivebase.driveToPose(SwerveSubsystem.getOutpostPose(), false);
+            autoDrive = drivebase.driveToPose(SwerveSubsystem.getOutpostPose(), false, false);
             CommandScheduler.getInstance().schedule(autoDrive);
         } else if(psControllerHID.getPOV() == 270) { // Tower
-            autoDrive = drivebase.driveToPose(SwerveSubsystem.getTowerPose(), false);
+            autoDrive = drivebase.driveToPose(SwerveSubsystem.getTowerPose(), false, false);
             CommandScheduler.getInstance().schedule(autoDrive);
         } else if(psControllerHID.getPOV() == 90) { // Depot / Test
             // autoDrive = drivebase.driveToPose(new Pose2d(SwerveDriveConstants.TEST_DRIVE_X, SwerveDriveConstants.TEST_DRIVE_Y,
             //     Rotation2d.fromDegrees(SwerveDriveConstants.TEST_DRIVE_ANGLE)), false);
-            autoDrive = drivebase.driveToPose(SwerveSubsystem.getDepotPose(), false);
+            autoDrive = drivebase.driveToPose(SwerveSubsystem.getDepotPose(), false, false);
             CommandScheduler.getInstance().schedule(autoDrive);
         } else if(psControllerHID.getL3Button()) { // Ramp Alignment (Lower priority)
             autoDrive = drivebase.driveCommandWithAngle(drivebase.calculateOptimalDiagonalRotation());
