@@ -59,15 +59,15 @@ public class ShootAuto extends SequentialCommandGroup {
 
     public ShootAuto(String orientation) {
         // Default is "red right"
-        RAMP_START = new Pose2d(13.2, 5.5, Rotation2d.kCW_90deg);
-        RAMP_CROSS = new Pose2d(10.8, 5.5, Rotation2d.kCW_90deg);
+        RAMP_START = new Pose2d(13.2, 5.5, Rotation2d.k180deg);
+        RAMP_CROSS = new Pose2d(10.8, 5.7, Rotation2d.k180deg);
         RAMP_RETURN_EA = Rotation2d.kZero;
         RAMP_START_ALIGNED = new Pose2d(13.2, 5.5, Rotation2d.fromDegrees(-131));
         RAMP_CROSS_FINAL = new Pose2d(10.8, 5.3, Rotation2d.k180deg);
         RAMP_START_FINAL = new Pose2d(13.2, 5.5, Rotation2d.k180deg);
 
-        STEAL_START = new Pose2d(9.5, 7, Rotation2d.kCW_90deg);
-        STEAL_START_EA = Rotation2d.k180deg;
+        STEAL_START = new Pose2d(9.5, 6, Rotation2d.fromDegrees(225));
+        STEAL_START_EA = Rotation2d.fromDegrees(225);
         STEAL_END = new Pose2d(9, 4, Rotation2d.kCW_90deg);
         STEAL_END_EA = Rotation2d.kCW_90deg;
         STEAL_FURTHER_END = new Pose2d(9, 2, Rotation2d.kCW_90deg);
@@ -165,9 +165,10 @@ public class ShootAuto extends SequentialCommandGroup {
             SubsystemManager.getDrivebase().driveToPose(new APTarget(RAMP_START_ALIGNED), 0.03, 2, false),
             SubsystemManager.operateAuto(ShooterState.SHOOT, IntakeState.HELP_SHOOT, StorageState.HELP_SHOOT),
             Commands.waitSeconds(8),
-            SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),
+            SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.IN),
             SubsystemManager.getDrivebase().driveToPose(
                 new APTarget(RAMP_CROSS).withVelocity(1), true, true),
+            SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),   
             SubsystemManager.getDrivebase().waypointToPose(new APTarget[]{
                 new APTarget(STEAL_START).withVelocity(3).withEntryAngle(STEAL_START_EA),
                 new APTarget(STEAL_FURTHER_END).withVelocity(0).withEntryAngle(STEAL_END_EA)

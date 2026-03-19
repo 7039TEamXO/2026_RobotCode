@@ -18,6 +18,7 @@ public class CollectAuto extends SequentialCommandGroup {
     private Pose2d RAMP_CROSS;
 
     private Pose2d STEAL_START;
+    private Pose2d STEAL_START_STRAIGHT;
     private Rotation2d STEAL_START_EA; // Entry angle
     private Pose2d STEAL_CENTER;
     private Rotation2d STEAL_CENTER_EA;
@@ -60,10 +61,11 @@ public class CollectAuto extends SequentialCommandGroup {
 
     public CollectAuto(String orientation) {
         // Default is "red right"
-        RAMP_START = new Pose2d(13.2, 5.4, Rotation2d.kCW_90deg);
-        RAMP_CROSS = new Pose2d(10.8, 5.8, Rotation2d.kCW_90deg);
-        STEAL_START = new Pose2d(9.5, 7, Rotation2d.kCW_90deg);
-        STEAL_START_EA = Rotation2d.k180deg;
+        RAMP_START = new Pose2d(13.2, 5.5, Rotation2d.k180deg);
+        RAMP_CROSS = new Pose2d(10.8, 5.7, Rotation2d.k180deg);
+        STEAL_START = new Pose2d(9.5, 6, Rotation2d.fromDegrees(225));
+        STEAL_START_STRAIGHT = new Pose2d(9.5, 6, Rotation2d.kCW_90deg);
+        STEAL_START_EA = Rotation2d.fromDegrees(225);
         STEAL_CENTER = new Pose2d(8.725, 4, Rotation2d.kCW_90deg);
         STEAL_CENTER_EA = Rotation2d.kCW_90deg;
         NEXT_STEAL_CENTER = new Pose2d(10.5, 4, Rotation2d.kCW_90deg);
@@ -85,6 +87,7 @@ public class CollectAuto extends SequentialCommandGroup {
                 RAMP_START = ToRedLeft(RAMP_START);
                 RAMP_CROSS = ToRedLeft(RAMP_CROSS);
                 STEAL_START = ToRedLeft(STEAL_START);
+                STEAL_START_STRAIGHT = ToRedLeft(STEAL_START_STRAIGHT);
                 STEAL_START_EA = ToRedLeft(STEAL_START_EA);
                 STEAL_CENTER = ToRedLeft(STEAL_CENTER);
                 STEAL_CENTER_EA = ToRedLeft(STEAL_CENTER_EA);
@@ -102,6 +105,7 @@ public class CollectAuto extends SequentialCommandGroup {
                 RAMP_START = ToBlueRight(RAMP_START);
                 RAMP_CROSS = ToBlueRight(RAMP_CROSS);
                 STEAL_START = ToBlueRight(STEAL_START);
+                STEAL_START_STRAIGHT = ToBlueRight(STEAL_START_STRAIGHT);
                 STEAL_START_EA = ToBlueRight(STEAL_START_EA);
                 STEAL_CENTER = ToBlueRight(STEAL_CENTER);
                 STEAL_CENTER_EA = ToBlueRight(STEAL_CENTER_EA);
@@ -119,6 +123,7 @@ public class CollectAuto extends SequentialCommandGroup {
                 RAMP_START = ToBlueLeft(RAMP_START);
                 RAMP_CROSS = ToBlueLeft(RAMP_CROSS);
                 STEAL_START = ToBlueLeft(STEAL_START);
+                STEAL_START_STRAIGHT = ToBlueLeft(STEAL_START_STRAIGHT);
                 STEAL_START_EA = ToBlueLeft(STEAL_START_EA);
                 STEAL_CENTER = ToBlueLeft(STEAL_CENTER);
                 STEAL_CENTER_EA = ToBlueLeft(STEAL_CENTER_EA);
@@ -155,7 +160,7 @@ public class CollectAuto extends SequentialCommandGroup {
             Commands.waitSeconds(4),
             SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),
             SubsystemManager.getDrivebase().waypointToPose(new APTarget[]{
-                new APTarget(STEAL_START).withVelocity(2).withEntryAngle(STEAL_START_EA),
+                new APTarget(STEAL_START_STRAIGHT).withVelocity(2).withEntryAngle(STEAL_CENTER_EA),
                 new APTarget(NEXT_STEAL_CENTER).withVelocity(3).withEntryAngle(STEAL_CENTER_EA),
                 new APTarget(NEXT_STEAL_END).withVelocity(2),
                 new APTarget(TROUGH_NEXT).withVelocity(0).withEntryAngle(TROUGH_EA)
