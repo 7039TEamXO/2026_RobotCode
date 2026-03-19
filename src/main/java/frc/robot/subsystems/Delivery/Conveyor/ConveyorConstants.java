@@ -12,7 +12,7 @@ public class ConveyorConstants {
     public static final double CONVEYOR_POWER_STOP = 0;
 
 
-    public static final double UNJAM_HALF_CYCLE_LENGTH = 300; // in ms
+    public static final double UNJAM_HALF_CYCLE_LENGTH = 200; // in ms
 
     // OTHER //
 

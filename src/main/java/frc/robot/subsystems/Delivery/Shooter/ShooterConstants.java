@@ -28,6 +28,8 @@ public class ShooterConstants {
     public static final double SHOOT_VELOCITY_NEUTRAL_ZONE = 60;
     public static final double SHOOT_VELOCITY_TOLERANCE = 4;
 
+    public static final double SHOOT_VELOCITY_MIN = 35;
+
     // ENTRY MOTOR //
 
     public static final double Entry_kS = 0.37413;
@@ -41,8 +43,10 @@ public class ShooterConstants {
     public static final double Entry_SupplyCurrentLimit = 70;
 
     public static final double ENTRY_VELOCITY_STOP = 0;
-    public static final double ENTRY_VELOCITY_ROLL = 120;
+    public static final double ENTRY_VELOCITY_ROLL = 60;
     public static final double ENTRY_VELOCITY_REVERSE = -60;
+
+    public static final double ENTRY_VELOCITY_MIN = 35;
 
     // ANGLE MOTOR //
     
@@ -61,7 +65,7 @@ public class ShooterConstants {
     public static final double Angle_SupplyCurrentLimit = 40;
 
     public static final double ANGLE_INTAKE_HELP_POS = 5; // Rotations
-    public static final double ANGLE_NEUTRAL_ZONE_POS = 5; // Rotations
+    public static final double ANGLE_NEUTRAL_ZONE_POS = 7; // Rotations
 
     // OTHER //
 

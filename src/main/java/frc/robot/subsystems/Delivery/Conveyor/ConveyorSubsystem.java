@@ -67,7 +67,7 @@ public class ConveyorSubsystem implements Subsystem {
     private void setMotorConfigs() {
         TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
 
-        talonFXConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        talonFXConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         talonFXConfigs.CurrentLimits.StatorCurrentLimit = ConveyorConstants.StatorCurrentLimit;
         talonFXConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
         talonFXConfigs.CurrentLimits.SupplyCurrentLimit = ConveyorConstants.SupplyCurrentLimit;

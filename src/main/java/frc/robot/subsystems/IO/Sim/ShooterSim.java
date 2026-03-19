@@ -77,23 +77,25 @@ public class ShooterSim implements ShooterIO {
         inputs.EntryMotor_Velocity = entryMotor.getVelocity().getValueAsDouble();
         inputs.EntryMotor_AppliedVolts = entryMotor.getMotorVoltage().getValueAsDouble();
         inputs.EntryMotor_CurrentAmps = entryMotor.getStatorCurrent().getValueAsDouble();
+        inputs.EntryMotor_DutyCycle = entryMotor.getDutyCycle().getValueAsDouble();
 
         inputs.AngleMotor_Position = angleMotor.getPosition().getValueAsDouble();
         inputs.AngleMotor_Velocity = angleMotor.getVelocity().getValueAsDouble();
         inputs.AngleMotor_AppliedVolts = angleMotor.getMotorVoltage().getValueAsDouble();
         inputs.AngleMotor_CurrentAmps = angleMotor.getStatorCurrent().getValueAsDouble();
+        inputs.AngleMotor_DutyCycle = angleMotor.getDutyCycle().getValueAsDouble();
 
         inputs.ShootMaster_Position = masterMotor.getPosition().getValueAsDouble();
         inputs.ShootMaster_Velocity = masterMotor.getVelocity().getValueAsDouble();
         inputs.ShootMaster_AppliedVolts = masterMotor.getMotorVoltage().getValueAsDouble();
         inputs.ShootMaster_CurrentAmps = masterMotor.getStatorCurrent().getValueAsDouble();
+        inputs.ShootMaster_DutyCycle = masterMotor.getDutyCycle().getValueAsDouble();
 
         inputs.ShootSlave_Position = slaveMotor.getPosition().getValueAsDouble();
         inputs.ShootSlave_Velocity = slaveMotor.getVelocity().getValueAsDouble();
         inputs.ShootSlave_AppliedVolts = slaveMotor.getMotorVoltage().getValueAsDouble();
         inputs.ShootSlave_CurrentAmps = slaveMotor.getStatorCurrent().getValueAsDouble();
-
-        inputs.AngleEncoder_RawPosition = inputs.AngleMotor_Position / ShooterConstants.EncoderGearRatio + ShooterConstants.EncoderOffset;
+        inputs.ShootSlave_DutyCycle = slaveMotor.getDutyCycle().getValueAsDouble();
     }
 
     public void applyEntryConfiguration(TalonFXConfiguration configuration) {

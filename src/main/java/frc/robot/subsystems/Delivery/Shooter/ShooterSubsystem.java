@@ -115,8 +115,6 @@ public class ShooterSubsystem implements Subsystem {
                 Entry_Velocity = ShooterTuning.ENTRY_VELOCITY_ROLL_get();
                 Shoot_Velocity = calculateShooterVelocity();
                 break;
-            case UNJAM_HELP:
-                Entry_Velocity = ShooterTuning.ENTRY_VELOCITY_REVERSE_get();
             default:
             case IDLE:
                 break;
@@ -196,6 +194,10 @@ public class ShooterSubsystem implements Subsystem {
         return timeInterpolatingMap.get(distance);
     }
 
+    public boolean isStuck() {
+        return inputs.ShootMaster_Velocity < ShooterTuning.SHOOT_VELOCITY_MIN_get() || inputs.EntryMotor_Velocity < ShooterTuning.ENTRY_VELOCITY_MIN_get();
+    }
+
     private void setEntryMotorConfigs() {
         TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
         Slot0Configs slot0Configs = talonFXConfigs.Slot0;
@@ -206,7 +208,7 @@ public class ShooterSubsystem implements Subsystem {
         slot0Configs.kI = ShooterTuning.Entry_kI_get();
         slot0Configs.kD = ShooterTuning.Entry_kD_get();
 
-        talonFXConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        talonFXConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         talonFXConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // Inverted
         talonFXConfigs.CurrentLimits.StatorCurrentLimit = ShooterConstants.Entry_StatorCurrentLimit;
         talonFXConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
