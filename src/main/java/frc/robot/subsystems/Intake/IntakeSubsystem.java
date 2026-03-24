@@ -31,7 +31,6 @@ public class IntakeSubsystem implements Subsystem {
     // HELP_SHOOT toggle state
     private boolean helpShootOpen = false;
     private double lastHelpToggleTime = 0.0;
-    private double initialTimeWithNoHelpSec = 1.5;
     // track when we entered HELP_SHOOT so we can wait initialTimeWithNoHelpSec
     private double helpShootEntryTime = 0.0;
     // track previous storage state for entry detection
@@ -106,7 +105,7 @@ public class IntakeSubsystem implements Subsystem {
                 }
 
                 // During the initial delay keep the control arm out and don't pump
-                if (now - helpShootEntryTime < initialTimeWithNoHelpSec) {
+                if (now - helpShootEntryTime < IntakeConstants.INITIAL_TIME_WITH_NO_HELP_SEC) {
                     Position = IntakeConstants.CONTROL_POS_OUT;
                     Control_Power = 0.0;
                 } else {
@@ -172,6 +171,7 @@ public class IntakeSubsystem implements Subsystem {
         talonFXConfigs.CurrentLimits.StatorCurrentLimit = IntakeConstants.Control_StatorCurrentLimit;
         talonFXConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
         talonFXConfigs.CurrentLimits.SupplyCurrentLimit = IntakeConstants.Control_SupplyCurrentLimit;
+        talonFXConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         MotionMagicConfigs motionMagicConfigs = talonFXConfigs.MotionMagic;
         motionMagicConfigs.MotionMagicCruiseVelocity = IntakeTuning.Control_CruiseVelocity_get();

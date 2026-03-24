@@ -73,23 +73,23 @@ public class ShootAuto extends SequentialCommandGroup {
         RAMP_CROSS_FINAL = new Pose2d(10.8, 5.3, Rotation2d.k180deg);
         RAMP_START_FINAL = new Pose2d(13.2, 5.5, Rotation2d.k180deg);
 
-        STEAL_START = new Pose2d(8, 6, Rotation2d.fromDegrees(225));
-        STEAL_START_EA = Rotation2d.fromDegrees(225);
-        STEAL_END = new Pose2d(8, 2.5, Rotation2d.kCW_90deg);
+        STEAL_START = new Pose2d(8, 6, Rotation2d.fromDegrees(260));
+        STEAL_START_EA = Rotation2d.fromDegrees(260);
+        STEAL_END = new Pose2d(8, 2.1, Rotation2d.kCW_90deg);
         STEAL_END_EA = Rotation2d.kCW_90deg;
-        STEAL_FURTHER_END = new Pose2d(9, 2.5, Rotation2d.kCW_90deg);
+        STEAL_FURTHER_END = new Pose2d(9, 2.1, Rotation2d.kCW_90deg);
 
-        CLOSE_ZERO = new Pose2d(9.75, 2.5, Rotation2d.kZero);
-        CLOSE_START = new Pose2d(10.5, 2.5, Rotation2d.kCCW_90deg);
+        CLOSE_ZERO = new Pose2d(9.75, 2.1, Rotation2d.kZero);
+        CLOSE_START = new Pose2d(10.5, 2.1, Rotation2d.kCCW_90deg);
         CLOSE_START_EA = Rotation2d.kCCW_90deg;
-        CLOSE_HUB = new Pose2d(10.5, 2.5, Rotation2d.kCCW_90deg);
+        CLOSE_HUB = new Pose2d(10.5, 2.1, Rotation2d.kCCW_90deg);
 
-        GO_BACK_OPPOSITE_SIDE = new Pose2d(13.2, 2.5, Rotation2d.fromDegrees(131));
-        RAMP_CROSS_FINAL_OTHER_SIDE = new Pose2d(10.5, 2.5, Rotation2d.k180deg);
-        RAMP_CROSS_START_OTHER_SIDE = new Pose2d(13.2, 2.5, Rotation2d.k180deg);
+        GO_BACK_OPPOSITE_SIDE = new Pose2d(13.2, 2.1, Rotation2d.fromDegrees(131));
+        RAMP_CROSS_FINAL_OTHER_SIDE = new Pose2d(10.5, 2.1, Rotation2d.k180deg);
+        RAMP_CROSS_START_OTHER_SIDE = new Pose2d(13.2, 2.1, Rotation2d.k180deg);
 
-        COLLECT_CLOSE_OPPOSITE_SIDE_START = new Pose2d(8.5, 2.5, Rotation2d.kCCW_90deg);
-        COLLECT_CLOSE_OPPOSITE_SIDE_FINAL = new Pose2d(8.5, 5, Rotation2d.kCCW_90deg);
+        COLLECT_CLOSE_OPPOSITE_SIDE_START = new Pose2d(8.5, 2.1, Rotation2d.kCCW_90deg);
+        COLLECT_CLOSE_OPPOSITE_SIDE_FINAL = new Pose2d(8.5, 6, Rotation2d.kCCW_90deg);
 
 
         switch(orientation) {
@@ -172,7 +172,7 @@ public class ShootAuto extends SequentialCommandGroup {
                 new APTarget(RAMP_CROSS).withVelocity(1), 0.3, 10, true),
             SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),
             SubsystemManager.getDrivebase().waypointToPose(new APTarget[]{
-                new APTarget(STEAL_START).withVelocity(3).withEntryAngle(STEAL_START_EA),
+                new APTarget(STEAL_START).withVelocity(2).withEntryAngle(STEAL_START_EA),
                 new APTarget(STEAL_END).withVelocity(1).withEntryAngle(STEAL_END_EA),
                 // new APTarget(CLOSE_ZERO).withVelocity(1).withEntryAngle(RAMP_RETURN_EA),
                 // new APTarget(CLOSE_START).withVelocity(2).withEntryAngle(CLOSE_START_EA),
@@ -184,7 +184,7 @@ public class ShootAuto extends SequentialCommandGroup {
             SubsystemManager.operateAuto(ShooterState.SPEED_UP, IntakeState.INACTIVE, StorageState.IN),
             SubsystemManager.getDrivebase().driveToPose(new APTarget(GO_BACK_OPPOSITE_SIDE), 0.03, 2, false),
             SubsystemManager.operateAuto(ShooterState.SHOOT, IntakeState.HELP_SHOOT, StorageState.HELP_SHOOT),
-            Commands.waitSeconds(8),
+            Commands.waitSeconds(7),
             SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.IN),
             SubsystemManager.getDrivebase().driveToPose(
                 new APTarget(RAMP_CROSS_FINAL_OTHER_SIDE).withVelocity(1), true, true),
