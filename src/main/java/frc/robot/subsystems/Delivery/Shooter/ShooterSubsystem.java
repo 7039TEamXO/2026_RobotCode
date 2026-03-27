@@ -130,7 +130,7 @@ public class ShooterSubsystem implements Subsystem {
     }
     
     private void setupAngleInterpolatingMap() {
-        final double angleCalibrationOffset = 0;
+        final double angleCalibrationOffset = 0.7;
         angleInterpolatingMap.put(0.0, 2.0 + angleCalibrationOffset);
         angleInterpolatingMap.put(1.5, 2.5 + angleCalibrationOffset);
         angleInterpolatingMap.put(2.0, 3.0 + angleCalibrationOffset);

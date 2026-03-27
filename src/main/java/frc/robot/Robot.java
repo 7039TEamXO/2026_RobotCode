@@ -159,6 +159,10 @@ public class Robot extends LoggedRobot {
   @Override
   public void teleopInit()
   {
+    if(SubsystemManager.getDrivebase().getLastAutonomousPose() != null) {
+      SubsystemManager.getDrivebase().resetOdometry(SubsystemManager.getDrivebase().getLastAutonomousPose());
+    }
+
     SubsystemManager.init();
     
     if (autoCommand != null)

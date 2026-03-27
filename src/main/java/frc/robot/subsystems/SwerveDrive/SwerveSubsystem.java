@@ -560,33 +560,57 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /* GETTER/SETTER FUNCTIONS */
 
+  static Pose2d lastAutoPose;
   public static Command getAutonomousCommand(String pathName) {
+    CollectAuto collectAuto;
+    ShootAuto shootAuto;
+
     switch(pathName) {
       case "Collect (Red Left)":
-        return new CollectAuto("red left");
+        collectAuto = new CollectAuto("red left");
+        lastAutoPose = collectAuto.getFinalPose();
+        return collectAuto;
       
       default:
       case "Collect (Red Right)":
-        return new CollectAuto("red right");
+        collectAuto = new CollectAuto("red right");
+        lastAutoPose = collectAuto.getFinalPose();
+        return collectAuto;
 
       case "Collect (Blue Left)":
-        return new CollectAuto("blue left");
+        collectAuto = new CollectAuto("blue left");
+        lastAutoPose = collectAuto.getFinalPose();
+        return collectAuto;
 
       case "Collect (Blue Right)":
-        return new CollectAuto("blue right");
+        collectAuto = new CollectAuto("blue right");
+        lastAutoPose = collectAuto.getFinalPose();
+        return collectAuto;
 
       case "Shoot (Red Left)":
-        return new ShootAuto("red left");
+        shootAuto = new ShootAuto("red left");
+        lastAutoPose = shootAuto.getFinalPose();
+        return shootAuto;
 
       case "Shoot (Red Right)":
-        return new ShootAuto("red right");
+        shootAuto = new ShootAuto("red right");
+        lastAutoPose = shootAuto.getFinalPose();
+        return shootAuto;
 
       case "Shoot (Blue Left)":
-        return new ShootAuto("blue left");
+        shootAuto = new ShootAuto("blue left");
+        lastAutoPose = shootAuto.getFinalPose();
+        return shootAuto;
 
       case "Shoot (Blue Right)":
-        return new ShootAuto("blue right");
+        shootAuto = new ShootAuto("blue right");
+        lastAutoPose = shootAuto.getFinalPose();
+        return shootAuto;
     }
+  }
+
+  public Pose2d getLastAutonomousPose() {
+    return lastAutoPose;
   }
 
   public void resetOdometry(Pose2d initialHolonomicPose)

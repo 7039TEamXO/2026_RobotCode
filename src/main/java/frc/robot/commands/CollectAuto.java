@@ -175,4 +175,8 @@ public class CollectAuto extends SequentialCommandGroup {
             }, 0.3, false)
         );
     }
+
+    public Pose2d getFinalPose() {
+        return RAMP_FINISH;
+    }
 }
