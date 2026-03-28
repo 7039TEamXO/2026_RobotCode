@@ -104,6 +104,9 @@ public class ShooterSubsystem implements Subsystem {
                 Shoot_Velocity = ShooterTuning.SHOOT_VELOCITY_HELP_get();
                 Angle_Position = ShooterTuning.ANGLE_INTAKE_HELP_POS_get();
                 break;
+            // case UNJAM_HELP:
+                // Entry_Velocity = ShooterTuning.ENTRY_VELOCITY_REVERSE_get();
+                // Shoot_Velocity = ShooterTuning.SHOOT_VELOCITY_IDLE_get();
             case DEPLETE:
                 Entry_Velocity = ShooterTuning.ENTRY_VELOCITY_REVERSE_get();
                 Angle_Position = ShooterTuning.ANGLE_INTAKE_HELP_POS_get();
@@ -142,7 +145,8 @@ public class ShooterSubsystem implements Subsystem {
         angleInterpolatingMap.put(5.5, 5.5 + angleCalibrationOffset);
 
         // Consistency
-        angleInterpolatingMap.put(10.0, ShooterConstants.ANGLE_SHOOT_MAX);    }
+        angleInterpolatingMap.put(10.0, ShooterConstants.ANGLE_SHOOT_MAX);
+    }
 
     private void setupShooterInterpolatingMap() {
         final double shooterCalibrationOffset = -1.0;
@@ -151,9 +155,9 @@ public class ShooterSubsystem implements Subsystem {
         shooterInterpolatingMap.put(2.0, 47.0 + shooterCalibrationOffset);
         shooterInterpolatingMap.put(2.5, 49.0 + shooterCalibrationOffset);
         shooterInterpolatingMap.put(3.0, 50.0 + shooterCalibrationOffset);
-        shooterInterpolatingMap.put(4.0, 55.0 + shooterCalibrationOffset);
-        shooterInterpolatingMap.put(4.5, 56.0 + shooterCalibrationOffset);
-        shooterInterpolatingMap.put(5.0, 60.0 + shooterCalibrationOffset);
+        shooterInterpolatingMap.put(4.0, 54.0 + shooterCalibrationOffset);
+        shooterInterpolatingMap.put(4.5, 55.0 + shooterCalibrationOffset);
+        shooterInterpolatingMap.put(5.0, 59.0 + shooterCalibrationOffset);
         shooterInterpolatingMap.put(5.5, 62.0 + shooterCalibrationOffset);
         
         // Consistency

@@ -5,8 +5,8 @@ public class IntakeConstants {
     public static final int ControlMotorID = 12;
     
     // INTAKE MOTOR //
-    public static final double Intake_StatorCurrentLimit = 90;
-    public static final double Intake_SupplyCurrentLimit = 70;
+    public static final double Intake_StatorCurrentLimit = 70;
+    public static final double Intake_SupplyCurrentLimit = 40;
 
     public static final double INTAKE_POWER_STOP = 0;
     public static final double INTAKE_POWER_INTAKE = -1;
@@ -15,14 +15,14 @@ public class IntakeConstants {
 
     // CONTROL MOTOR //
     public static final double CONTROL_POWER_STOP = 0;
-    public static final double CONTROL_POWER_SHAKE = 0.22;
+    public static final double CONTROL_POWER_SHAKE = 0.24;
 
     public static final double Control_kS = 0.6;
     public static final double Control_kV = 0.16;
     public static final double Control_kA = 0.015;
-    public static final double Control_kP = 2.1;
-    public static final double Control_kI = 0.1;
-    public static final double Control_kD = 0.05;
+    public static final double Control_kP = 1.9;
+    public static final double Control_kI = 0.02;
+    public static final double Control_kD = 0;
     public static final double Control_kG = 0;
 
     public static final double Control_CruiseVelocity = 100.0;
@@ -31,8 +31,8 @@ public class IntakeConstants {
     public static final double Control_StatorCurrentLimit = 50;
     public static final double Control_SupplyCurrentLimit = 50;
 
-    public static final double CONTROL_POS_IN = 0.5;
-    public static final double CONTROL_POS_HELP_SHOOT = 3.5;
+    public static final double CONTROL_POS_IN = 0;
+    public static final double CONTROL_POS_HELP_SHOOT = 3.2;
     public static final double CONTROL_POS_OUT = 5.45;
 
     public static final double CONTROL_POS_TOLERANCE = 0.2;

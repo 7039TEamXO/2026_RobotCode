@@ -159,6 +159,7 @@ public class IntakeSubsystem implements Subsystem {
         talonFXConfigs.CurrentLimits.StatorCurrentLimit = IntakeConstants.Intake_StatorCurrentLimit;
         talonFXConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
         talonFXConfigs.CurrentLimits.SupplyCurrentLimit = IntakeConstants.Intake_SupplyCurrentLimit;
+        talonFXConfigs.CurrentLimits.SupplyCurrentLowerLimit = 90;
         talonFXConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         io.applyIntakeConfiguration(talonFXConfigs);

@@ -57,15 +57,15 @@ public class ShootAuto extends SequentialCommandGroup {
         RAMP_CROSS = new Pose2d(10.8, 5.7, Rotation2d.k180deg);
         RAMP_RETURN_EA = Rotation2d.kZero;
 
-        STEAL_START = new Pose2d(7.5, 6, Rotation2d.kCW_90deg);
+        STEAL_START = new Pose2d(6.6, 6, Rotation2d.kCW_90deg);
         STEAL_START_EA = Rotation2d.kCW_90deg;
-        STEAL_END = new Pose2d(7.5, 2.1, Rotation2d.kCW_90deg);
+        STEAL_END = new Pose2d(6.6, 2.1, Rotation2d.kCW_90deg);
         STEAL_END_EA = Rotation2d.kCW_90deg;
 
         RAMP_START_ALIGNED = new Pose2d(13.2, 2.3, Rotation2d.fromDegrees(127));
         RAMP_CROSS_FINAL = new Pose2d(10.8, 2.3, Rotation2d.fromDegrees(135));
 
-        CLOSE_END = new Pose2d(9, 7, Rotation2d.kCCW_90deg);
+        CLOSE_END = new Pose2d(8.5, 7, Rotation2d.kCCW_90deg);
 
         switch(orientation) {
             default:
@@ -133,10 +133,9 @@ public class ShootAuto extends SequentialCommandGroup {
             SubsystemManager.getDrivebase().driveToPose(new APTarget(RAMP_START_ALIGNED), 0.03, 2, true),
             SubsystemManager.operateAuto(ShooterState.SHOOT, IntakeState.HELP_SHOOT, StorageState.HELP_SHOOT),
             Commands.waitSeconds(7),
-            SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.IN),
+            SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),
             SubsystemManager.getDrivebase().driveToPose(
                 new APTarget(RAMP_CROSS_FINAL).withVelocity(1), true, true),
-            SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),   
             SubsystemManager.getDrivebase().driveToPose(
                 new APTarget(CLOSE_END).withVelocity(0).withEntryAngle(Rotation2d.kCW_90deg), 0.1, 10, true)
         );

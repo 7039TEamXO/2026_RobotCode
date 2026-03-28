@@ -55,10 +55,11 @@ public class SubsystemManager {
             autoDrive = drivebase.driveToPose(SwerveSubsystem.getTowerPose(), false, false);
             CommandScheduler.getInstance().schedule(autoDrive);
         } else if(psControllerHID.getPOV() == 90) { // Depot / Test
-            // autoDrive = drivebase.driveToPose(new Pose2d(SwerveDriveConstants.TEST_DRIVE_X, SwerveDriveConstants.TEST_DRIVE_Y,
-            //     Rotation2d.fromDegrees(SwerveDriveConstants.TEST_DRIVE_ANGLE)), false);
             autoDrive = drivebase.driveToPose(SwerveSubsystem.getDepotPose(), false, false);
             CommandScheduler.getInstance().schedule(autoDrive);
+        } else if(psControllerHID.getPOV() == 0) {
+            // autoDrive = drivebase.driveToPose(new Pose2d(SwerveDriveConstants.TEST_DRIVE_X, SwerveDriveConstants.TEST_DRIVE_Y,
+                // Rotation2d.fromDegrees(SwerveDriveConstants.TEST_DRIVE_ANGLE)), false, false);
         } else if(psControllerHID.getL3Button()) { // Ramp Alignment (Lower priority)
             autoDrive = drivebase.driveCommandWithAngle(drivebase.calculateOptimalDiagonalRotation());
             CommandScheduler.getInstance().schedule(autoDrive);
@@ -112,7 +113,7 @@ public class SubsystemManager {
                         psControllerHID.getR1Button() ? ShooterState.IDLE : 
                         shooterState; 
 
-        conveyorUnjam = psControllerHID.getPOV() == 0;
+        // conveyorUnjam = psControllerHID.getPOV() == 0;
 
         // Cancel Help Shoot once it's no longer needed
         if(shooterState != ShooterState.SHOOT) {
@@ -169,7 +170,7 @@ public class SubsystemManager {
             }
 
             // Unjamming has the highest priority
-            if(conveyorUnjam || (shooterState == ShooterState.SHOOT && RobotContainer.Shooter.isStuck())) {
+            if(conveyorUnjam) {
                 conveyorState = ConveyorState.UNJAM;
             }
 

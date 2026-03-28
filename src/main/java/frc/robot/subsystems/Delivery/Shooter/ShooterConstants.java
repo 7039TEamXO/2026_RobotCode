@@ -28,7 +28,7 @@ public class ShooterConstants {
     public static final double SHOOT_VELOCITY_NEUTRAL_ZONE = 60;
     public static final double SHOOT_VELOCITY_TOLERANCE = 4;
 
-    public static final double SHOOT_VELOCITY_MIN = 0;
+    public static final double SHOOT_VELOCITY_MIN = 0; // Disabled
 
     // ENTRY MOTOR //
 
@@ -46,7 +46,7 @@ public class ShooterConstants {
     public static final double ENTRY_VELOCITY_ROLL = 60;
     public static final double ENTRY_VELOCITY_REVERSE = -60;
 
-    public static final double ENTRY_VELOCITY_MIN = 0;
+    public static final double ENTRY_VELOCITY_MIN = 0; // Disabled
 
     // ANGLE MOTOR //
     
