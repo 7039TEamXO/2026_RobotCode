@@ -107,11 +107,24 @@ public class SubsystemManager {
             intakeState = IntakeState.HELP_SHOOT;
         }
 
-        /* SHOOTER */
-        shooterState = psControllerHID.getL2Button() ? ShooterState.SHOOT :
-                        psControllerHID.getL1Button() ? ShooterState.SPEED_UP :
-                        psControllerHID.getR1Button() ? ShooterState.IDLE : 
-                        shooterState; 
+        /* SHOOTER
+         * Intake / stop buttons take priority over L2 so brief L2 overlap does not keep shooting.
+         * When no shoot inputs are held, default to IDLE instead of latching the previous state. */
+        if (psControllerHID.getSquareButton()
+                || psControllerHID.getCrossButton()
+                || psControllerHID.getTriangleButton()) {
+            shooterState = ShooterState.IDLE;
+        } else if (psControllerHID.getCircleButton()) {
+            shooterState = ShooterState.DEPLETE;
+        } else if (psControllerHID.getL2Button()) {
+            shooterState = ShooterState.SHOOT;
+        } else if (psControllerHID.getL1Button()) {
+            shooterState = ShooterState.SPEED_UP;
+        } else if (psControllerHID.getR1Button()) {
+            shooterState = ShooterState.IDLE;
+        } else {
+            shooterState = ShooterState.IDLE;
+        }
 
         // conveyorUnjam = psControllerHID.getPOV() == 0;
 
