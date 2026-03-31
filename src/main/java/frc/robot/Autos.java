@@ -5,10 +5,14 @@ public enum Autos {
     CollectRedRight("Collect (Red Right)"),
     CollectBlueLeft("Collect (Blue Left)"),
     CollectBlueRight("Collect (Blue Right)"),
-    ShootRedLeft("Shoot (Red Left)"),
-    ShootRedRight("Shoot (Red Right)"),
-    ShootBlueLeft("Shoot (Blue Left)"),
-    ShootBlueRight("Shoot (Blue Right)");
+    ShortShootRedLeft("Short Shoot (Red Left)"),
+    ShortShootRedRight("Short Shoot (Red Right)"),
+    ShortShootBlueLeft("Short Shoot (Blue Left)"),
+    ShortShootBlueRight("Short Shoot (Blue Right)"),
+    LongShootRedLeft("Long Shoot (Red Left)"),
+    LongShootRedRight("Long Shoot (Red Right)"),
+    LongShootBlueLeft("Long Shoot (Blue Left)"),
+    LongShootBlueRight("Long Shoot (Blue Right)");
     
     private final String autoName;
     

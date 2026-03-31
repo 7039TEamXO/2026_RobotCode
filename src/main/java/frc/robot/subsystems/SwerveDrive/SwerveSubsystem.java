@@ -23,7 +23,8 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.LimelightSimMode;
 import frc.robot.Constants.TuningMode;
 import frc.robot.commands.CollectAuto;
-import frc.robot.commands.ShootAuto;
+import frc.robot.commands.LongShootAuto;
+import frc.robot.commands.ShortShootAuto;
 import frc.robot.subsystems.SubsystemManager;
 import frc.robot.subsystems.Delivery.Shooter.ShooterState;
 
@@ -560,10 +561,12 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /* GETTER/SETTER FUNCTIONS */
 
+  // Can be automated, up to future refactoring
   static Pose2d lastAutoPose;
   public static Command getAutonomousCommand(String pathName) {
     CollectAuto collectAuto;
-    ShootAuto shootAuto;
+    ShortShootAuto shortShootAuto;
+    LongShootAuto longShootAuto;
 
     switch(pathName) {
       case "Collect (Red Left)":
@@ -587,25 +590,45 @@ public class SwerveSubsystem extends SubsystemBase {
         lastAutoPose = collectAuto.getFinalPose();
         return collectAuto;
 
-      case "Shoot (Red Left)":
-        shootAuto = new ShootAuto("red left");
-        lastAutoPose = shootAuto.getFinalPose();
-        return shootAuto;
+      case "Short Shoot (Red Left)":
+        shortShootAuto = new ShortShootAuto("red left");
+        lastAutoPose = shortShootAuto.getFinalPose();
+        return shortShootAuto;
 
-      case "Shoot (Red Right)":
-        shootAuto = new ShootAuto("red right");
-        lastAutoPose = shootAuto.getFinalPose();
-        return shootAuto;
+      case "Short Shoot (Red Right)":
+        shortShootAuto = new ShortShootAuto("red right");
+        lastAutoPose = shortShootAuto.getFinalPose();
+        return shortShootAuto;
 
-      case "Shoot (Blue Left)":
-        shootAuto = new ShootAuto("blue left");
-        lastAutoPose = shootAuto.getFinalPose();
-        return shootAuto;
+      case "Short Shoot (Blue Left)":
+        shortShootAuto = new ShortShootAuto("blue left");
+        lastAutoPose = shortShootAuto.getFinalPose();
+        return shortShootAuto;
 
-      case "Shoot (Blue Right)":
-        shootAuto = new ShootAuto("blue right");
-        lastAutoPose = shootAuto.getFinalPose();
-        return shootAuto;
+      case "Short Shoot (Blue Right)":
+        shortShootAuto = new ShortShootAuto("blue right");
+        lastAutoPose = shortShootAuto.getFinalPose();
+        return shortShootAuto;
+
+      case "Long Shoot (Red Left)":
+        longShootAuto = new LongShootAuto("red left");
+        lastAutoPose = longShootAuto.getFinalPose();
+        return longShootAuto;
+
+      case "Long Shoot (Red Right)":
+        longShootAuto = new LongShootAuto("red right");
+        lastAutoPose = longShootAuto.getFinalPose();
+        return longShootAuto;
+
+      case "Long Shoot (Blue Left)":
+        longShootAuto = new LongShootAuto("blue left");
+        lastAutoPose = longShootAuto.getFinalPose();
+        return longShootAuto;
+
+      case "Long Shoot (Blue Right)":
+        longShootAuto = new LongShootAuto("blue right");
+        lastAutoPose = longShootAuto.getFinalPose();
+        return longShootAuto;
     }
   }
 
