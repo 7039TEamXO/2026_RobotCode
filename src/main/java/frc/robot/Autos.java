@@ -5,6 +5,8 @@ public enum Autos {
     CollectRedRight("Collect (Red Right)"),
     CollectBlueLeft("Collect (Blue Left)"),
     CollectBlueRight("Collect (Blue Right)"),
+    CenterRedLeft("Center (Red)"),
+    CenterRedRight("Center (Blue)"),
     ShortShootRedLeft("Short Shoot (Red Left)"),
     ShortShootRedRight("Short Shoot (Red Right)"),
     ShortShootBlueLeft("Short Shoot (Blue Left)"),

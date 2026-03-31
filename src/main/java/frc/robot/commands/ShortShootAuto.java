@@ -146,16 +146,13 @@ public class ShortShootAuto extends SequentialCommandGroup {
             SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.IN),
             SubsystemManager.getDrivebase().driveToPose(
                 new APTarget(RAMP_CROSS).withVelocity(1), true, true),
-            SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),   
-            SubsystemManager.getDrivebase().waypointToPose(new APTarget[]{
-                new APTarget(STEAL_START).withVelocity(3).withEntryAngle(STEAL_START_EA),
-                new APTarget(STEAL_END).withVelocity(1).withEntryAngle(STEAL_END_EA),
-                new APTarget(RETURN_START).withVelocity(0).withEntryAngle(RAMP_RETURN_EA)
-            }, 0.3, 0.1, 10)
+            SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),
+            SubsystemManager.getDrivebase().driveToPose(
+                new APTarget(RAMP_CROSS).withVelocity(1), false, false)
         );
     }
 
     public Pose2d getFinalPose() {
-        return STEAL_END;
+        return RAMP_CROSS;
     }
 }

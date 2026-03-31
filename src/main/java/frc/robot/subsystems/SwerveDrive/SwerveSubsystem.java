@@ -22,6 +22,7 @@ import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LimelightSimMode;
 import frc.robot.Constants.TuningMode;
+import frc.robot.commands.CenterAuto;
 import frc.robot.commands.CollectAuto;
 import frc.robot.commands.LongShootAuto;
 import frc.robot.commands.ShortShootAuto;
@@ -565,6 +566,7 @@ public class SwerveSubsystem extends SubsystemBase {
   static Pose2d lastAutoPose;
   public static Command getAutonomousCommand(String pathName) {
     CollectAuto collectAuto;
+    CenterAuto centerAuto;
     ShortShootAuto shortShootAuto;
     LongShootAuto longShootAuto;
 
@@ -589,6 +591,16 @@ public class SwerveSubsystem extends SubsystemBase {
         collectAuto = new CollectAuto("blue right");
         lastAutoPose = collectAuto.getFinalPose();
         return collectAuto;
+
+      case "Center (Red)":
+        centerAuto = new CenterAuto("red");
+        lastAutoPose = centerAuto.getFinalPose();
+        return centerAuto;
+
+      case "Center (Blue)":
+        centerAuto = new CenterAuto("blue");
+        lastAutoPose = centerAuto.getFinalPose();
+        return centerAuto;
 
       case "Short Shoot (Red Left)":
         shortShootAuto = new ShortShootAuto("red left");
