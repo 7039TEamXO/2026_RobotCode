@@ -28,11 +28,13 @@ public class CenterAuto extends SequentialCommandGroup {
 
         switch(orientation) {
             default:
-            case "red":
+            case "red left":
+            case "red right":
                 // Do nothing
                 break;
             
-            case "blue":
+            case "blue left":
+            case "blue right":
                 START = ToBlueLeft(START);
                 break;
         }
@@ -48,15 +50,11 @@ public class CenterAuto extends SequentialCommandGroup {
             }),
             SubsystemManager.operateAuto(ShooterState.SPEED_UP, IntakeState.INACTIVE, StorageState.IN),
             Commands.waitSeconds(1),
-            SubsystemManager.operateAuto(ShooterState.SHOOT, IntakeState.HELP_SHOOT, StorageState.HELP_SHOOT),
+            SubsystemManager.operateAuto(ShooterState.SHOOT, IntakeState.HELP_SHOOT, StorageState.IN),
             Commands.waitSeconds(7),
             SubsystemManager.operateAuto(ShooterState.SHOOT, IntakeState.INACTIVE, StorageState.IN),
             Commands.waitSeconds(4),
             SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.INACTIVE, StorageState.IN)
         );
-    }
-
-    public Pose2d getFinalPose() {
-        return START;
     }
 }

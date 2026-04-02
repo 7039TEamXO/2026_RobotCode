@@ -89,19 +89,6 @@
             }
           },
           {
-            "title": "Autos",
-            "x": 1216.0,
-            "y": 0.0,
-            "width": 320.0,
-            "height": 160.0,
-            "type": "ComboBox Chooser",
-            "properties": {
-              "topic": "/SmartDashboard/Autos",
-              "period": 0.06,
-              "sort_options": false
-            }
-          },
-          {
             "title": "Accept Angle Changes",
             "x": 768.0,
             "y": 0.0,
@@ -195,6 +182,32 @@
               "period": 0.06,
               "data_type": "double",
               "show_submit_button": false
+            }
+          },
+          {
+            "title": "Autonomy",
+            "x": 1216.0,
+            "y": 0.0,
+            "width": 320.0,
+            "height": 128.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/SmartDashboard/Autonomy",
+              "period": 0.06,
+              "sort_options": false
+            }
+          },
+          {
+            "title": "Orientation",
+            "x": 1216.0,
+            "y": 128.0,
+            "width": 320.0,
+            "height": 128.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/SmartDashboard/Orientation",
+              "period": 0.06,
+              "sort_options": false
             }
           }
         ]

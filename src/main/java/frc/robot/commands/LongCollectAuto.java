@@ -13,7 +13,7 @@ import frc.robot.subsystems.Delivery.Shooter.ShooterState;
 import frc.robot.subsystems.Intake.IntakeState;
 import frc.robot.subsystems.Intake.StorageState;
 
-public class CollectAuto extends SequentialCommandGroup {
+public class LongCollectAuto extends SequentialCommandGroup {
     private Pose2d RAMP_START;
     private Pose2d RAMP_CROSS;
 
@@ -59,7 +59,7 @@ public class CollectAuto extends SequentialCommandGroup {
         return new Pose2d(Constants.Field.FIELD_WIDTH - pose.getX(), Constants.Field.FIELD_HEIGHT - pose.getY(), ToBlueRight(pose.getRotation()));
     }
 
-    public CollectAuto(String orientation) {
+    public LongCollectAuto(String orientation) {
         // Default is "red right"
         RAMP_START = new Pose2d(13.2, 5.5, Rotation2d.k180deg);
         RAMP_CROSS = new Pose2d(10.8, 5.7, Rotation2d.k180deg);
@@ -174,9 +174,5 @@ public class CollectAuto extends SequentialCommandGroup {
                 new APTarget(RAMP_FINISH).withVelocity(0).withEntryAngle(TROUGH_EA)
             }, 0.3, false)
         );
-    }
-
-    public Pose2d getFinalPose() {
-        return RAMP_FINISH;
     }
 }

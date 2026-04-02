@@ -23,8 +23,11 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.LimelightSimMode;
 import frc.robot.Constants.TuningMode;
 import frc.robot.commands.CenterAuto;
-import frc.robot.commands.CollectAuto;
+import frc.robot.commands.DelayShortCollectAuto;
+import frc.robot.commands.DelayShortShootAuto;
+import frc.robot.commands.LongCollectAuto;
 import frc.robot.commands.LongShootAuto;
+import frc.robot.commands.ShortCollectAuto;
 import frc.robot.commands.ShortShootAuto;
 import frc.robot.subsystems.SubsystemManager;
 import frc.robot.subsystems.Delivery.Shooter.ShooterState;
@@ -562,90 +565,30 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /* GETTER/SETTER FUNCTIONS */
 
-  // Can be automated, up to future refactoring
-  static Pose2d lastAutoPose;
-  public static Command getAutonomousCommand(String pathName) {
-    CollectAuto collectAuto;
-    CenterAuto centerAuto;
-    ShortShootAuto shortShootAuto;
-    LongShootAuto longShootAuto;
-
+  public static Command getAutonomousCommand(String pathName, String orientationName) {
     switch(pathName) {
-      case "Collect (Red Left)":
-        collectAuto = new CollectAuto("red left");
-        lastAutoPose = collectAuto.getFinalPose();
-        return collectAuto;
-      
       default:
-      case "Collect (Red Right)":
-        collectAuto = new CollectAuto("red right");
-        lastAutoPose = collectAuto.getFinalPose();
-        return collectAuto;
+      case "Center":
+        return new CenterAuto(orientationName);
+        
+      case "Short Collect":
+        return new ShortCollectAuto(orientationName);
 
-      case "Collect (Blue Left)":
-        collectAuto = new CollectAuto("blue left");
-        lastAutoPose = collectAuto.getFinalPose();
-        return collectAuto;
+      case "Short Shoot":
+        return new ShortShootAuto(orientationName);
 
-      case "Collect (Blue Right)":
-        collectAuto = new CollectAuto("blue right");
-        lastAutoPose = collectAuto.getFinalPose();
-        return collectAuto;
+      case "Short Collect w/ Delay":
+        return new DelayShortCollectAuto(orientationName);
 
-      case "Center (Red)":
-        centerAuto = new CenterAuto("red");
-        lastAutoPose = centerAuto.getFinalPose();
-        return centerAuto;
+      case "Short Shoot w/ Delay":
+        return new DelayShortShootAuto(orientationName);
 
-      case "Center (Blue)":
-        centerAuto = new CenterAuto("blue");
-        lastAutoPose = centerAuto.getFinalPose();
-        return centerAuto;
+      case "Long Shoot":
+        return new LongShootAuto(orientationName);
 
-      case "Short Shoot (Red Left)":
-        shortShootAuto = new ShortShootAuto("red left");
-        lastAutoPose = shortShootAuto.getFinalPose();
-        return shortShootAuto;
-
-      case "Short Shoot (Red Right)":
-        shortShootAuto = new ShortShootAuto("red right");
-        lastAutoPose = shortShootAuto.getFinalPose();
-        return shortShootAuto;
-
-      case "Short Shoot (Blue Left)":
-        shortShootAuto = new ShortShootAuto("blue left");
-        lastAutoPose = shortShootAuto.getFinalPose();
-        return shortShootAuto;
-
-      case "Short Shoot (Blue Right)":
-        shortShootAuto = new ShortShootAuto("blue right");
-        lastAutoPose = shortShootAuto.getFinalPose();
-        return shortShootAuto;
-
-      case "Long Shoot (Red Left)":
-        longShootAuto = new LongShootAuto("red left");
-        lastAutoPose = longShootAuto.getFinalPose();
-        return longShootAuto;
-
-      case "Long Shoot (Red Right)":
-        longShootAuto = new LongShootAuto("red right");
-        lastAutoPose = longShootAuto.getFinalPose();
-        return longShootAuto;
-
-      case "Long Shoot (Blue Left)":
-        longShootAuto = new LongShootAuto("blue left");
-        lastAutoPose = longShootAuto.getFinalPose();
-        return longShootAuto;
-
-      case "Long Shoot (Blue Right)":
-        longShootAuto = new LongShootAuto("blue right");
-        lastAutoPose = longShootAuto.getFinalPose();
-        return longShootAuto;
+      case "Long Collect":
+        return new LongCollectAuto(orientationName);
     }
-  }
-
-  public Pose2d getLastAutonomousPose() {
-    return lastAutoPose;
   }
 
   public void resetOdometry(Pose2d initialHolonomicPose)

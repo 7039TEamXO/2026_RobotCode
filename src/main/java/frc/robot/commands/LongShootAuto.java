@@ -140,8 +140,4 @@ public class LongShootAuto extends SequentialCommandGroup {
                 new APTarget(CLOSE_END).withVelocity(0).withEntryAngle(Rotation2d.kCW_90deg), 0.1, 10, true)
         );
     }
-
-    public Pose2d getFinalPose() {
-        return CLOSE_END;
-    }
 }

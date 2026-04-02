@@ -47,7 +47,7 @@ public class SubsystemManager {
     private static boolean isInAutoDrive;
 
     private static void scheduleAutoDrive() {
-        // TO-DO: Check if in ramp zone
+        /* // UNUSED DRIVE COMMANDS //
         if(psControllerHID.getPOV() == 180) { // Outpost
             autoDrive = drivebase.driveToPose(SwerveSubsystem.getOutpostPose(), false, false);
             CommandScheduler.getInstance().schedule(autoDrive);
@@ -58,9 +58,10 @@ public class SubsystemManager {
             autoDrive = drivebase.driveToPose(SwerveSubsystem.getDepotPose(), false, false);
             CommandScheduler.getInstance().schedule(autoDrive);
         } else if(psControllerHID.getPOV() == 0) {
-            // autoDrive = drivebase.driveToPose(new Pose2d(SwerveDriveConstants.TEST_DRIVE_X, SwerveDriveConstants.TEST_DRIVE_Y,
-                // Rotation2d.fromDegrees(SwerveDriveConstants.TEST_DRIVE_ANGLE)), false, false);
-        } else if(psControllerHID.getL3Button()) { // Ramp Alignment (Lower priority)
+            autoDrive = drivebase.driveToPose(new Pose2d(SwerveDriveConstants.TEST_DRIVE_X, SwerveDriveConstants.TEST_DRIVE_Y,
+                Rotation2d.fromDegrees(SwerveDriveConstants.TEST_DRIVE_ANGLE)), false, false);
+        } else */
+        if(psControllerHID.getL3Button()) { // Ramp Alignment (Lower priority)
             autoDrive = drivebase.driveCommandWithAngle(drivebase.calculateOptimalDiagonalRotation());
             CommandScheduler.getInstance().schedule(autoDrive);
         } else if(psControllerHID.getR2Button()) { // Hub Alignment (Lowest priority)
@@ -103,16 +104,14 @@ public class SubsystemManager {
         }
         // 5. Help Shoot (L2)
         else if (psControllerHID.getL2Button()) {
-            storageState = StorageState.HELP_SHOOT;
+            // storageState = StorageState.HELP_SHOOT;
             intakeState = IntakeState.HELP_SHOOT;
         }
 
-        /* SHOOTER
-         * Intake / stop buttons take priority over L2 so brief L2 overlap does not keep shooting.
-         * When no shoot inputs are held, default to IDLE instead of latching the previous state. */
+        /* SHOOTER */
         if (psControllerHID.getSquareButton()
-                || psControllerHID.getCrossButton()
-                || psControllerHID.getTriangleButton()) {
+            || psControllerHID.getCrossButton()
+            || psControllerHID.getTriangleButton()) {
             shooterState = ShooterState.IDLE;
         } else if (psControllerHID.getCircleButton()) {
             shooterState = ShooterState.DEPLETE;
@@ -122,16 +121,26 @@ public class SubsystemManager {
             shooterState = ShooterState.SPEED_UP;
         } else if (psControllerHID.getR1Button()) {
             shooterState = ShooterState.IDLE;
-        } else {
-            shooterState = ShooterState.IDLE;
         }
 
-        // conveyorUnjam = psControllerHID.getPOV() == 0;
+        conveyorUnjam = psControllerHID.getPOV() == 0;
 
         // Cancel Help Shoot once it's no longer needed
         if(shooterState != ShooterState.SHOOT) {
             if(storageState == StorageState.HELP_SHOOT) storageState = StorageState.OUT;
             if(intakeState == IntakeState.HELP_SHOOT) intakeState = IntakeState.INACTIVE;
+        }
+
+        // Reset control motor encoder
+        if(psControllerHID.getPOV() == 180) {
+            RobotContainer.Intake.resetControlEncoder();
+        }
+
+        // Exclusive storage control for shoot
+        if(psControllerHID.getPOV() == 90) {
+            storageState = StorageState.IN;
+        } else if(psControllerHID.getPOV() == 270) {
+            storageState = StorageState.OUT;
         }
     }
 

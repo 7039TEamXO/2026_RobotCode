@@ -11,6 +11,7 @@ import frc.robot.subsystems.SubsystemManager;
 
 public class Dashboard {
     private final static SendableChooser<String> autoChooser = new SendableChooser<>();
+    private final static SendableChooser<String> orientationChooser = new SendableChooser<>();
 
     private static NetworkTableEntry acceptAngleChanges;
     private static NetworkTableEntry setAngleValue;
@@ -32,11 +33,19 @@ public class Dashboard {
             autoChooser.addOption(name_state, name_state);
         }
 
+        // Static anyway
+        orientationChooser.setDefaultOption("Red Left", "red left");
+        orientationChooser.addOption("Red Left", "red left");
+        orientationChooser.addOption("Red Right", "red right");
+        orientationChooser.addOption("Blue Left", "blue left");
+        orientationChooser.addOption("Blue Right", "blue right");
+
         limelightCamera = new HttpCamera("limelight", "http://10.70.39.202:5801/");
 
         // -----------------------
           
-        SmartDashboard.putData("Autos", autoChooser);
+        SmartDashboard.putData("Autonomy", autoChooser);
+        SmartDashboard.putData("Orientation", orientationChooser);
 
         SmartDashboard.putBoolean("Accept Angle Changes", false);
         acceptAngleChanges = SmartDashboard.getEntry("Accept Angle Changes");
@@ -270,6 +279,10 @@ public class Dashboard {
         
     public static String getSelectedAutonomy() {
         return autoChooser.getSelected();
+    }
+
+    public static String getSelectedOrientation() {
+        return orientationChooser.getSelected();
     }
 
     public static Boolean getAcceptAngleChanges() {

@@ -28,14 +28,15 @@ import frc.robot.subsystems.IO.IntakeIO.IntakeIOInputs;
 public class IntakeSubsystem implements Subsystem {
     private IntakeIO io;
     private IntakeIOInputs inputs = new IntakeIOInputs();
-    // HELP_SHOOT toggle state
+
     private boolean helpShootOpen = false;
     private double lastHelpToggleTime = 0.0;
-    // track when we entered HELP_SHOOT so we can wait initialTimeWithNoHelpSec
+
+    // track when we entered HELP_SHOOT so we can wait
     private double helpShootEntryTime = 0.0;
+
     // track previous storage state for entry detection
     private StorageState lastStorageState = StorageState.OUT;
-
 
     public IntakeSubsystem(IntakeIO _io) {        
         io = _io;
@@ -58,8 +59,6 @@ public class IntakeSubsystem implements Subsystem {
                 Logger.processInputs("Intake", inputs);
             }, null, this));
     }
-
-    
 
     public void operate(IntakeState state, StorageState storageState) {
         io.updateInputs(inputs);
@@ -105,10 +104,7 @@ public class IntakeSubsystem implements Subsystem {
                 }
 
                 // During the initial delay keep the control arm out and don't pump
-                if (now - helpShootEntryTime < IntakeConstants.INITIAL_TIME_WITH_NO_HELP_SEC) {
-                    Position = IntakeConstants.CONTROL_POS_OUT;
-                    Control_Power = 0.0;
-                } else {
+                if (now - helpShootEntryTime > IntakeConstants.INITIAL_STOP_TIME) {
                     // After delay, toggle open/close on configured period
                     if (now - lastHelpToggleTime > IntakeConstants.HELP_TOGGLE_PERIOD) {
                         helpShootOpen = !helpShootOpen;
@@ -120,10 +116,10 @@ public class IntakeSubsystem implements Subsystem {
                     } else {
                         Control_Power = -IntakeTuning.CONTROL_POWER_SHAKE_get();
                     }
-
-                    // Keep the mechanism out while helping
-                    Position = IntakeConstants.CONTROL_POS_OUT;
+                } else {
+                    lastHelpToggleTime = now;
                 }
+
                 break;
 
             default:
@@ -136,9 +132,7 @@ public class IntakeSubsystem implements Subsystem {
         if(storageState != StorageState.HELP_SHOOT) {
             if(Math.abs(inputs.Control_Position - Position) > IntakeConstants.CONTROL_POS_TOLERANCE) {
                 io.setControlRequest(new MotionMagicVoltage(Position));
-            }
-            else {
-
+            } else {
                 io.setControlRequest(new CoastOut());
             }
         } else {
@@ -147,9 +141,7 @@ public class IntakeSubsystem implements Subsystem {
 
         io.setIntakeRequest(new DutyCycleOut(Intake_Power));
         
-        // remember storage state for next cycle so we can detect entry into HELP_SHOOT
         lastStorageState = storageState;
-        
     }
 
     private void setIntakeMotorConfigs() {
@@ -192,6 +184,14 @@ public class IntakeSubsystem implements Subsystem {
         io.applyControlConfiguration(talonFXConfigs);
     }
 
+    public void resetControlEncoder() {
+        if(lastStorageState == StorageState.IN) {
+            io.setControlPosition(IntakeConstants.CONTROL_POS_IN);
+        } else if(lastStorageState == StorageState.OUT) {
+            io.setControlPosition(IntakeConstants.CONTROL_POS_OUT);
+        }
+    }
+
     private void setMotorConfigs() {
         setIntakeMotorConfigs();
         setControlMotorConfigs();
@@ -212,5 +212,4 @@ public class IntakeSubsystem implements Subsystem {
     public Command Control_SysIdDynamic(SysIdRoutine.Direction direction) {
         return Control_SysIdRoutine.dynamic(direction);
     }
-
 }
