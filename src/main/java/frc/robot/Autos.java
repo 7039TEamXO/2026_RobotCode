@@ -3,11 +3,9 @@ package frc.robot;
 public enum Autos {
     Center("Center"),
     ShortCollect("Short Collect"),
-    DelayShortCollect("Short Collect w/ Delay"),
-    LongCollect("Long Collect"),
     ShortShoot("Short Shoot"),
     DelayShortShoot("Short Shoot w/ Delay"),
-    LongShoot("Long Shoot");
+    StealShoot("Steal Shoot");
     
     private final String autoName;
     

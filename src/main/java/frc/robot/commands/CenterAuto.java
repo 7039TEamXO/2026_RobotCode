@@ -14,6 +14,8 @@ import frc.robot.subsystems.Intake.StorageState;
 public class CenterAuto extends SequentialCommandGroup {
     private Pose2d START;
 
+    private double DELAY;
+
     private Rotation2d ToBlueLeft(Rotation2d angle) {
         return angle.plus(Rotation2d.k180deg).times(-1);
     }
@@ -22,9 +24,11 @@ public class CenterAuto extends SequentialCommandGroup {
         return new Pose2d(Constants.Field.FIELD_WIDTH - pose.getX(), pose.getY(), ToBlueLeft(pose.getRotation()));
     }
 
-    public CenterAuto(String orientation) {
+    public CenterAuto(String orientation, double delay) {
         // Default is "red right"
         START = new Pose2d(13.3, Constants.Field.FIELD_HEIGHT / 2, Rotation2d.k180deg);
+
+        DELAY = delay;
 
         switch(orientation) {
             default:
@@ -48,12 +52,13 @@ public class CenterAuto extends SequentialCommandGroup {
                 SubsystemManager.getDrivebase().resetOdometry(START);
                 SubsystemManager.getDrivebase().resetWaypointToPose();
             }),
+            Commands.waitSeconds(DELAY),
             SubsystemManager.operateAuto(ShooterState.SPEED_UP, IntakeState.INACTIVE, StorageState.IN),
             Commands.waitSeconds(1),
             SubsystemManager.operateAuto(ShooterState.SHOOT, IntakeState.HELP_SHOOT, StorageState.IN),
-            Commands.waitSeconds(7),
+            Commands.waitSeconds(3),
             SubsystemManager.operateAuto(ShooterState.SHOOT, IntakeState.INACTIVE, StorageState.IN),
-            Commands.waitSeconds(4),
+            Commands.waitSeconds(2),
             SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.INACTIVE, StorageState.IN)
         );
     }

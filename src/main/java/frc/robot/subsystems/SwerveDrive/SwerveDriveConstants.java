@@ -43,7 +43,7 @@ public class SwerveDriveConstants {
 
     public static final Autopilot kAutopilot = new Autopilot(kProfile);
 
-    public static final double MAX_GENTLE_VELOCITY = 2;
+    public static final double MAX_GENTLE_VELOCITY = 2.5;
     private static final APConstraints kConstraintsGentle = new APConstraints()
         .withVelocity(MAX_GENTLE_VELOCITY)
         .withAcceleration(7039.0)

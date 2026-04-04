@@ -123,7 +123,7 @@ public class RobotContainer {
   }
 
   public static Command getAutonomousCommand() {
-    return SwerveSubsystem.getAutonomousCommand(Dashboard.getSelectedAutonomy(), Dashboard.getSelectedOrientation());
+    return SwerveSubsystem.getAutonomousCommand(Dashboard.getSelectedAutonomy(), Dashboard.getSelectedOrientation(), Dashboard.getAutonomyDelay());
   }
 
   public static void setMotorBrake(boolean brake) {

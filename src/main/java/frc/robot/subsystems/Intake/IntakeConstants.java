@@ -15,7 +15,7 @@ public class IntakeConstants {
 
     // CONTROL MOTOR //
     public static final double CONTROL_POWER_STOP = 0;
-    public static final double CONTROL_POWER_SHAKE = 0.24;
+    public static final double CONTROL_POWER_SHAKE = 0.37;
 
     public static final double Control_kS = 0.6;
     public static final double Control_kV = 0.16;

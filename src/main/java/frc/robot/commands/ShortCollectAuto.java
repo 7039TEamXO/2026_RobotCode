@@ -24,9 +24,9 @@ public class ShortCollectAuto extends SequentialCommandGroup {
     private Rotation2d STEAL_END_EA;
 
     private Pose2d RETURN_START;
-    private Pose2d RETURN_END;
-
     private Pose2d TROUGH;
+
+    private double DELAY;
 
     private Rotation2d ToRedLeft(Rotation2d angle) {
         return angle.times(-1);
@@ -52,20 +52,21 @@ public class ShortCollectAuto extends SequentialCommandGroup {
         return new Pose2d(Constants.Field.FIELD_WIDTH - pose.getX(), Constants.Field.FIELD_HEIGHT - pose.getY(), ToBlueRight(pose.getRotation()));
     }
 
-    public ShortCollectAuto(String orientation) {
+    public ShortCollectAuto(String orientation, double delay) {
         // Default is "red right"
         RAMP_START = new Pose2d(13.2, 5.5, Rotation2d.k180deg);
         RAMP_CROSS = new Pose2d(10.6, 5.7, Rotation2d.k180deg);
         RAMP_RETURN_EA = Rotation2d.kZero;
 
-        STEAL_START = new Pose2d(8.5, 6.5, Rotation2d.k180deg);
+        STEAL_START = new Pose2d(9, 6.5, Rotation2d.k180deg);
         STEAL_START_EA = Rotation2d.k180deg;
-        STEAL_END = new Pose2d(6.5, 5.5, Rotation2d.kCW_90deg);
+        STEAL_END = new Pose2d(8, 5.25, Rotation2d.kCW_90deg);
         STEAL_END_EA = Rotation2d.kCW_90deg;
 
-        RETURN_START = new Pose2d(8.5, 4.75, Rotation2d.kZero);
-        RETURN_END = new Pose2d(9.75, 5.75, Rotation2d.fromDegrees(45));
+        RETURN_START = new Pose2d(9, 4, Rotation2d.kZero);
         TROUGH = new Pose2d(11, 7.4, Rotation2d.kZero);
+
+        DELAY = delay;
 
         switch(orientation) {
             default:
@@ -82,7 +83,6 @@ public class ShortCollectAuto extends SequentialCommandGroup {
                 STEAL_END = ToRedLeft(STEAL_END);
                 STEAL_END_EA = ToRedLeft(STEAL_END_EA);
                 RETURN_START = ToRedLeft(RETURN_START);
-                RETURN_END = ToRedLeft(RETURN_END);
                 TROUGH = ToRedLeft(TROUGH);
                 break;
             
@@ -95,7 +95,6 @@ public class ShortCollectAuto extends SequentialCommandGroup {
                 STEAL_END = ToBlueRight(STEAL_END);
                 STEAL_END_EA = ToBlueRight(STEAL_END_EA);
                 RETURN_START = ToBlueRight(RETURN_START);
-                RETURN_END = ToBlueRight(RETURN_END);
                 TROUGH = ToBlueRight(TROUGH);
                 break;
 
@@ -108,7 +107,6 @@ public class ShortCollectAuto extends SequentialCommandGroup {
                 STEAL_END = ToBlueLeft(STEAL_END);
                 STEAL_END_EA = ToBlueLeft(STEAL_END_EA);
                 RETURN_START = ToBlueLeft(RETURN_START);
-                RETURN_END = ToBlueLeft(RETURN_END);
                 TROUGH = ToBlueLeft(TROUGH);
                 break;
         }
@@ -122,6 +120,7 @@ public class ShortCollectAuto extends SequentialCommandGroup {
                 SubsystemManager.getDrivebase().resetOdometry(RAMP_START);
                 SubsystemManager.getDrivebase().resetWaypointToPose();
             }),
+            Commands.waitSeconds(DELAY),
             SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.INACTIVE, StorageState.IN),
             SubsystemManager.getDrivebase().driveToPose(
                 new APTarget(RAMP_CROSS).withVelocity(1), 0.3, 10, true),
@@ -130,7 +129,6 @@ public class ShortCollectAuto extends SequentialCommandGroup {
                 new APTarget(STEAL_START).withVelocity(3).withEntryAngle(STEAL_START_EA),
                 new APTarget(STEAL_END).withVelocity(1).withEntryAngle(STEAL_END_EA),
                 new APTarget(RETURN_START).withVelocity(1).withEntryAngle(RAMP_RETURN_EA),
-                new APTarget(RETURN_END).withVelocity(2),
                 new APTarget(TROUGH).withVelocity(0).withEntryAngle(RAMP_RETURN_EA)
             }, 0.3, 0.1, 10),
             SubsystemManager.operateAuto(ShooterState.SHOOT, IntakeState.DEPLETE, StorageState.OUT),
@@ -140,7 +138,6 @@ public class ShortCollectAuto extends SequentialCommandGroup {
                 new APTarget(STEAL_START).withVelocity(3).withEntryAngle(STEAL_START_EA),
                 new APTarget(STEAL_END).withVelocity(1).withEntryAngle(STEAL_END_EA),
                 new APTarget(RETURN_START).withVelocity(1).withEntryAngle(RAMP_RETURN_EA),
-                new APTarget(RETURN_END).withVelocity(2),
                 new APTarget(TROUGH).withVelocity(0).withEntryAngle(RAMP_RETURN_EA)
             }, 0.3, 0.1, 10),
             SubsystemManager.operateAuto(ShooterState.SHOOT, IntakeState.DEPLETE, StorageState.OUT),

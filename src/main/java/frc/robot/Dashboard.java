@@ -19,6 +19,8 @@ public class Dashboard {
     private static NetworkTableEntry acceptVelocityChanges;
     private static NetworkTableEntry setVelocityValue;
 
+    private static NetworkTableEntry autonomyDelay;
+
     @SuppressWarnings("unused")
     private static HttpCamera limelightCamera;
 
@@ -58,6 +60,9 @@ public class Dashboard {
 
         SmartDashboard.putNumber("Set Velocity Value", 0);
         setVelocityValue = SmartDashboard.getEntry("Set Velocity Value");
+
+        SmartDashboard.putNumber("Autonomy Delay", 0);
+        autonomyDelay = SmartDashboard.getEntry("Autonomy Delay");
 
         update();
     }
@@ -299,5 +304,9 @@ public class Dashboard {
 
     public static double getVelocityValue() {
         return setVelocityValue.getDouble(0);
+    }
+
+    public static double getAutonomyDelay() {
+        return autonomyDelay.getDouble(0);
     }
 }

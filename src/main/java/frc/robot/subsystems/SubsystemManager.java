@@ -104,7 +104,7 @@ public class SubsystemManager {
         }
         // 5. Help Shoot (L2)
         else if (psControllerHID.getL2Button()) {
-            // storageState = StorageState.HELP_SHOOT;
+            storageState = StorageState.HELP_SHOOT;
             intakeState = IntakeState.HELP_SHOOT;
         }
 

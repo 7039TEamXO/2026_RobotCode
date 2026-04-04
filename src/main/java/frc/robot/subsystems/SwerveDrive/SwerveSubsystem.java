@@ -23,12 +23,10 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.LimelightSimMode;
 import frc.robot.Constants.TuningMode;
 import frc.robot.commands.CenterAuto;
-import frc.robot.commands.DelayShortCollectAuto;
 import frc.robot.commands.DelayShortShootAuto;
-import frc.robot.commands.LongCollectAuto;
-import frc.robot.commands.LongShootAuto;
 import frc.robot.commands.ShortCollectAuto;
 import frc.robot.commands.ShortShootAuto;
+import frc.robot.commands.StealShootAuto;
 import frc.robot.subsystems.SubsystemManager;
 import frc.robot.subsystems.Delivery.Shooter.ShooterState;
 
@@ -565,29 +563,23 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /* GETTER/SETTER FUNCTIONS */
 
-  public static Command getAutonomousCommand(String pathName, String orientationName) {
+  public static Command getAutonomousCommand(String pathName, String orientationName, double delay) {
     switch(pathName) {
       default:
       case "Center":
-        return new CenterAuto(orientationName);
+        return new CenterAuto(orientationName, delay);
         
       case "Short Collect":
-        return new ShortCollectAuto(orientationName);
+        return new ShortCollectAuto(orientationName, delay);
 
       case "Short Shoot":
-        return new ShortShootAuto(orientationName);
-
-      case "Short Collect w/ Delay":
-        return new DelayShortCollectAuto(orientationName);
+        return new ShortShootAuto(orientationName, delay);
 
       case "Short Shoot w/ Delay":
-        return new DelayShortShootAuto(orientationName);
-
-      case "Long Shoot":
-        return new LongShootAuto(orientationName);
-
-      case "Long Collect":
-        return new LongCollectAuto(orientationName);
+        return new DelayShortShootAuto(orientationName, delay);
+      
+      case "Steal Shoot":
+        return new StealShootAuto(orientationName, delay);
     }
   }
 

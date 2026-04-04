@@ -175,7 +175,7 @@
             "x": 768.0,
             "y": 384.0,
             "width": 416.0,
-            "height": 128.0,
+            "height": 160.0,
             "type": "Text Display",
             "properties": {
               "topic": "/SmartDashboard/Distance To Hub",
@@ -208,6 +208,84 @@
               "topic": "/SmartDashboard/Orientation",
               "period": 0.06,
               "sort_options": false
+            }
+          },
+          {
+            "title": "Autonomy Delay",
+            "x": 1216.0,
+            "y": 256.0,
+            "width": 320.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Autonomy Delay",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Test",
+      "grid_layout": {
+        "layouts": [],
+        "containers": [
+          {
+            "title": "Raw Absolute Encoder",
+            "x": 32.0,
+            "y": 160.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/swerve/modules/backleft/Raw Absolute Encoder",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Raw Absolute Encoder",
+            "x": 160.0,
+            "y": 160.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/swerve/modules/backright/Raw Absolute Encoder",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Raw Absolute Encoder",
+            "x": 32.0,
+            "y": 32.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/swerve/modules/frontleft/Raw Absolute Encoder",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Raw Absolute Encoder",
+            "x": 160.0,
+            "y": 32.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/swerve/modules/frontright/Raw Absolute Encoder",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
             }
           }
         ]
