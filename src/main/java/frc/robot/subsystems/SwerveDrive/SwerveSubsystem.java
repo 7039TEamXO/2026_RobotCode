@@ -458,6 +458,12 @@ public class SwerveSubsystem extends SubsystemBase {
     return (x > Constants.Field.HUB_X_BLUE) && (x < Constants.Field.HUB_X_RED);
   }
 
+  public Boolean isHorizontalNearHub() {
+    double x = getPose().getX();
+    if(RobotContainer.teamColorIsBlue() == 1) return (x > Constants.Field.HUB_X_BLUE - Constants.Field.HUB_X_THRESHOLD) && (x < Constants.Field.HUB_X_BLUE + Constants.Field.HUB_X_THRESHOLD);
+    else return (x < Constants.Field.HUB_X_RED + Constants.Field.HUB_X_THRESHOLD) && (x > Constants.Field.HUB_X_RED - Constants.Field.HUB_X_THRESHOLD);
+  }
+
   public Rotation2d calculateOptimalDiagonalRotation() {
     final Rotation2d option1 = Rotation2d.fromDegrees(45);
     final Rotation2d option2 = Rotation2d.fromDegrees(135);

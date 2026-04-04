@@ -90,9 +90,9 @@
           },
           {
             "title": "Autos",
-            "x": 1216.0,
-            "y": 0.0,
-            "width": 320.0,
+            "x": 768.0,
+            "y": 384.0,
+            "width": 416.0,
             "height": 160.0,
             "type": "ComboBox Chooser",
             "properties": {

@@ -53,12 +53,12 @@ public class CameraReal implements CameraIO {
         // Process at half resolution for improved framerate and reduced range
         LimelightHelpers.SetFiducialDownscalingOverride("limelight", 2.0f); 
         LimelightHelpers.setCameraPose_RobotSpace("limelight", 
-            Constants.Limelight.Main_RobotToCamera.getX(),                   // Forward offset (meters)
-            Constants.Limelight.Main_RobotToCamera.getY(),                   // Side offset (meters)
-            Constants.Limelight.Main_RobotToCamera.getZ(),                   // Height offset (meters)
-            Constants.Limelight.Main_RobotToCamera.getRotation().getX(),     // Roll (degrees)
-            Constants.Limelight.Main_RobotToCamera.getRotation().getY(),     // Pitch (degrees)
-            Constants.Limelight.Main_RobotToCamera.getRotation().getZ()      // Yaw (degrees)
+            Constants.Limelight.Main_RobotToCamera.getX(),                                  // Forward offset (meters)
+            Constants.Limelight.Main_RobotToCamera.getY(),                                  // Side offset (meters)
+            Constants.Limelight.Main_RobotToCamera.getZ(),                                  // Height offset (meters)
+            Math.toDegrees(Constants.Limelight.Main_RobotToCamera.getRotation().getX()),    // Roll (degrees)
+            Math.toDegrees(Constants.Limelight.Main_RobotToCamera.getRotation().getY()),    // Pitch (degrees)
+            Math.toDegrees(Constants.Limelight.Main_RobotToCamera.getRotation().getZ())     // Yaw (degrees)
         );
     }
 

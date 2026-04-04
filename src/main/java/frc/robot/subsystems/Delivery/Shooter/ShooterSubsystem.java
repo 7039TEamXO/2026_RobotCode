@@ -130,6 +130,7 @@ public class ShooterSubsystem implements Subsystem {
     }
 
     public double calculateShooterAngle() {
+        if(SubsystemManager.getDrivebase().isHorizontalNearHub()) return 0;
         if(Dashboard.getAcceptAngleChanges()) return Dashboard.getAngleValue();
         if(SubsystemManager.getDrivebase().isInNeutralZone()) return ShooterTuning.ANGLE_NEUTRAL_ZONE_POS_get();
         double distanceFromHub = SubsystemManager.getDrivebase().calculateDistanceToHub();

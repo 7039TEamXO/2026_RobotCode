@@ -75,7 +75,7 @@ public final class Constants
 
   public static class Limelight
   { // -0.2675, -0.1475, 0.71
-    public static final Transform3d Main_RobotToCamera = new Transform3d(new Translation3d(-0.2675, -0.1475, 0.71), new Rotation3d(0, Math.toRadians(0), Math.toRadians(0)));
+    public static final Transform3d Main_RobotToCamera = new Transform3d(new Translation3d(-0.325, 0, 0.405), new Rotation3d(0, Math.toRadians(0), Math.toRadians(180)));
     public static final Transform3d Back_RobotToCamera = new Transform3d(new Translation3d(-0.3, 0.0, 0.2), new Rotation3d(0, Math.toRadians(-20), Math.toRadians(180))); // Temporary
     public static class CameraProperties {
       public static final int resWidth = 1280;
@@ -112,6 +112,8 @@ public final class Constants
     public static final double HUB_Y_RED = 4.0;
     public static final double HUB_X_BLUE = 4.625;
     public static final double HUB_Y_BLUE = 4.0;
+
+    public static final double HUB_X_THRESHOLD = 0.5;
 
     public static final double OUTPOST_X_RED = 16.0;
     public static final double OUTPOST_Y_RED = 7.4;
