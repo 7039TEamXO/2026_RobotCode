@@ -5,6 +5,7 @@ public enum Autos {
     ShortCollect("Short Collect"),
     ShortShoot("Short Shoot"),
     DelayShortShoot("Short Shoot w/ Delay"),
+    ChessShoot("Chess Shoot"),
     StealShoot("Steal Shoot");
     
     private final String autoName;

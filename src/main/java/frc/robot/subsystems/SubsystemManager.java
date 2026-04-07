@@ -106,6 +106,9 @@ public class SubsystemManager {
         else if (psControllerHID.getL2Button()) {
             storageState = StorageState.HELP_SHOOT;
             intakeState = IntakeState.HELP_SHOOT;
+            if(drivebase.isInNeutralZone()) { // Don't pump if outside alliance zone
+                storageState = StorageState.OUT;
+            }
         }
 
         /* SHOOTER */

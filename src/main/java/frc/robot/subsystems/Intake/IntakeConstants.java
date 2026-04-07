@@ -38,7 +38,7 @@ public class IntakeConstants {
     public static final double CONTROL_POS_TOLERANCE = 0.2;
 
     public static final double HELP_TOGGLE_PERIOD = 0.4; // seconds
-    public static final double INITIAL_STOP_TIME = 0.5;  // seconds
+    public static final double INITIAL_STOP_TIME = 1.5;  // seconds
 
     // OTHER //
     public static final double SimulationMotorGearRatio = 12.8;

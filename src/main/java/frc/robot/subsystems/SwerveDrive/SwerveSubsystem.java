@@ -23,6 +23,7 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.LimelightSimMode;
 import frc.robot.Constants.TuningMode;
 import frc.robot.commands.CenterAuto;
+import frc.robot.commands.ChessShootAuto;
 import frc.robot.commands.DelayShortShootAuto;
 import frc.robot.commands.ShortCollectAuto;
 import frc.robot.commands.ShortShootAuto;
@@ -500,9 +501,11 @@ public class SwerveSubsystem extends SubsystemBase {
     return getPose().getTranslation().getDistance(hubTranslation);
   }
 
+  // Include opposing alliance zone
   public Boolean isInNeutralZone() {
     double x = getPose().getX();
-    return (x > Constants.Field.HUB_X_BLUE) && (x < Constants.Field.HUB_X_RED);
+    if(RobotContainer.teamColorIsBlue() == 1) return x > Constants.Field.HUB_X_BLUE;
+    else return x < Constants.Field.HUB_X_RED;
   }
 
   public Rotation2d calculateOptimalDiagonalRotation() {
@@ -577,6 +580,9 @@ public class SwerveSubsystem extends SubsystemBase {
 
       case "Short Shoot w/ Delay":
         return new DelayShortShootAuto(orientationName, delay);
+
+      case "Chess Shoot":
+        return new ChessShootAuto(orientationName, delay);
       
       case "Steal Shoot":
         return new StealShootAuto(orientationName, delay);
