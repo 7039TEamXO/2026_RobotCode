@@ -2,9 +2,9 @@ package frc.robot;
 
 public enum Autos {
     Center("Center"),
-    SimpleShoot("Simple Out"),
-    ChessShoot("Simple Middle"),
-    SimpleShootDelay("Simple Out w/8"),
+    SimpleOut("Simple Out"),
+    SimpleMiddle("Simple Middle"),
+    SimpleOutDelay("Simple Out w/8"),
     HubSteal("Hub Steal"),
     Collect("Collect");
     
