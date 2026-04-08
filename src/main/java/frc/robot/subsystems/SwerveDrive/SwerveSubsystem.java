@@ -23,11 +23,11 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.LimelightSimMode;
 import frc.robot.Constants.TuningMode;
 import frc.robot.commands.CenterAuto;
-import frc.robot.commands.ChessShootAuto;
-import frc.robot.commands.DelayShortShootAuto;
-import frc.robot.commands.ShortCollectAuto;
-import frc.robot.commands.ShortShootAuto;
-import frc.robot.commands.StealShootAuto;
+import frc.robot.commands.SimpleMiddleAuto;
+import frc.robot.commands.SimpleOutDelayAuto;
+import frc.robot.commands.CollectAuto;
+import frc.robot.commands.SimpleOutAuto;
+import frc.robot.commands.HubStealAuto;
 import frc.robot.subsystems.SubsystemManager;
 import frc.robot.subsystems.Delivery.Shooter.ShooterState;
 
@@ -572,20 +572,20 @@ public class SwerveSubsystem extends SubsystemBase {
       case "Center":
         return new CenterAuto(orientationName, delay);
         
-      case "Short Collect":
-        return new ShortCollectAuto(orientationName, delay);
+      case "Collect":
+        return new CollectAuto(orientationName, delay);
 
-      case "Short Shoot":
-        return new ShortShootAuto(orientationName, delay);
+      case "Simple Out":
+        return new SimpleOutAuto(orientationName, delay);
 
-      case "Short Shoot w/ Delay":
-        return new DelayShortShootAuto(orientationName, delay);
+      case "Simple Out w/8":
+        return new SimpleOutDelayAuto(orientationName, delay);
 
-      case "Chess Shoot":
-        return new ChessShootAuto(orientationName, delay);
+      case "Simple Middle":
+        return new SimpleMiddleAuto(orientationName, delay);
       
-      case "Steal Shoot":
-        return new StealShootAuto(orientationName, delay);
+      case "Hub Steal":
+        return new HubStealAuto(orientationName, delay);
     }
   }
 

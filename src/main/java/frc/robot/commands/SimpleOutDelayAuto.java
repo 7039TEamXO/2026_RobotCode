@@ -13,7 +13,7 @@ import frc.robot.subsystems.Delivery.Shooter.ShooterState;
 import frc.robot.subsystems.Intake.IntakeState;
 import frc.robot.subsystems.Intake.StorageState;
 
-public class DelayShortShootAuto extends SequentialCommandGroup {
+public class SimpleOutDelayAuto extends SequentialCommandGroup {
     private Pose2d RAMP_CROSS;
     private Rotation2d RAMP_RETURN_EA; // Entry angle
     private Pose2d RAMP_CROSS_FINAL;
@@ -55,7 +55,7 @@ public class DelayShortShootAuto extends SequentialCommandGroup {
         return new Pose2d(Constants.Field.FIELD_WIDTH - pose.getX(), Constants.Field.FIELD_HEIGHT - pose.getY(), ToBlueRight(pose.getRotation()));
     }
 
-    public DelayShortShootAuto(String orientation, double delay) {
+    public SimpleOutDelayAuto(String orientation, double delay) {
         // Default is "red right"
         RAMP_CROSS = new Pose2d(10.9, 5.5, Rotation2d.k180deg);
         RAMP_RETURN_EA = Rotation2d.kZero;

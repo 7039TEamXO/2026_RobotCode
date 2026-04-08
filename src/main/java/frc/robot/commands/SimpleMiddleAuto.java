@@ -13,7 +13,7 @@ import frc.robot.subsystems.Delivery.Shooter.ShooterState;
 import frc.robot.subsystems.Intake.IntakeState;
 import frc.robot.subsystems.Intake.StorageState;
 
-public class ChessShootAuto extends SequentialCommandGroup {
+public class SimpleMiddleAuto extends SequentialCommandGroup {
     private Pose2d RAMP_START;
     private Pose2d RAMP_CROSS;
     private Rotation2d RAMP_RETURN_EA; // Entry angle
@@ -59,7 +59,7 @@ public class ChessShootAuto extends SequentialCommandGroup {
 
     // Chess, because in the beginning of the game there's usually a race to conquer the center, which is what's done here
     // Analogous to Short Shoot with the steal and return sequence flipped
-    public ChessShootAuto(String orientation, double delay) {
+    public SimpleMiddleAuto(String orientation, double delay) {
         // Default is "red right"
         RAMP_START = new Pose2d(13.2, 5.5, Rotation2d.k180deg);
         RAMP_CROSS = new Pose2d(10.9, 5.5, Rotation2d.k180deg);

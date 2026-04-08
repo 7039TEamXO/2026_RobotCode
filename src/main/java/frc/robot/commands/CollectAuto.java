@@ -13,7 +13,7 @@ import frc.robot.subsystems.Delivery.Shooter.ShooterState;
 import frc.robot.subsystems.Intake.IntakeState;
 import frc.robot.subsystems.Intake.StorageState;
 
-public class ShortCollectAuto extends SequentialCommandGroup {
+public class CollectAuto extends SequentialCommandGroup {
     private Pose2d RAMP_START;
     private Pose2d RAMP_CROSS;
     private Rotation2d RAMP_RETURN_EA; // Entry angle
@@ -52,7 +52,7 @@ public class ShortCollectAuto extends SequentialCommandGroup {
         return new Pose2d(Constants.Field.FIELD_WIDTH - pose.getX(), Constants.Field.FIELD_HEIGHT - pose.getY(), ToBlueRight(pose.getRotation()));
     }
 
-    public ShortCollectAuto(String orientation, double delay) {
+    public CollectAuto(String orientation, double delay) {
         // Default is "red right"
         RAMP_START = new Pose2d(13.2, 5.5, Rotation2d.k180deg);
         RAMP_CROSS = new Pose2d(10.6, 5.7, Rotation2d.k180deg);
