@@ -188,7 +188,11 @@ public class ShooterSubsystem implements Subsystem {
 
     public double calculateShooterVelocity() {
         if(Dashboard.getAcceptVelocityChanges()) return Dashboard.getVelocityValue();
-        if(SubsystemManager.getDrivebase().isInNeutralZone()) return ShooterTuning.SHOOT_VELOCITY_NEUTRAL_ZONE_get();
+        if(SubsystemManager.getDrivebase().isInNeutralZone()) { 
+            if(SubsystemManager.getDrivebase().distanceToRampLine() < 2) return 40.0;
+            else if(SubsystemManager.getDrivebase().distanceToRampLine() < 4) return 50.0;
+            else return 60.0;
+        }
         double distanceFromHub = SubsystemManager.getDrivebase().calculateDistanceToHub(true);
         return shooterInterpolatingMap.get(distanceFromHub);
     }

@@ -98,6 +98,7 @@ public class SimpleMiddleAuto extends SequentialCommandGroup {
                 STEAL_END_EA = ToRedLeft(STEAL_END_EA);
                 RETURN_START = ToRedLeft(RETURN_START);
                 CLOSE_END = ToRedLeft(CLOSE_END);
+                CLOSE_END_EA = ToRedLeft(CLOSE_END_EA);
                 break;
             
             case "blue right":
@@ -113,6 +114,7 @@ public class SimpleMiddleAuto extends SequentialCommandGroup {
                 STEAL_END_EA = ToBlueRight(STEAL_END_EA);
                 RETURN_START = ToBlueRight(RETURN_START);
                 CLOSE_END = ToBlueRight(CLOSE_END);
+                CLOSE_END_EA = ToBlueRight(CLOSE_END_EA);
                 break;
 
             case "blue left":
@@ -128,6 +130,7 @@ public class SimpleMiddleAuto extends SequentialCommandGroup {
                 STEAL_END_EA = ToBlueLeft(STEAL_END_EA);
                 RETURN_START = ToBlueLeft(RETURN_START);
                 CLOSE_END = ToBlueLeft(CLOSE_END);
+                CLOSE_END_EA = ToBlueLeft(CLOSE_END_EA);
                 break;
         }
 

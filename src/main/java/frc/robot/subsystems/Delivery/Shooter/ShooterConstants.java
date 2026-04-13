@@ -25,7 +25,6 @@ public class ShooterConstants {
 
     public static final double SHOOT_VELOCITY_IDLE = 5;
     public static final double SHOOT_VELOCITY_HELP = 7;
-    public static final double SHOOT_VELOCITY_NEUTRAL_ZONE = 60;
     public static final double SHOOT_VELOCITY_TOLERANCE = 4;
 
     public static final double SHOOT_VELOCITY_MIN = 0; // Disabled

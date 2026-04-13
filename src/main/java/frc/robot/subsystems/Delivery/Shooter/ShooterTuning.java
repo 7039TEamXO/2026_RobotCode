@@ -40,7 +40,6 @@ public class ShooterTuning {
 
     private static final LoggedNetworkNumber Shoot_Velocity_Idle = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Velocity Idle", ShooterConstants.SHOOT_VELOCITY_IDLE);
     private static final LoggedNetworkNumber Shoot_Velocity_Help = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Velocity Help", ShooterConstants.SHOOT_VELOCITY_HELP);
-    private static final LoggedNetworkNumber Shoot_Velocity_Neutral_Zone = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Velocity Neutral Zone", ShooterConstants.SHOOT_VELOCITY_NEUTRAL_ZONE);
     private static final LoggedNetworkNumber Shoot_Velocity_Tolerance = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Velocity Tolerance (rot/s)", ShooterConstants.SHOOT_VELOCITY_TOLERANCE);
     private static final LoggedNetworkNumber Shoot_Velocity_Min = new LoggedNetworkNumber("/Tuning/Shooter/(Shoot) Minimal Velocity", ShooterConstants.SHOOT_VELOCITY_MIN);
 
@@ -154,10 +153,6 @@ public class ShooterTuning {
 
     public static final double SHOOT_VELOCITY_HELP_get() {
         return Constants.GetTuningMode() != TuningMode.IGNORE ? Shoot_Velocity_Help.get() : ShooterConstants.SHOOT_VELOCITY_HELP;
-    }
-
-    public static final double SHOOT_VELOCITY_NEUTRAL_ZONE_get() {
-        return Constants.GetTuningMode() != TuningMode.IGNORE ? Shoot_Velocity_Neutral_Zone.get() : ShooterConstants.SHOOT_VELOCITY_NEUTRAL_ZONE;
     }
 
     public static final double SHOOT_VELOCITY_TOLERANCE_get() {

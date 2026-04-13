@@ -501,11 +501,15 @@ public class SwerveSubsystem extends SubsystemBase {
     return getPose().getTranslation().getDistance(hubTranslation);
   }
 
+  public double distanceToRampLine() {
+    double x = getPose().getX();
+    if(RobotContainer.teamColorIsBlue() == 1) return x - Constants.Field.HUB_X_BLUE;
+    else return Constants.Field.HUB_X_RED - x;
+  }
+
   // Include opposing alliance zone
   public Boolean isInNeutralZone() {
-    double x = getPose().getX();
-    if(RobotContainer.teamColorIsBlue() == 1) return x > Constants.Field.HUB_X_BLUE;
-    else return x < Constants.Field.HUB_X_RED;
+    return distanceToRampLine() > 0;
   }
 
   public Rotation2d calculateOptimalDiagonalRotation() {
