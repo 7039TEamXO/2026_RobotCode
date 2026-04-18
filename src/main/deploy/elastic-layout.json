@@ -25,7 +25,7 @@
             "x": 0.0,
             "y": 352.0,
             "width": 480.0,
-            "height": 160.0,
+            "height": 192.0,
             "type": "Match Time",
             "properties": {
               "topic": "/SmartDashboard/Shift Timer",
@@ -80,12 +80,25 @@
             "x": 480.0,
             "y": 0.0,
             "width": 256.0,
-            "height": 512.0,
+            "height": 544.0,
             "type": "Single Color View",
             "properties": {
               "topic": "/SmartDashboard/Flash Bar",
               "period": 0.06,
               "data_type": "string"
+            }
+          },
+          {
+            "title": "Autos",
+            "x": 768.0,
+            "y": 384.0,
+            "width": 416.0,
+            "height": 160.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/SmartDashboard/Autos",
+              "period": 0.06,
+              "sort_options": false
             }
           },
           {
@@ -165,124 +178,6 @@
             "type": "Text Display",
             "properties": {
               "topic": "/AdvantageKit/Shooter/Angle Motor Position",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "Distance To Hub",
-            "x": 768.0,
-            "y": 384.0,
-            "width": 416.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/Distance To Hub",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "Autonomy",
-            "x": 1216.0,
-            "y": 0.0,
-            "width": 320.0,
-            "height": 128.0,
-            "type": "ComboBox Chooser",
-            "properties": {
-              "topic": "/SmartDashboard/Autonomy",
-              "period": 0.06,
-              "sort_options": false
-            }
-          },
-          {
-            "title": "Orientation",
-            "x": 1216.0,
-            "y": 128.0,
-            "width": 320.0,
-            "height": 128.0,
-            "type": "ComboBox Chooser",
-            "properties": {
-              "topic": "/SmartDashboard/Orientation",
-              "period": 0.06,
-              "sort_options": false
-            }
-          },
-          {
-            "title": "Autonomy Delay",
-            "x": 1216.0,
-            "y": 256.0,
-            "width": 320.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/Autonomy Delay",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": true
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "Test",
-      "grid_layout": {
-        "layouts": [],
-        "containers": [
-          {
-            "title": "Raw Absolute Encoder",
-            "x": 32.0,
-            "y": 160.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/swerve/modules/backleft/Raw Absolute Encoder",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "Raw Absolute Encoder",
-            "x": 160.0,
-            "y": 160.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/swerve/modules/backright/Raw Absolute Encoder",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "Raw Absolute Encoder",
-            "x": 32.0,
-            "y": 32.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/swerve/modules/frontleft/Raw Absolute Encoder",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "Raw Absolute Encoder",
-            "x": 160.0,
-            "y": 32.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/swerve/modules/frontright/Raw Absolute Encoder",
               "period": 0.06,
               "data_type": "double",
               "show_submit_button": false

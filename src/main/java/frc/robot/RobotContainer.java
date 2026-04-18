@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -7,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.SysIdMode;
-import frc.robot.subsystems.SubsystemManager;
 import frc.robot.subsystems.Delivery.Conveyor.ConveyorSubsystem;
 import frc.robot.subsystems.Delivery.Shooter.ShooterSubsystem;
 import frc.robot.subsystems.IO.Real.CameraReal;
@@ -20,9 +21,8 @@ import frc.robot.subsystems.IO.Sim.IntakeSim;
 import frc.robot.subsystems.IO.Sim.ShooterSim;
 import frc.robot.subsystems.IO.Stub.CameraStub;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
+import frc.robot.subsystems.SubsystemManager;
 import frc.robot.subsystems.SwerveDrive.SwerveSubsystem;
-
-import java.util.Optional;
 
 // import com.ctre.phoenix6.SignalLogger;
 
@@ -123,7 +123,7 @@ public class RobotContainer {
   }
 
   public static Command getAutonomousCommand() {
-    return SwerveSubsystem.getAutonomousCommand(Dashboard.getSelectedAutonomy(), Dashboard.getSelectedOrientation(), Dashboard.getAutonomyDelay());
+    return SwerveSubsystem.getAutonomousCommand(Dashboard.getSelectedAutonomy());
   }
 
   public static void setMotorBrake(boolean brake) {

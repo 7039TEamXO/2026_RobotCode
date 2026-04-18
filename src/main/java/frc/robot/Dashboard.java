@@ -11,15 +11,12 @@ import frc.robot.subsystems.SubsystemManager;
 
 public class Dashboard {
     private final static SendableChooser<String> autoChooser = new SendableChooser<>();
-    private final static SendableChooser<String> orientationChooser = new SendableChooser<>();
 
     private static NetworkTableEntry acceptAngleChanges;
     private static NetworkTableEntry setAngleValue;
 
     private static NetworkTableEntry acceptVelocityChanges;
     private static NetworkTableEntry setVelocityValue;
-
-    private static NetworkTableEntry autonomyDelay;
 
     @SuppressWarnings("unused")
     private static HttpCamera limelightCamera;
@@ -35,19 +32,11 @@ public class Dashboard {
             autoChooser.addOption(name_state, name_state);
         }
 
-        // Static anyway
-        orientationChooser.setDefaultOption("Red Left", "red left");
-        orientationChooser.addOption("Red Left", "red left");
-        orientationChooser.addOption("Red Right", "red right");
-        orientationChooser.addOption("Blue Left", "blue left");
-        orientationChooser.addOption("Blue Right", "blue right");
-
         limelightCamera = new HttpCamera("limelight", "http://10.70.39.202:5801/");
 
         // -----------------------
           
-        SmartDashboard.putData("Autonomy", autoChooser);
-        SmartDashboard.putData("Orientation", orientationChooser);
+        SmartDashboard.putData("Autos", autoChooser);
 
         SmartDashboard.putBoolean("Accept Angle Changes", false);
         acceptAngleChanges = SmartDashboard.getEntry("Accept Angle Changes");
@@ -60,9 +49,6 @@ public class Dashboard {
 
         SmartDashboard.putNumber("Set Velocity Value", 0);
         setVelocityValue = SmartDashboard.getEntry("Set Velocity Value");
-
-        SmartDashboard.putNumber("Autonomy Delay", 0);
-        autonomyDelay = SmartDashboard.getEntry("Autonomy Delay");
 
         update();
     }
@@ -286,10 +272,6 @@ public class Dashboard {
         return autoChooser.getSelected();
     }
 
-    public static String getSelectedOrientation() {
-        return orientationChooser.getSelected();
-    }
-
     public static Boolean getAcceptAngleChanges() {
         return acceptAngleChanges.getBoolean(false);
     }
@@ -304,9 +286,5 @@ public class Dashboard {
 
     public static double getVelocityValue() {
         return setVelocityValue.getDouble(0);
-    }
-
-    public static double getAutonomyDelay() {
-        return autonomyDelay.getDouble(0);
     }
 }

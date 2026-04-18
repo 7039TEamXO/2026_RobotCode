@@ -1,12 +1,14 @@
 package frc.robot;
 
 public enum Autos {
-    Center("Center"),
-    SimpleOut("Simple Out"),
-    SimpleMiddle("Simple Middle"),
-    SimpleOutDelay("Simple Out w/8"),
-    HubSteal("Hub Steal"),
-    Collect("Collect");
+    CollectRedLeft("Collect (Red Left)"),
+    CollectRedRight("Collect (Red Right)"),
+    CollectBlueLeft("Collect (Blue Left)"),
+    CollectBlueRight("Collect (Blue Right)"),
+    ShootRedLeft("Shoot (Red Left)"),
+    ShootRedRight("Shoot (Red Right)"),
+    ShootBlueLeft("Shoot (Blue Left)"),
+    ShootBlueRight("Shoot (Blue Right)");
     
     private final String autoName;
     

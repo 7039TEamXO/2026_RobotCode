@@ -16,17 +16,22 @@ import frc.robot.subsystems.Intake.StorageState;
 public class CollectAuto extends SequentialCommandGroup {
     private Pose2d RAMP_START;
     private Pose2d RAMP_CROSS;
-    private Rotation2d RAMP_RETURN_EA; // Entry angle
 
     private Pose2d STEAL_START;
-    private Rotation2d STEAL_START_EA;
+    private Rotation2d STEAL_START_EA; // Entry angle
+    private Pose2d STEAL_CENTER;
+    private Rotation2d STEAL_CENTER_EA;
     private Pose2d STEAL_END;
-    private Rotation2d STEAL_END_EA;
 
-    private Pose2d RETURN_START;
-    private Pose2d TROUGH;
+    private Pose2d TROUGH_FIRST;
+    private Pose2d TROUGH_NEXT;
+    private Rotation2d TROUGH_EA;
 
-    private double DELAY;
+    private Pose2d END_START;
+    private Pose2d END_HUB;
+
+    private Pose2d RAMP_CROSS_FINISH;
+    private Pose2d RAMP_START_FINISH;
 
     private Rotation2d ToRedLeft(Rotation2d angle) {
         return angle.times(-1);
@@ -52,21 +57,22 @@ public class CollectAuto extends SequentialCommandGroup {
         return new Pose2d(Constants.Field.FIELD_WIDTH - pose.getX(), Constants.Field.FIELD_HEIGHT - pose.getY(), ToBlueRight(pose.getRotation()));
     }
 
-    public CollectAuto(String orientation, double delay) {
+    public CollectAuto(String orientation) {
         // Default is "red right"
-        RAMP_START = new Pose2d(13.2, 5.5, Rotation2d.k180deg);
-        RAMP_CROSS = new Pose2d(10.6, 5.7, Rotation2d.k180deg);
-        RAMP_RETURN_EA = Rotation2d.kZero;
-
-        STEAL_START = new Pose2d(9, 6.5, Rotation2d.k180deg);
+        RAMP_START = new Pose2d(13.2, 5.4, Rotation2d.kCW_90deg);
+        RAMP_CROSS = new Pose2d(10.8, 5.8, Rotation2d.kCW_90deg);
+        STEAL_START = new Pose2d(9.5, 7, Rotation2d.kCW_90deg);
         STEAL_START_EA = Rotation2d.k180deg;
-        STEAL_END = new Pose2d(8, 5.25, Rotation2d.kCW_90deg);
-        STEAL_END_EA = Rotation2d.kCW_90deg;
-
-        RETURN_START = new Pose2d(9, 4, Rotation2d.kZero);
-        TROUGH = new Pose2d(11, 7.4, Rotation2d.kZero);
-
-        DELAY = delay;
+        STEAL_CENTER = new Pose2d(8.725, 4, Rotation2d.kCW_90deg);
+        STEAL_CENTER_EA = Rotation2d.kCW_90deg;
+        STEAL_END = new Pose2d(8.725, 2, Rotation2d.kCW_90deg);
+        TROUGH_FIRST = new Pose2d(11, 7.4, Rotation2d.kZero);
+        TROUGH_NEXT = new Pose2d(11, 0.6, Rotation2d.kZero);
+        TROUGH_EA = Rotation2d.kZero;
+        END_START = new Pose2d(10, 2, Rotation2d.kCCW_90deg);
+        END_HUB = new Pose2d(10, 4, Rotation2d.kCCW_90deg);
+        RAMP_CROSS_FINISH = new Pose2d(10.8, 5.4, Rotation2d.kCCW_90deg);
+        RAMP_START_FINISH = new Pose2d(13.5, 5.4, Rotation2d.kCCW_90deg);
 
         switch(orientation) {
             default:
@@ -77,37 +83,52 @@ public class CollectAuto extends SequentialCommandGroup {
             case "red left":
                 RAMP_START = ToRedLeft(RAMP_START);
                 RAMP_CROSS = ToRedLeft(RAMP_CROSS);
-                RAMP_RETURN_EA = ToRedLeft(RAMP_RETURN_EA);
                 STEAL_START = ToRedLeft(STEAL_START);
                 STEAL_START_EA = ToRedLeft(STEAL_START_EA);
+                STEAL_CENTER = ToRedLeft(STEAL_CENTER);
+                STEAL_CENTER_EA = ToRedLeft(STEAL_CENTER_EA);
                 STEAL_END = ToRedLeft(STEAL_END);
-                STEAL_END_EA = ToRedLeft(STEAL_END_EA);
-                RETURN_START = ToRedLeft(RETURN_START);
-                TROUGH = ToRedLeft(TROUGH);
+                TROUGH_FIRST = ToRedLeft(TROUGH_FIRST);
+                TROUGH_NEXT = ToRedLeft(TROUGH_NEXT);
+                TROUGH_EA = ToRedLeft(TROUGH_EA);
+                END_START = ToRedLeft(END_START);
+                END_HUB = ToRedLeft(END_HUB);
+                RAMP_CROSS_FINISH = ToRedLeft(RAMP_CROSS_FINISH);
+                RAMP_START_FINISH = ToRedLeft(RAMP_START_FINISH);
                 break;
             
             case "blue right":
                 RAMP_START = ToBlueRight(RAMP_START);
                 RAMP_CROSS = ToBlueRight(RAMP_CROSS);
-                RAMP_RETURN_EA = ToBlueRight(RAMP_RETURN_EA);
                 STEAL_START = ToBlueRight(STEAL_START);
                 STEAL_START_EA = ToBlueRight(STEAL_START_EA);
+                STEAL_CENTER = ToBlueRight(STEAL_CENTER);
+                STEAL_CENTER_EA = ToBlueRight(STEAL_CENTER_EA);
                 STEAL_END = ToBlueRight(STEAL_END);
-                STEAL_END_EA = ToBlueRight(STEAL_END_EA);
-                RETURN_START = ToBlueRight(RETURN_START);
-                TROUGH = ToBlueRight(TROUGH);
+                TROUGH_FIRST = ToBlueRight(TROUGH_FIRST);
+                TROUGH_NEXT = ToBlueRight(TROUGH_NEXT);
+                TROUGH_EA = ToBlueRight(TROUGH_EA);
+                END_START = ToBlueRight(END_START);
+                END_HUB = ToBlueRight(END_HUB);
+                RAMP_CROSS_FINISH = ToBlueRight(RAMP_CROSS_FINISH);
+                RAMP_START_FINISH = ToBlueRight(RAMP_START_FINISH);
                 break;
 
             case "blue left":
                 RAMP_START = ToBlueLeft(RAMP_START);
                 RAMP_CROSS = ToBlueLeft(RAMP_CROSS);
-                RAMP_RETURN_EA = ToBlueLeft(RAMP_RETURN_EA);
                 STEAL_START = ToBlueLeft(STEAL_START);
                 STEAL_START_EA = ToBlueLeft(STEAL_START_EA);
+                STEAL_CENTER = ToBlueLeft(STEAL_CENTER);
+                STEAL_CENTER_EA = ToBlueLeft(STEAL_CENTER_EA);
                 STEAL_END = ToBlueLeft(STEAL_END);
-                STEAL_END_EA = ToBlueLeft(STEAL_END_EA);
-                RETURN_START = ToBlueLeft(RETURN_START);
-                TROUGH = ToBlueLeft(TROUGH);
+                TROUGH_FIRST = ToBlueLeft(TROUGH_FIRST);
+                TROUGH_NEXT = ToBlueLeft(TROUGH_NEXT);
+                TROUGH_EA = ToBlueLeft(TROUGH_EA);
+                END_START = ToBlueLeft(END_START);
+                END_HUB = ToBlueLeft(END_HUB);
+                RAMP_CROSS_FINISH = ToBlueLeft(RAMP_CROSS_FINISH);
+                RAMP_START_FINISH = ToBlueLeft(RAMP_START_FINISH);
                 break;
         }
 
@@ -120,31 +141,34 @@ public class CollectAuto extends SequentialCommandGroup {
                 SubsystemManager.getDrivebase().resetOdometry(RAMP_START);
                 SubsystemManager.getDrivebase().resetWaypointToPose();
             }),
-            Commands.waitSeconds(DELAY),
             SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.INACTIVE, StorageState.IN),
             SubsystemManager.getDrivebase().driveToPose(
-                new APTarget(RAMP_CROSS).withVelocity(1), 0.3, 10, true),
+                new APTarget(RAMP_CROSS).withVelocity(3), true, false),
             SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),
             SubsystemManager.getDrivebase().waypointToPose(new APTarget[]{
                 new APTarget(STEAL_START).withVelocity(3).withEntryAngle(STEAL_START_EA),
-                new APTarget(STEAL_END).withVelocity(1).withEntryAngle(STEAL_END_EA),
-                new APTarget(RETURN_START).withVelocity(1).withEntryAngle(RAMP_RETURN_EA),
-                new APTarget(TROUGH).withVelocity(0).withEntryAngle(RAMP_RETURN_EA)
-            }, 0.3, 0.1, 10),
-            SubsystemManager.operateAuto(ShooterState.SHOOT, IntakeState.DEPLETE, StorageState.OUT),
+                new APTarget(STEAL_CENTER).withVelocity(1).withEntryAngle(STEAL_CENTER_EA),
+                new APTarget(TROUGH_FIRST).withVelocity(1).withEntryAngle(TROUGH_EA)
+            }, 0.3, true),
+            SubsystemManager.operateAuto(ShooterState.DEPLETE, IntakeState.DEPLETE, StorageState.OUT),
             Commands.waitSeconds(4),
             SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),
             SubsystemManager.getDrivebase().waypointToPose(new APTarget[]{
-                new APTarget(STEAL_START).withVelocity(3).withEntryAngle(STEAL_START_EA),
-                new APTarget(STEAL_END).withVelocity(1).withEntryAngle(STEAL_END_EA),
-                new APTarget(RETURN_START).withVelocity(1).withEntryAngle(RAMP_RETURN_EA),
-                new APTarget(TROUGH).withVelocity(0).withEntryAngle(RAMP_RETURN_EA)
-            }, 0.3, 0.1, 10),
-            SubsystemManager.operateAuto(ShooterState.SHOOT, IntakeState.DEPLETE, StorageState.OUT),
+                new APTarget(STEAL_START).withVelocity(2).withEntryAngle(STEAL_START_EA),
+                new APTarget(STEAL_CENTER).withVelocity(3).withEntryAngle(STEAL_CENTER_EA),
+                new APTarget(STEAL_END).withVelocity(2),
+                new APTarget(TROUGH_NEXT).withVelocity(1).withEntryAngle(TROUGH_EA)
+            }, 0.3, true),
+            SubsystemManager.operateAuto(ShooterState.DEPLETE, IntakeState.DEPLETE, StorageState.OUT),
             Commands.waitSeconds(4),
+            SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),
+            SubsystemManager.getDrivebase().waypointToPose(new APTarget[]{
+                new APTarget(END_START).withVelocity(3),
+                new APTarget(END_HUB).withVelocity(3),
+                new APTarget(RAMP_CROSS_FINISH).withVelocity(3).withEntryAngle(TROUGH_EA)
+            }, 0.3, 0.3, 10),
             SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.INACTIVE, StorageState.OUT),
-            SubsystemManager.getDrivebase().driveToPose(
-                new APTarget(RAMP_CROSS).withVelocity(1).withEntryAngle(RAMP_RETURN_EA), false, false)
+            SubsystemManager.getDrivebase().driveToPose(new APTarget(RAMP_START_FINISH).withVelocity(1), false, false)
         );
     }
 }

@@ -22,12 +22,8 @@ import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LimelightSimMode;
 import frc.robot.Constants.TuningMode;
-import frc.robot.commands.CenterAuto;
-import frc.robot.commands.SimpleMiddleAuto;
-import frc.robot.commands.SimpleOutDelayAuto;
 import frc.robot.commands.CollectAuto;
-import frc.robot.commands.SimpleOutAuto;
-import frc.robot.commands.HubStealAuto;
+import frc.robot.commands.ShootAuto;
 import frc.robot.subsystems.SubsystemManager;
 import frc.robot.subsystems.Delivery.Shooter.ShooterState;
 
@@ -570,26 +566,32 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /* GETTER/SETTER FUNCTIONS */
 
-  public static Command getAutonomousCommand(String pathName, String orientationName, double delay) {
+  public static Command getAutonomousCommand(String pathName) {
     switch(pathName) {
+      case "Collect (Red Left)":
+        return new CollectAuto("red left");
+
       default:
-      case "Center":
-        return new CenterAuto(orientationName, delay);
-        
-      case "Collect":
-        return new CollectAuto(orientationName, delay);
+      case "Collect (Red Right)":
+        return new CollectAuto("red right");
 
-      case "Simple Out":
-        return new SimpleOutAuto(orientationName, delay);
+      case "Collect (Blue Left)":
+        return new CollectAuto("blue left");
 
-      case "Simple Out w/8":
-        return new SimpleOutDelayAuto(orientationName, delay);
+      case "Collect (Blue Right)":
+        return new CollectAuto("blue right");
 
-      case "Simple Middle":
-        return new SimpleMiddleAuto(orientationName, delay);
-      
-      case "Hub Steal":
-        return new HubStealAuto(orientationName, delay);
+      case "Shoot (Red Left)":
+        return new ShootAuto("red left");
+
+      case "Shoot (Red Right)":
+        return new ShootAuto("red right");
+
+      case "Shoot (Blue Left)":
+        return new ShootAuto("blue left");
+
+      case "Shoot (Blue Right)":
+        return new ShootAuto("blue right");
     }
   }
 

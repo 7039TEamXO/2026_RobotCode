@@ -1,8 +1,8 @@
 package frc.robot.subsystems.Intake;
 
 public class IntakeConstants {
-    public static final int IntakeMotorID = 14;
-    public static final int ControlMotorID = 12;
+    public static final int IntakeMotorID = 19;
+    public static final int ControlMotorID = 16;
     
     // INTAKE MOTOR //
     public static final double Intake_StatorCurrentLimit = 80;
@@ -10,12 +10,12 @@ public class IntakeConstants {
 
     public static final double INTAKE_POWER_STOP = 0;
     public static final double INTAKE_POWER_INTAKE = -1;
-    public static final double INTAKE_POWER_HELP_SHOOT = -0.7;
+    public static final double INTAKE_POWER_HELP_SHOOT = -0.6;
     public static final double INTAKE_POWER_DEPLETE = 0.8;
 
     // CONTROL MOTOR //
     public static final double CONTROL_POWER_STOP = 0;
-    public static final double CONTROL_POWER_SHAKE = 0.37;
+    public static final double CONTROL_POWER_SHAKE = 0.35;
 
     public static final double Control_kS = 0.6;
     public static final double Control_kV = 0.16;
@@ -32,8 +32,8 @@ public class IntakeConstants {
     public static final double Control_SupplyCurrentLimit = 50;
 
     public static final double CONTROL_POS_IN = 0;
-    public static final double CONTROL_POS_HELP_SHOOT = 3.2;
-    public static final double CONTROL_POS_OUT = 5.45;
+    public static final double CONTROL_POS_HELP_SHOOT = 3.5;
+    public static final double CONTROL_POS_OUT = 4.3;
 
     public static final double CONTROL_POS_TOLERANCE = 0.2;
 
