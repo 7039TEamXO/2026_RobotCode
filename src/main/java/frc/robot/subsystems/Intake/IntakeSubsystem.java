@@ -15,6 +15,7 @@ import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -154,6 +155,7 @@ public class IntakeSubsystem implements Subsystem {
         talonFXConfigs.CurrentLimits.SupplyCurrentLowerLimit = 90;
         talonFXConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
 
+
         io.applyIntakeConfiguration(talonFXConfigs);
     }
 
@@ -166,6 +168,7 @@ public class IntakeSubsystem implements Subsystem {
         talonFXConfigs.CurrentLimits.SupplyCurrentLimit = IntakeConstants.Control_SupplyCurrentLimit;
         talonFXConfigs.CurrentLimits.SupplyCurrentLowerLimit = 90;
         talonFXConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
+        talonFXConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
         MotionMagicConfigs motionMagicConfigs = talonFXConfigs.MotionMagic;
         motionMagicConfigs.MotionMagicCruiseVelocity = IntakeTuning.Control_CruiseVelocity_get();
