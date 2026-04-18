@@ -131,12 +131,11 @@ public class HubStealAuto extends SequentialCommandGroup {
                 SubsystemManager.getDrivebase().resetOdometry(RAMP_START_ALIGNED);
                 SubsystemManager.getDrivebase().resetWaypointToPose();
             }),
-            Commands.waitSeconds(DELAY),
             SubsystemManager.operateAuto(ShooterState.SPEED_UP, IntakeState.INACTIVE, StorageState.IN),
             SubsystemManager.getDrivebase().driveToPose(
                 new APTarget(RAMP_START_ALIGNED).withVelocity(0), 0.03, 2, true),
             SubsystemManager.operateAuto(ShooterState.SHOOT, IntakeState.HELP_SHOOT, StorageState.IN),
-            Commands.waitSeconds(1.5),
+            Commands.waitSeconds(1.5 + DELAY),
             SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.INACTIVE, StorageState.IN),
             SubsystemManager.getDrivebase().driveToPose(
                 new APTarget(RAMP_CROSS).withVelocity(1), 0.3, 10, true),
