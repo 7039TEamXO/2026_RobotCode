@@ -17,10 +17,10 @@ public class IntakeConstants {
     public static final double CONTROL_POWER_STOP = 0;
     public static final double CONTROL_POWER_SHAKE = 0.35;
 
-    public static final double Control_kS = 0.6;
+    public static final double Control_kS = 0.5;
     public static final double Control_kV = 0.16;
     public static final double Control_kA = 0.015;
-    public static final double Control_kP = 1.9;
+    public static final double Control_kP = 0.5;
     public static final double Control_kI = 0.02;
     public static final double Control_kD = 0;
     public static final double Control_kG = 0;

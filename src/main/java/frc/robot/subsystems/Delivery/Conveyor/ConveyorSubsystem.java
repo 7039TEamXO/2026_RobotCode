@@ -61,7 +61,7 @@ public class ConveyorSubsystem implements Subsystem {
                 break;
         }
 
-        io.setRequest(new DutyCycleOut(Power));
+        io.setRequest(new DutyCycleOut(Power).withEnableFOC(true));
     }
 
     private void setMotorConfigs() {
