@@ -1,22 +1,22 @@
 package frc.robot.subsystems.Intake;
 
-import static edu.wpi.first.units.Units.Second;
-import static edu.wpi.first.units.Units.Volts;
-
 import org.littletonrobotics.junction.Logger;
-import edu.wpi.first.wpilibj.Timer;
 
 import com.ctre.phoenix6.SignalLogger;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.TorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Volts;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -138,8 +138,14 @@ public class IntakeSubsystem implements Subsystem {
         } else {
             io.setControlRequest(new DutyCycleOut(Control_Power).withEnableFOC(true)); //TODO: FOC
         }
-
-        io.setIntakeRequest(new DutyCycleOut(Intake_Power).withEnableFOC(true)); //TODO: FOC
+        
+        if (inputs.Intake_Velocity < 5){
+            io.setIntakeRequest(new TorqueCurrentFOC(IntakeConstants.INTAKE_CURRENT_KICK));
+        }
+        else {
+            io.setIntakeRequest(new TorqueCurrentFOC(IntakeConstants.INTAKE_CURRENT_FREE));
+        }
+        // io.setIntakeRequest(new DutyCycleOut(Intake_Power).withEnableFOC(true)); //TODO: FOC
         
         lastStorageState = storageState;
     }

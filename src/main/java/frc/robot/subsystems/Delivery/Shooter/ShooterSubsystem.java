@@ -1,8 +1,5 @@
 package frc.robot.subsystems.Delivery.Shooter;
 
-import static edu.wpi.first.units.Units.Second;
-import static edu.wpi.first.units.Units.Volts;
-
 import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.SignalLogger;
@@ -16,16 +13,19 @@ import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
-import frc.robot.Constants;
-import frc.robot.Dashboard;
+import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Volts;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants;
 import frc.robot.Constants.TuningMode;
-import frc.robot.subsystems.SubsystemManager;
+import frc.robot.Dashboard;
 import frc.robot.subsystems.IO.ShooterIO;
 import frc.robot.subsystems.IO.ShooterIO.ShooterIOInputs;
+import frc.robot.subsystems.SubsystemManager;
 
 public class ShooterSubsystem implements Subsystem {
     private final ShooterIO io;
@@ -189,9 +189,9 @@ public class ShooterSubsystem implements Subsystem {
     public double calculateShooterVelocity() {
         if(Dashboard.getAcceptVelocityChanges()) return Dashboard.getVelocityValue();
         if(SubsystemManager.getDrivebase().isInNeutralZone()) { 
-            if(SubsystemManager.getDrivebase().distanceToRampLine() < 2) return 40.0;
-            else if(SubsystemManager.getDrivebase().distanceToRampLine() < 4) return 50.0;
-            else return 60.0;
+            if(SubsystemManager.getDrivebase().distanceToRampLine() < 2) return ShooterConstants.RPS_DELIVERY_CLOSE_RAMP;
+            else if(SubsystemManager.getDrivebase().distanceToRampLine() < 4) return ShooterConstants.RPS_DELIVERY_FAR_RAMP;
+            else return ShooterConstants.RPS_DELIVERY_OPPONENT_SIDE;
         }
         double distanceFromHub = SubsystemManager.getDrivebase().calculateDistanceToHub(true);
         return shooterInterpolatingMap.get(distanceFromHub);
