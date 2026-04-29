@@ -73,7 +73,7 @@ public class IntakeSubsystem implements Subsystem {
 
         switch (state) {
             case ACTIVE:
-                if(inputs.Intake_Velocity < 5){
+                if(inputs.Intake_Velocity < 75){
                 Intake_Power = IntakeConstants.INTAKE_CURRENT_KICK;
                 }
         
@@ -147,6 +147,10 @@ public class IntakeSubsystem implements Subsystem {
         }
         
             io.setIntakeRequest(new TorqueCurrentFOC(Intake_Power));
+            System.out.println(Intake_Power);
+            System.out.println(inputs.Intake_Velocity);
+            System.out.println("================");
+
         // io.setIntakeRequest(new DutyCycleOut(Intake_Power).withEnableFOC(true)); //TODO: FOC
         
         lastStorageState = storageState;

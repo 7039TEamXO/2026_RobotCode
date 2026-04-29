@@ -11,8 +11,8 @@ public class SwerveDriveConstants {
     // SPEED LIMITATIONS
     public static final double MAX_SPEED = 4.5; // NOT TUNEABLE [!]
 
-    public static final double JOYSTICK_SLOW_DOWN_FACTOR = 0.65;
-    public static final double JOYSTICK_SLOW_DOWN_FACTOR_SHOOT = 0.35;
+    public static final double JOYSTICK_SLOW_DOWN_FACTOR = 0.75;
+    public static final double JOYSTICK_SLOW_DOWN_FACTOR_SHOOT = 0.45;
 
     // SysId
     public static final double DriveSysIdQuasistatic = 1;
