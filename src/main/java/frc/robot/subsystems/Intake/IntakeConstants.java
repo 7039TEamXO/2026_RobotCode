@@ -8,13 +8,13 @@ public class IntakeConstants {
     public static final double Intake_StatorCurrentLimit = 85;
     public static final double Intake_SupplyCurrentLimit = 60;
 
-    public static final double INTAKE_CURRENT_FREE = 35;
+    public static final double INTAKE_CURRENT_FREE = 40;
     public static final double INTAKE_CURRENT_KICK = 80;
 
     public static final double INTAKE_POWER_STOP = 0;
     public static final double INTAKE_POWER_INTAKE = -1;
-    public static final double INTAKE_POWER_HELP_SHOOT = -0.7;
-    public static final double INTAKE_POWER_DEPLETE = 0.8;
+    public static final double INTAKE_POWER_HELP_SHOOT = 55;
+    public static final double INTAKE_POWER_DEPLETE = -55;
 
     // CONTROL MOTOR //
     public static final double CONTROL_POWER_STOP = 0;

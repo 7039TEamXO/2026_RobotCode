@@ -12,6 +12,7 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.TorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import static edu.wpi.first.units.Units.Second;
@@ -72,7 +73,13 @@ public class IntakeSubsystem implements Subsystem {
 
         switch (state) {
             case ACTIVE:
-                Intake_Power = IntakeTuning.POWER_INTAKE_get();
+                if(inputs.Intake_Velocity < 5){
+                Intake_Power = IntakeConstants.INTAKE_CURRENT_KICK;
+                }
+        
+             else {
+                Intake_Power = (IntakeConstants.INTAKE_CURRENT_FREE);
+                }
                 break;
 
             case HELP_SHOOT:
@@ -139,12 +146,7 @@ public class IntakeSubsystem implements Subsystem {
             io.setControlRequest(new DutyCycleOut(Control_Power).withEnableFOC(true)); //TODO: FOC
         }
         
-        if (inputs.Intake_Velocity < 5){
-            io.setIntakeRequest(new TorqueCurrentFOC(IntakeConstants.INTAKE_CURRENT_KICK));
-        }
-        else {
-            io.setIntakeRequest(new TorqueCurrentFOC(IntakeConstants.INTAKE_CURRENT_FREE));
-        }
+            io.setIntakeRequest(new TorqueCurrentFOC(Intake_Power));
         // io.setIntakeRequest(new DutyCycleOut(Intake_Power).withEnableFOC(true)); //TODO: FOC
         
         lastStorageState = storageState;
@@ -159,6 +161,7 @@ public class IntakeSubsystem implements Subsystem {
         talonFXConfigs.CurrentLimits.SupplyCurrentLimit = IntakeConstants.Intake_SupplyCurrentLimit;
         talonFXConfigs.CurrentLimits.SupplyCurrentLowerLimit = 90;
         talonFXConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
+        talonFXConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
         io.applyIntakeConfiguration(talonFXConfigs);
     }

@@ -4,6 +4,7 @@ import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.TorqueCurrentFOC;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -60,8 +61,8 @@ public class ConveyorSubsystem implements Subsystem {
                 // Do nothing
                 break;
         }
-
-        io.setRequest(new DutyCycleOut(Power).withEnableFOC(true)); //TODO: FOC
+        io.setRequest(new TorqueCurrentFOC(Power));
+        // io.setRequest(new DutyCycleOut(Power).withEnableFOC(true)); //TODO: FOC
     }
 
     private void setMotorConfigs() {

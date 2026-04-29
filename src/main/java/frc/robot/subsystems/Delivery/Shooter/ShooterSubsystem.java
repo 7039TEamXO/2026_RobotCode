@@ -124,7 +124,7 @@ public class ShooterSubsystem implements Subsystem {
         }
 
         io.setEntryRequest(new VelocityVoltage(Entry_Velocity));
-        io.setAngleRequest(new MotionMagicVoltage(Angle_Position));
+        io.setAngleRequest(new MotionMagicVoltage(Angle_Position).withEnableFOC(true));
         io.setMasterRequest(new VelocityVoltage(Shoot_Velocity));
     }
 
