@@ -143,11 +143,11 @@ public class SimpleMiddleAuto extends SequentialCommandGroup {
                 SubsystemManager.getDrivebase().resetOdometry(RAMP_START);
                 SubsystemManager.getDrivebase().resetWaypointToPose();
             }),
-            Commands.waitSeconds(DELAY),
             SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.INACTIVE, StorageState.IN),
             SubsystemManager.getDrivebase().driveToPose(
-                new APTarget(RAMP_CROSS).withVelocity(1), 0.3, 10, true),
-            SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),
+                new APTarget(RAMP_CROSS).withVelocity(DELAY == 0 ? 1 : 0), 0.3, 10, true),
+                SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),
+                Commands.waitSeconds(DELAY),
             SubsystemManager.getDrivebase().waypointToPose(new APTarget[]{
                 new APTarget(STEAL_START).withVelocity(3).withEntryAngle(STEAL_START_EA),
                 new APTarget(STEAL_END).withVelocity(1).withEntryAngle(STEAL_END_EA),

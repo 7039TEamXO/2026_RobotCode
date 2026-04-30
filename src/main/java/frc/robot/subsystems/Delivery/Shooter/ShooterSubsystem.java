@@ -149,16 +149,16 @@ public class ShooterSubsystem implements Subsystem {
     }
 
     private void setupShooterInterpolatingMap() {
-        final double shooterCalibrationOffset = -3.0;
+        final double shooterCalibrationOffset = -2.0;
         shooterInterpolatingMap.put(0.0, 42.0 + shooterCalibrationOffset);
         shooterInterpolatingMap.put(1.5, 45.0 + shooterCalibrationOffset);
         shooterInterpolatingMap.put(2.0, 47.0 + shooterCalibrationOffset);
         shooterInterpolatingMap.put(2.5, 49.0 + shooterCalibrationOffset);
-        shooterInterpolatingMap.put(3.0, 50.0 + shooterCalibrationOffset);
-        shooterInterpolatingMap.put(4.0, 54.0 + shooterCalibrationOffset);
-        shooterInterpolatingMap.put(4.5, 55.0 + shooterCalibrationOffset);
-        shooterInterpolatingMap.put(5.0, 59.0 + shooterCalibrationOffset);
-        shooterInterpolatingMap.put(5.5, 62.0 + shooterCalibrationOffset);
+        shooterInterpolatingMap.put(3.0, 51.0 + shooterCalibrationOffset);
+        shooterInterpolatingMap.put(4.0, 56.0 + shooterCalibrationOffset);
+        shooterInterpolatingMap.put(4.5, 57.0 + shooterCalibrationOffset);
+        shooterInterpolatingMap.put(5.0, 61.0 + shooterCalibrationOffset);
+        shooterInterpolatingMap.put(5.5, 63.0 + shooterCalibrationOffset);
         
         // Consistency
         shooterInterpolatingMap.put(10.0, ShooterConstants.RPS_SHOOT_MAX);

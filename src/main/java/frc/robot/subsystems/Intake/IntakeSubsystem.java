@@ -137,12 +137,18 @@ public class IntakeSubsystem implements Subsystem {
         }
 
         if(storageState != StorageState.HELP_SHOOT) {
-            if(Math.abs(inputs.Control_Position - Position) > IntakeConstants.CONTROL_POS_TOLERANCE) {
+            if (storageState == StorageState.IN) {
+                io.setControlRequest(new MotionMagicVoltage(Position).withEnableFOC(true));
+            }
+            
+            else if(Math.abs(inputs.Control_Position - Position) > IntakeConstants.CONTROL_POS_TOLERANCE) {
                 io.setControlRequest(new MotionMagicVoltage(Position).withEnableFOC(true)); //TODO: FOC
-            } else {
+            }
+            else {
                 io.setControlRequest(new CoastOut());
             }
-        } else {
+        } 
+        else {
             io.setControlRequest(new DutyCycleOut(Control_Power).withEnableFOC(true)); //TODO: FOC
         }
         

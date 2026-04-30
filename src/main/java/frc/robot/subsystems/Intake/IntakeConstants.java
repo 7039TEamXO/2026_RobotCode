@@ -8,7 +8,7 @@ public class IntakeConstants {
     public static final double Intake_StatorCurrentLimit = 85;
     public static final double Intake_SupplyCurrentLimit = 75;
 
-    public static final double INTAKE_CURRENT_FREE = 35;
+    public static final double INTAKE_CURRENT_FREE = 45;
     public static final double INTAKE_CURRENT_KICK = 85;
 
     public static final double INTAKE_POWER_STOP = 0;
@@ -23,13 +23,13 @@ public class IntakeConstants {
     public static final double Control_kS = 0.6;
     public static final double Control_kV = 0.16;
     public static final double Control_kA = 0.015;
-    public static final double Control_kP = 1.9;
+    public static final double Control_kP = 1.55;
     public static final double Control_kI = 0.02;
     public static final double Control_kD = 0;
     public static final double Control_kG = 0;
 
     public static final double Control_CruiseVelocity = 100.0;
-    public static final double Control_Acceleration = 65.0;
+    public static final double Control_Acceleration = 50.0;
 
     public static final double Control_StatorCurrentLimit = 50;
     public static final double Control_SupplyCurrentLimit = 50;
@@ -38,7 +38,7 @@ public class IntakeConstants {
     public static final double CONTROL_POS_HELP_SHOOT = 3.2;
     public static final double CONTROL_POS_OUT = 5.45;
 
-    public static final double CONTROL_POS_TOLERANCE = 0.2;
+    public static final double CONTROL_POS_TOLERANCE = 2;
 
     public static final double HELP_TOGGLE_PERIOD = 0.4; // seconds
     public static final double INITIAL_STOP_TIME = 0.5;  // seconds
