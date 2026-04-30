@@ -147,10 +147,6 @@ public class IntakeSubsystem implements Subsystem {
         }
         
             io.setIntakeRequest(new TorqueCurrentFOC(Intake_Power));
-            System.out.println(Intake_Power);
-            System.out.println(inputs.Intake_Velocity);
-            System.out.println("================");
-
         // io.setIntakeRequest(new DutyCycleOut(Intake_Power).withEnableFOC(true)); //TODO: FOC
         
         lastStorageState = storageState;

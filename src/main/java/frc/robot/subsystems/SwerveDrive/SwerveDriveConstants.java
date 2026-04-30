@@ -9,10 +9,10 @@ import com.therekrab.autopilot.Autopilot;
                
 public class SwerveDriveConstants {
     // SPEED LIMITATIONS
-    public static final double MAX_SPEED = 4.5; // NOT TUNEABLE [!]
+    public static final double MAX_SPEED = 4.5; // NOT TUNEABLE [!] 4.5
 
-    public static final double JOYSTICK_SLOW_DOWN_FACTOR = 0.75;
-    public static final double JOYSTICK_SLOW_DOWN_FACTOR_SHOOT = 0.45;
+    public static final double JOYSTICK_SLOW_DOWN_FACTOR = 0.8;
+    public static final double JOYSTICK_SLOW_DOWN_FACTOR_SHOOT = 0.55;
 
     // SysId
     public static final double DriveSysIdQuasistatic = 1;

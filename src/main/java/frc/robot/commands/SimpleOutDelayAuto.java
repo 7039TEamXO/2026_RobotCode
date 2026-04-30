@@ -60,8 +60,8 @@ public class SimpleOutDelayAuto extends SequentialCommandGroup {
         RAMP_CROSS = new Pose2d(10.9, 5.5, Rotation2d.k180deg);
         RAMP_RETURN_EA = Rotation2d.kZero;
         RAMP_START_ALIGNED = new Pose2d(13.2, 5.5, Rotation2d.fromDegrees(-131));
-        RAMP_CROSS_FINAL = new Pose2d(10.9, 5.5, Rotation2d.kCW_90deg);
-        RAMP_RETURN = new Pose2d(10.9, 5.5, Rotation2d.fromDegrees(-135));
+        RAMP_CROSS_FINAL = new Pose2d(11.2, 5.5, Rotation2d.fromDegrees(-135));
+        RAMP_RETURN = new Pose2d(10.2, 5.5, Rotation2d.fromDegrees(-135));
 
         STEAL_START = new Pose2d(9, 6.5, Rotation2d.k180deg);
         STEAL_START_EA = Rotation2d.k180deg;
