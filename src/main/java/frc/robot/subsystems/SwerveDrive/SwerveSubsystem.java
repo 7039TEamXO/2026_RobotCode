@@ -24,6 +24,8 @@ import frc.robot.Constants.LimelightSimMode;
 import frc.robot.Constants.TuningMode;
 import frc.robot.commands.CenterAuto;
 import frc.robot.commands.SimpleMiddleAuto;
+import frc.robot.commands.SimpleOutAutoTwoSweep;
+import frc.robot.commands.SimpleMiddleAutoTwoSweep;
 import frc.robot.commands.SimpleOutDelayAuto;
 import frc.robot.commands.CollectAuto;
 import frc.robot.commands.SimpleOutAuto;
@@ -590,6 +592,12 @@ public class SwerveSubsystem extends SubsystemBase {
       
       case "Hub Steal":
         return new HubStealAuto(orientationName, delay);
+      
+      case "Simple Middle One Shoot":
+        return new SimpleOutAutoTwoSweep(orientationName, delay);
+      
+      case "Simple Middle Two Sweep":
+        return new SimpleMiddleAutoTwoSweep(orientationName, delay);
     }
   }
 
