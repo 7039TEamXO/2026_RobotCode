@@ -89,6 +89,6 @@ public class ShooterConstants {
     public static final double TIME_SHOOT_MAX = 3;
 
     public static final double RPS_DELIVERY_CLOSE_RAMP = 40;
-    public static final double RPS_DELIVERY_FAR_RAMP = 50;
-    public static final double RPS_DELIVERY_OPPONENT_SIDE = 95;
+    public static final double RPS_DELIVERY_FAR_RAMP = 65;
+    public static final double RPS_DELIVERY_OPPONENT_SIDE = 140;
 }

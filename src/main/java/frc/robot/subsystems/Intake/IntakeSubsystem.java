@@ -100,6 +100,9 @@ public class IntakeSubsystem implements Subsystem {
             case IN:
                 Position = IntakeConstants.CONTROL_POS_IN;
                 break;
+            case RESET:
+                Control_Power = -0.2;
+                break;
                 
             case HELP_SHOOT:
                 // On entry into HELP_SHOOT, record the time so we can wait a fixed delay
@@ -137,7 +140,10 @@ public class IntakeSubsystem implements Subsystem {
         }
 
         if(storageState != StorageState.HELP_SHOOT) {
-            if (storageState == StorageState.IN) {
+            if (storageState == StorageState.RESET){
+                io.setControlRequest(new DutyCycleOut(Control_Power).withEnableFOC(true)); //TODO: FO
+            }
+            else if (storageState == StorageState.IN) {
                 io.setControlRequest(new MotionMagicVoltage(Position).withEnableFOC(true));
             }
             
@@ -201,11 +207,13 @@ public class IntakeSubsystem implements Subsystem {
     }
 
     public void resetControlEncoder() {
-        if(lastStorageState == StorageState.IN) {
-            io.setControlPosition(IntakeConstants.CONTROL_POS_IN);
-        } else if(lastStorageState == StorageState.OUT) {
-            io.setControlPosition(IntakeConstants.CONTROL_POS_OUT);
-        }
+
+            io.setControlPosition(0);
+        // if(lastStorageState == StorageState.IN) {
+        //     io.setControlPosition(IntakeConstants.CONTROL_POS_IN);
+        // } else if(lastStorageState == StorageState.OUT) {
+        //     io.setControlPosition(IntakeConstants.CONTROL_POS_OUT);
+        // }
     }
 
     private void setMotorConfigs() {

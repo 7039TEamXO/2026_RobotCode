@@ -157,8 +157,8 @@ public class ShooterSubsystem implements Subsystem {
         shooterInterpolatingMap.put(3.0, 51.0 + shooterCalibrationOffset);
         shooterInterpolatingMap.put(4.0, 56.0 + shooterCalibrationOffset);
         shooterInterpolatingMap.put(4.5, 57.0 + shooterCalibrationOffset);
-        shooterInterpolatingMap.put(5.0, 61.0 + shooterCalibrationOffset);
-        shooterInterpolatingMap.put(5.5, 63.0 + shooterCalibrationOffset);
+        shooterInterpolatingMap.put(5.0, 59.0 + shooterCalibrationOffset);
+        shooterInterpolatingMap.put(5.5, 61.0 + shooterCalibrationOffset);
         
         // Consistency
         shooterInterpolatingMap.put(10.0, ShooterConstants.RPS_SHOOT_MAX);

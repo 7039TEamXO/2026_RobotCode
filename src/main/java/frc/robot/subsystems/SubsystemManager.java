@@ -136,6 +136,7 @@ public class SubsystemManager {
 
         // Reset control motor encoder
         if(psControllerHID.getPOV() == 180) {
+            storageState = StorageState.RESET;
             RobotContainer.Intake.resetControlEncoder();
         }
 
