@@ -62,7 +62,7 @@ public class SimpleOutAuto extends SequentialCommandGroup {
         RAMP_CROSS = new Pose2d(10.9, 5.5, Rotation2d.k180deg);
         RAMP_RETURN_EA = Rotation2d.kZero;
         RAMP_START_ALIGNED = new Pose2d(13.2, 5.5, Rotation2d.fromDegrees(-131));
-        RAMP_CROSS_FINAL = new Pose2d(11.2, 5.5, Rotation2d.fromDegrees(-135));
+        RAMP_CROSS_FINAL = new Pose2d(11.2, 5.75, Rotation2d.fromDegrees(-135));
         RAMP_RETURN = new Pose2d(10.2, 5.5, Rotation2d.fromDegrees(-135));
 
         STEAL_START = new Pose2d(9, 6.5, Rotation2d.k180deg);
@@ -138,7 +138,7 @@ public class SimpleOutAuto extends SequentialCommandGroup {
             }),
             SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.INACTIVE, StorageState.IN),
             SubsystemManager.getDrivebase().driveToPose(
-                new APTarget(RAMP_CROSS).withVelocity(DELAY == 0 ? 1 : 0), 0.3, 10, true),
+                new APTarget(RAMP_CROSS).withVelocity(DELAY == 0 ? 1 : 0), 0.3, 10, false),
                 SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),
                 Commands.waitSeconds(DELAY),
                 SubsystemManager.getDrivebase().waypointToPose(new APTarget[]{
@@ -149,9 +149,9 @@ public class SimpleOutAuto extends SequentialCommandGroup {
             }, 0.3, 0.3, 30),
             SubsystemManager.operateAuto(ShooterState.SPEED_UP, IntakeState.ACTIVE, StorageState.OUT),
             SubsystemManager.getDrivebase().driveToPose(
-                new APTarget(RAMP_START_ALIGNED).withVelocity(0), 0.05, 2, true),
+                new APTarget(RAMP_START_ALIGNED).withVelocity(0), 0.05, 2, false),
             SubsystemManager.operateAuto(ShooterState.SHOOT, IntakeState.HELP_SHOOT, StorageState.HELP_SHOOT),
-            Commands.waitSeconds(4),
+            Commands.waitSeconds(4.5),
             SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),
             SubsystemManager.getDrivebase().driveToPose(
                 new APTarget(RAMP_CROSS_FINAL).withVelocity(1), 0.3, 30, true),
@@ -162,7 +162,7 @@ public class SimpleOutAuto extends SequentialCommandGroup {
             }, 0.3, 0.3, 30),
             SubsystemManager.operateAuto(ShooterState.SPEED_UP, IntakeState.ACTIVE, StorageState.OUT),
             SubsystemManager.getDrivebase().driveToPose(
-                new APTarget(RAMP_START_ALIGNED).withVelocity(0), 0.03, 2, true),
+                new APTarget(RAMP_START_ALIGNED).withVelocity(0), 0.03, 2, false),
             SubsystemManager.operateAuto(ShooterState.SHOOT, IntakeState.HELP_SHOOT, StorageState.HELP_SHOOT)
         );
     }
