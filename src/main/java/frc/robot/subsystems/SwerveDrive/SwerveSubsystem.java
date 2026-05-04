@@ -593,7 +593,7 @@ public class SwerveSubsystem extends SubsystemBase {
       case "Hub Steal":
         return new HubStealAuto(orientationName, delay);
       
-      case "Simple Middle One Shoot":
+      case "Simple Out Two Sweep":
         return new SimpleOutAutoTwoSweep(orientationName, delay);
       
       case "Simple Middle Two Sweep":

@@ -28,11 +28,7 @@ public class SimpleOutAutoTwoSweep extends SequentialCommandGroup {
     private Rotation2d STEAL_END_EA;
 
     private Pose2d RETURN_START;
-    private Pose2d START_INTAKE_SECOND_RUN;
-    private Pose2d FINISH_INTAKE_SECOND_RUN;
     private Pose2d CLOSE_END;
-    private Rotation2d CLOSE_END_EA;
-    private Rotation2d INTAKE_END_EA;
 
     private double DELAY;
 
@@ -68,7 +64,7 @@ public class SimpleOutAutoTwoSweep extends SequentialCommandGroup {
         RAMP_CROSS = new Pose2d(10.9, 5.5, Rotation2d.k180deg);
         RAMP_RETURN_EA = Rotation2d.kZero;
         RAMP_START_ALIGNED = new Pose2d(13.2, 5.5, Rotation2d.fromDegrees(-131));
-        RAMP_CROSS_FINAL = new Pose2d(11.2, 5.75, Rotation2d.fromDegrees(-135));
+        RAMP_CROSS_FINAL = new Pose2d(10.3, 5.75, Rotation2d.fromDegrees(-90));
         RAMP_RETURN = new Pose2d(10.2, 5.5, Rotation2d.fromDegrees(-135));
 
         STEAL_START = new Pose2d(9, 6.5, Rotation2d.k180deg);
@@ -100,10 +96,6 @@ public class SimpleOutAutoTwoSweep extends SequentialCommandGroup {
                 STEAL_END_EA = ToRedLeft(STEAL_END_EA);
                 RETURN_START = ToRedLeft(RETURN_START);
                 CLOSE_END = ToRedLeft(CLOSE_END);
-                CLOSE_END_EA = ToRedLeft(CLOSE_END_EA);
-                INTAKE_END_EA = ToRedLeft(INTAKE_END_EA);
-                START_INTAKE_SECOND_RUN = ToRedLeft(START_INTAKE_SECOND_RUN);
-                FINISH_INTAKE_SECOND_RUN = ToRedLeft(FINISH_INTAKE_SECOND_RUN);
                 break;
             
             case "blue right":
@@ -119,10 +111,6 @@ public class SimpleOutAutoTwoSweep extends SequentialCommandGroup {
                 STEAL_END_EA = ToBlueRight(STEAL_END_EA);
                 RETURN_START = ToBlueRight(RETURN_START);
                 CLOSE_END = ToBlueRight(CLOSE_END);
-                CLOSE_END_EA = ToBlueRight(CLOSE_END_EA);
-                INTAKE_END_EA = ToBlueRight(INTAKE_END_EA);
-                START_INTAKE_SECOND_RUN = ToBlueRight(START_INTAKE_SECOND_RUN);
-                FINISH_INTAKE_SECOND_RUN = ToBlueRight(FINISH_INTAKE_SECOND_RUN);
                 break;
 
             case "blue left":
@@ -138,10 +126,6 @@ public class SimpleOutAutoTwoSweep extends SequentialCommandGroup {
                 STEAL_END_EA = ToBlueLeft(STEAL_END_EA);
                 RETURN_START = ToBlueLeft(RETURN_START);
                 CLOSE_END = ToBlueLeft(CLOSE_END);
-                CLOSE_END_EA = ToBlueLeft(CLOSE_END_EA);
-                INTAKE_END_EA = ToBlueLeft(INTAKE_END_EA);
-                START_INTAKE_SECOND_RUN = ToBlueLeft(START_INTAKE_SECOND_RUN);
-                FINISH_INTAKE_SECOND_RUN = ToBlueLeft(FINISH_INTAKE_SECOND_RUN);
                 break;
         }
 
@@ -160,7 +144,7 @@ public class SimpleOutAutoTwoSweep extends SequentialCommandGroup {
                 SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),
                 Commands.waitSeconds(DELAY),
             SubsystemManager.getDrivebase().waypointToPose(new APTarget[]{
-                new APTarget(STEAL_START).withVelocity(3).withEntryAngle(STEAL_START_EA),
+                new APTarget(STEAL_START).withVelocity(2).withEntryAngle(STEAL_START_EA),
                 new APTarget(STEAL_END).withVelocity(1).withEntryAngle(STEAL_END_EA),
                 new APTarget(RETURN_START).withVelocity(1).withEntryAngle(RAMP_RETURN_EA),
                 new APTarget(RAMP_RETURN).withVelocity(1)
@@ -169,21 +153,24 @@ public class SimpleOutAutoTwoSweep extends SequentialCommandGroup {
             SubsystemManager.getDrivebase().driveToPose(
                 new APTarget(RAMP_START_ALIGNED).withVelocity(0), 0.05, 2, false),
             SubsystemManager.operateAuto(ShooterState.SHOOT, IntakeState.HELP_SHOOT, StorageState.HELP_SHOOT),
-            Commands.waitSeconds(5),
+            Commands.waitSeconds(4.5),
             SubsystemManager.getDrivebase().driveToPose(
-                new APTarget(RAMP_CROSS_FINAL).withVelocity(0.4), 0.3, 30, true),
+                new APTarget(RAMP_CROSS_FINAL).withVelocity(0.6), 0.3, 30, true),
             SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),
             SubsystemManager.getDrivebase().waypointToPose(new APTarget[]{
-                new APTarget(STEAL_START).withVelocity(0.7).withEntryAngle(STEAL_START_EA),
-                new APTarget(STEAL_END).withVelocity(0.7).withEntryAngle(STEAL_END_EA),
-                new APTarget(RETURN_START).withVelocity(0.7).withEntryAngle(RAMP_RETURN_EA),
-                new APTarget(RAMP_RETURN).withVelocity(0.7)
+                new APTarget(STEAL_START).withVelocity(1).withEntryAngle(STEAL_START_EA),
+                new APTarget(STEAL_END).withVelocity(1).withEntryAngle(STEAL_END_EA),
+                new APTarget(RETURN_START).withVelocity(1).withEntryAngle(RAMP_RETURN_EA),
+                new APTarget(RAMP_RETURN).withVelocity(1)
             }, 0.3, 0.3, 30),
                         SubsystemManager.operateAuto(ShooterState.SPEED_UP, IntakeState.ACTIVE, StorageState.OUT),
             SubsystemManager.getDrivebase().driveToPose(
                 new APTarget(RAMP_START_ALIGNED).withVelocity(0), 0.05, 2, false),
                 SubsystemManager.operateAuto(ShooterState.SHOOT, IntakeState.HELP_SHOOT, StorageState.HELP_SHOOT),
-                Commands.waitSeconds(4)
+                Commands.waitSeconds(3),
+                SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.INACTIVE, StorageState.IN),
+                SubsystemManager.getDrivebase().driveToPose(
+                new APTarget(RAMP_CROSS_FINAL).withVelocity(0.6), 0.3, 30, true)
 
         );
     }

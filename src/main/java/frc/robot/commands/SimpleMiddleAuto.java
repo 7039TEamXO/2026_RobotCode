@@ -65,7 +65,7 @@ public class SimpleMiddleAuto extends SequentialCommandGroup {
         RAMP_CROSS = new Pose2d(10.9, 5.5, Rotation2d.k180deg);
         RAMP_RETURN_EA = Rotation2d.kZero;
         RAMP_START_ALIGNED = new Pose2d(13.2, 5.5, Rotation2d.fromDegrees(-131));
-        RAMP_CROSS_FINAL = new Pose2d(11.2, 5.75, Rotation2d.fromDegrees(-135));
+        RAMP_CROSS_FINAL = new Pose2d(10.3, 5.75, Rotation2d.fromDegrees(-90));
         RAMP_RETURN = new Pose2d(10.2, 5.5, Rotation2d.fromDegrees(-135));
 
         STEAL_START = new Pose2d(9, 4, Rotation2d.k180deg);
@@ -149,7 +149,7 @@ public class SimpleMiddleAuto extends SequentialCommandGroup {
                 SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),
                 Commands.waitSeconds(DELAY),
             SubsystemManager.getDrivebase().waypointToPose(new APTarget[]{
-                new APTarget(STEAL_START).withVelocity(3).withEntryAngle(STEAL_START_EA),
+                new APTarget(STEAL_START).withVelocity(2).withEntryAngle(STEAL_START_EA),
                 new APTarget(STEAL_END).withVelocity(1).withEntryAngle(STEAL_END_EA),
                 new APTarget(RETURN_START).withVelocity(1).withEntryAngle(RAMP_RETURN_EA),
                 new APTarget(RAMP_RETURN).withVelocity(1)
@@ -161,7 +161,7 @@ public class SimpleMiddleAuto extends SequentialCommandGroup {
             Commands.waitSeconds(4),
             SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),
             SubsystemManager.getDrivebase().driveToPose(
-                new APTarget(RAMP_CROSS_FINAL).withVelocity(1), 0.3, 30, true),
+                new APTarget(RAMP_CROSS_FINAL).withVelocity(0.5), 0.3, 30, true),
             SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.ACTIVE, StorageState.OUT),
             SubsystemManager.getDrivebase().waypointToPose(new APTarget[]{
                 new APTarget(CLOSE_END).withVelocity(1).withEntryAngle(CLOSE_END_EA),
@@ -170,7 +170,11 @@ public class SimpleMiddleAuto extends SequentialCommandGroup {
             SubsystemManager.operateAuto(ShooterState.SPEED_UP, IntakeState.ACTIVE, StorageState.OUT),
             SubsystemManager.getDrivebase().driveToPose(
                 new APTarget(RAMP_START_ALIGNED).withVelocity(0), 0.03, 2, false),
-            SubsystemManager.operateAuto(ShooterState.SHOOT, IntakeState.HELP_SHOOT, StorageState.HELP_SHOOT)
+            SubsystemManager.operateAuto(ShooterState.SHOOT, IntakeState.HELP_SHOOT, StorageState.HELP_SHOOT),
+            Commands.waitSeconds(3),
+            SubsystemManager.operateAuto(ShooterState.IDLE, IntakeState.INACTIVE, StorageState.IN),
+            SubsystemManager.getDrivebase().driveToPose(
+                new APTarget(RAMP_CROSS_FINAL).withVelocity(0.6), 0.3, 30, true)
         );
     }
 }

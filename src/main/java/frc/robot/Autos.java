@@ -5,7 +5,7 @@ public enum Autos {
     SimpleOut("Simple Out"),
     SimpleMiddle("Simple Middle"),
     SimpleMiddleAutoTwoSweep("Simple Middle Two Sweep"),
-    SimpleOutAutoTwoSweep("Simple Out Auto Two Sweep"),
+    SimpleOutAutoTwoSweep("Simple Out Two Sweep"),
     SimpleOutDelay("Simple Out w/8"),
     Collect("Collect");
     

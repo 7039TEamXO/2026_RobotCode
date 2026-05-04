@@ -23,7 +23,7 @@ public class ShooterConstants {
     public static final double Shoot_kI = 0;
     public static final double Shoot_kD = 0;
 
-    public static final double SHOOT_VELOCITY_IDLE = 5;
+    public static final double SHOOT_VELOCITY_IDLE = 4;
     public static final double SHOOT_VELOCITY_HELP = 7;
     public static final double SHOOT_VELOCITY_TOLERANCE = 4;
 
